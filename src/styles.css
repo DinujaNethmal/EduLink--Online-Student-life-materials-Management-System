@@ -363,6 +363,29 @@ h1 {
   font-weight: 500;
 }
 
+.auth-row {
+  display: flex;
+}
+
+.auth-right {
+  justify-content: flex-end;
+}
+
+.auth-link {
+  font-size: 0.84rem;
+  color: #4f46e5;
+  font-weight: 500;
+}
+
+.auth-notice {
+  margin-top: 1.4rem;
+  text-align: center;
+  color: #374151;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
 .page-shell {
   min-height: 100vh;
   display: flex;
