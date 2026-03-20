@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 
 const memberPostsSeed = [
   {
@@ -166,6 +167,30 @@ export default function FindingGroups() {
 
   return (
     <div className="groups-page">
+      <header className="nav">
+        <div className="nav-left">
+          <span className="logo-mark">EL</span>
+          <span className="logo-text">EduLink</span>
+        </div>
+        <nav className="nav-links">
+          <Link to="/" className="nav-link">
+            Home
+          </Link>
+          <Link to="/login" className="nav-link">
+            Login
+          </Link>
+          <Link to="/register" className="nav-link primary-link">
+            Register
+          </Link>
+          <Link to="/profile" className="nav-link">
+            Profile
+          </Link>
+          <Link to="/finding-groups" className="nav-link active">
+            Finding Groups
+          </Link>
+        </nav>
+      </header>
+
       <section className="groups-hero">
         <h1>Finding Groups</h1>
         <p>
@@ -557,6 +582,10 @@ export default function FindingGroups() {
           </>
         )}
       </div>
+
+      <footer className="footer">
+        <span>© {new Date().getFullYear()} EduLink. Designed for university projects.</span>
+      </footer>
     </div>
   );
 }

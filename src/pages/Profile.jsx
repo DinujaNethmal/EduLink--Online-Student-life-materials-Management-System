@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 
 const initialProfile = {
   fullName: "Student Name",
@@ -57,6 +58,30 @@ export default function Profile() {
 
   return (
     <div className="profile-page">
+      <header className="nav">
+        <div className="nav-left">
+          <span className="logo-mark">EL</span>
+          <span className="logo-text">EduLink</span>
+        </div>
+        <nav className="nav-links">
+          <Link to="/" className="nav-link">
+            Home
+          </Link>
+          <Link to="/login" className="nav-link">
+            Login
+          </Link>
+          <Link to="/register" className="nav-link primary-link">
+            Register
+          </Link>
+          <Link to="/profile" className="nav-link active">
+            Profile
+          </Link>
+          <Link to="/finding-groups" className="nav-link">
+            Finding Groups
+          </Link>
+        </nav>
+      </header>
+
       <div className="profile-header-card">
         <div className="profile-avatar-wrap">
           {profilePhoto ? (
@@ -264,6 +289,10 @@ export default function Profile() {
           </div>
         </section>
       </div>
+
+      <footer className="footer">
+        <span>© {new Date().getFullYear()} EduLink. Designed for university projects.</span>
+      </footer>
     </div>
   );
 }
