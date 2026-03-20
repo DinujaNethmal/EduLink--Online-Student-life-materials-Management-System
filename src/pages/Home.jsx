@@ -21,6 +21,9 @@ export default function Home() {
           <Link to="/profile" className="nav-link">
             Profile
           </Link>
+          <Link to="/finding-groups" className="nav-link">
+            Finding Groups
+          </Link>
         </nav>
       </header>
 
@@ -46,6 +49,9 @@ export default function Home() {
             </Link>
             <Link to="/profile" className="btn-secondary">
               View Profile
+            </Link>
+            <Link to="/finding-groups" className="btn-secondary">
+              Find Groups
             </Link>
           </div>
 
