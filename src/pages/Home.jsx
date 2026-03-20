@@ -18,6 +18,9 @@ export default function Home() {
           <Link to="/register" className="nav-link primary-link">
             Register
           </Link>
+          <Link to="/profile" className="nav-link">
+            Profile
+          </Link>
         </nav>
       </header>
 
@@ -40,6 +43,9 @@ export default function Home() {
             </Link>
             <Link to="/login" className="btn-secondary">
               Already have an account?
+            </Link>
+            <Link to="/profile" className="btn-secondary">
+              View Profile
             </Link>
           </div>
 
