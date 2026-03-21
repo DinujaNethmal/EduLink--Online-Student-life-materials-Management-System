@@ -5,6 +5,8 @@ const memberPostsSeed = [
   {
     id: 1,
     name: "Nethmi Perera",
+    personalEmail: "nethmi.perera@gmail.com",
+    contactNumber: "0771234567",
     campus: "Malabe",
     subject: "SE",
     lookingGroupType: "Research",
@@ -17,6 +19,8 @@ const memberPostsSeed = [
   {
     id: 2,
     name: "Dulaj Fernando",
+    personalEmail: "dulaj.fernando@gmail.com",
+    contactNumber: "0712345678",
     campus: "Kandy",
     subject: "DBMS",
     lookingGroupType: "Assignment",
@@ -33,6 +37,8 @@ const groupBannersSeed = [
     id: 1,
     groupName: "Team Quantum",
     leaderName: "Sahan",
+    personalEmail: "teamquantum.lead@gmail.com",
+    contactNumber: "0765432109",
     campus: "Malabe",
     subject: "OOP",
     subgroup: "Development",
@@ -45,6 +51,8 @@ const groupBannersSeed = [
     id: 2,
     groupName: "Data Spark",
     leaderName: "Nimali",
+    personalEmail: "dataspark.team@gmail.com",
+    contactNumber: "0751112233",
     campus: "Metro",
     subject: "DSA",
     subgroup: "Research",
@@ -64,6 +72,8 @@ const filterDefaults = {
 
 const newMemberDefault = {
   name: "",
+  personalEmail: "",
+  contactNumber: "",
   campus: "Malabe",
   subject: "SE",
   lookingGroupType: "Research",
@@ -77,6 +87,8 @@ const newMemberDefault = {
 const newBannerDefault = {
   groupName: "",
   leaderName: "",
+  personalEmail: "",
+  contactNumber: "",
   campus: "Malabe",
   subject: "SE",
   subgroup: "Development",
@@ -93,6 +105,7 @@ export default function FindingGroups() {
   const [groupBanners, setGroupBanners] = useState(groupBannersSeed);
   const [memberForm, setMemberForm] = useState(newMemberDefault);
   const [bannerForm, setBannerForm] = useState(newBannerDefault);
+  const [copyMessage, setCopyMessage] = useState("");
 
   const filteredMemberPosts = useMemo(
     () =>
@@ -139,7 +152,14 @@ export default function FindingGroups() {
 
   const submitMemberPost = (e) => {
     e.preventDefault();
-    if (!memberForm.name.trim() || !memberForm.miniPoster.trim()) return;
+    if (
+      !memberForm.name.trim() ||
+      !memberForm.personalEmail.trim() ||
+      !memberForm.contactNumber.trim() ||
+      !memberForm.miniPoster.trim()
+    ) {
+      return;
+    }
 
     setMemberPosts((prev) => [
       {
@@ -153,7 +173,14 @@ export default function FindingGroups() {
 
   const submitGroupBanner = (e) => {
     e.preventDefault();
-    if (!bannerForm.groupName.trim() || !bannerForm.banner.trim()) return;
+    if (
+      !bannerForm.groupName.trim() ||
+      !bannerForm.personalEmail.trim() ||
+      !bannerForm.contactNumber.trim() ||
+      !bannerForm.banner.trim()
+    ) {
+      return;
+    }
 
     setGroupBanners((prev) => [
       {
@@ -163,6 +190,17 @@ export default function FindingGroups() {
       ...prev,
     ]);
     setBannerForm(newBannerDefault);
+  };
+
+  const copyToClipboard = async (value, label) => {
+    try {
+      await navigator.clipboard.writeText(value);
+      setCopyMessage(`${label} copied`);
+      window.setTimeout(() => setCopyMessage(""), 1400);
+    } catch {
+      setCopyMessage("Copy failed");
+      window.setTimeout(() => setCopyMessage(""), 1400);
+    }
   };
 
   return (
@@ -283,6 +321,8 @@ export default function FindingGroups() {
         </button>
       </section>
 
+      {copyMessage ? <p className="copy-toast">{copyMessage}</p> : null}
+
       <div className="groups-layout">
         {activeTab === "member" ? (
           <>
@@ -300,6 +340,31 @@ export default function FindingGroups() {
                       placeholder="e.g. Kasun Perera"
                     />
                   </div>
+                  <div className="field-group">
+                    <label htmlFor="memberEmail">Personal Gmail</label>
+                    <input
+                      id="memberEmail"
+                      name="personalEmail"
+                      type="email"
+                      value={memberForm.personalEmail}
+                      onChange={handleMemberFormChange}
+                      placeholder="e.g. yourname@gmail.com"
+                    />
+                  </div>
+                  <div className="field-group">
+                    <label htmlFor="memberContactNumber">Contact Number</label>
+                    <input
+                      id="memberContactNumber"
+                      name="contactNumber"
+                      type="tel"
+                      value={memberForm.contactNumber}
+                      onChange={handleMemberFormChange}
+                      placeholder="e.g. 07XXXXXXXX"
+                    />
+                  </div>
+                </div>
+
+                <div className="profile-form-row">
                   <div className="field-group">
                     <label htmlFor="memberCampus">Campus</label>
                     <select
@@ -329,7 +394,6 @@ export default function FindingGroups() {
                     </select>
                   </div>
                 </div>
-
                 <div className="profile-form-row">
                   <div className="field-group">
                     <label htmlFor="lookingGroupType">Looking Group Type</label>
@@ -426,6 +490,28 @@ export default function FindingGroups() {
                       <span>{post.gender}</span>
                       {post.showGpa && post.gpa ? <span>GPA {post.gpa}</span> : null}
                     </div>
+                    <div className="group-contact-row">
+                      <a href={`mailto:${post.personalEmail}`}>{post.personalEmail}</a>
+                      <span>{post.contactNumber}</span>
+                      <button
+                        type="button"
+                        className="copy-btn"
+                        onClick={() =>
+                          copyToClipboard(post.personalEmail, "Member email")
+                        }
+                      >
+                        Copy Email
+                      </button>
+                      <button
+                        type="button"
+                        className="copy-btn"
+                        onClick={() =>
+                          copyToClipboard(post.contactNumber, "Member number")
+                        }
+                      >
+                        Copy Number
+                      </button>
+                    </div>
                     <p className="profile-note">{post.details}</p>
                   </article>
                 ))}
@@ -456,6 +542,31 @@ export default function FindingGroups() {
                       value={bannerForm.leaderName}
                       onChange={handleBannerFormChange}
                       placeholder="e.g. Lahiru"
+                    />
+                  </div>
+                  <div className="field-group">
+                    <label htmlFor="bannerEmail">Personal Gmail</label>
+                    <input
+                      id="bannerEmail"
+                      name="personalEmail"
+                      type="email"
+                      value={bannerForm.personalEmail}
+                      onChange={handleBannerFormChange}
+                      placeholder="e.g. leader@gmail.com"
+                    />
+                  </div>
+                </div>
+
+                <div className="profile-form-row">
+                  <div className="field-group">
+                    <label htmlFor="bannerContactNumber">Contact Number</label>
+                    <input
+                      id="bannerContactNumber"
+                      name="contactNumber"
+                      type="tel"
+                      value={bannerForm.contactNumber}
+                      onChange={handleBannerFormChange}
+                      placeholder="e.g. 07XXXXXXXX"
                     />
                   </div>
                   <div className="field-group">
@@ -571,6 +682,28 @@ export default function FindingGroups() {
                       <span>{banner.subgroup}</span>
                       <span>Gender: {banner.wantedGender}</span>
                       {banner.minGpa ? <span>Min GPA {banner.minGpa}</span> : null}
+                    </div>
+                    <div className="group-contact-row">
+                      <a href={`mailto:${banner.personalEmail}`}>{banner.personalEmail}</a>
+                      <span>{banner.contactNumber}</span>
+                      <button
+                        type="button"
+                        className="copy-btn"
+                        onClick={() =>
+                          copyToClipboard(banner.personalEmail, "Group email")
+                        }
+                      >
+                        Copy Email
+                      </button>
+                      <button
+                        type="button"
+                        className="copy-btn"
+                        onClick={() =>
+                          copyToClipboard(banner.contactNumber, "Group number")
+                        }
+                      >
+                        Copy Number
+                      </button>
                     </div>
                     <p className="profile-note">
                       Leader: {banner.leaderName || "N/A"} | {banner.details}

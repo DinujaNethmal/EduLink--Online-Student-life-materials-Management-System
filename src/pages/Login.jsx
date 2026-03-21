@@ -51,8 +51,18 @@ export default function Login() {
   };
 
   return (
-    <div className="auth-page">
-      <div className="auth-card">
+    <div className="auth-page auth-split-page">
+      <section className="auth-visual-panel">
+        <div className="auth-visual-content">
+          <h2>Welcome Back</h2>
+          <p>
+            Continue your EduLink journey, manage groups, and stay connected
+            with the right teammates.
+          </p>
+        </div>
+      </section>
+
+      <div className="auth-card auth-card-glass">
         <div className="auth-header">
           <div className="auth-logo">
             <span className="logo-mark">EL</span>

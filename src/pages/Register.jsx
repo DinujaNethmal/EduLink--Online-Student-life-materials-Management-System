@@ -65,8 +65,18 @@ export default function Register() {
   };
 
   return (
-    <div className="auth-page">
-      <div className="auth-card">
+    <div className="auth-page auth-split-page">
+      <section className="auth-visual-panel">
+        <div className="auth-visual-content">
+          <h2>Join EduLink</h2>
+          <p>
+            Create your account and find smart group opportunities with students
+            who match your skills.
+          </p>
+        </div>
+      </section>
+
+      <div className="auth-card auth-card-glass">
         <div className="auth-header">
           <div className="auth-logo">
             <span className="logo-mark">EL</span>

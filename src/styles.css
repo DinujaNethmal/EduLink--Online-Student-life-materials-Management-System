@@ -275,6 +275,42 @@ h1 {
   padding: 2rem 1.5rem;
 }
 
+.auth-split-page {
+  justify-content: space-between;
+  gap: 1.4rem;
+  background-image:
+    linear-gradient(90deg, rgba(2, 6, 23, 0.75), rgba(2, 6, 23, 0.35)),
+    url("https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=1800&q=80");
+  background-size: cover;
+  background-position: center;
+}
+
+.auth-visual-panel {
+  flex: 1;
+  min-height: 520px;
+  display: flex;
+  align-items: flex-end;
+  padding: 1.8rem;
+}
+
+.auth-visual-content {
+  max-width: 430px;
+  color: #f8fafc;
+}
+
+.auth-visual-content h2 {
+  margin: 0 0 0.65rem;
+  font-size: clamp(2rem, 3vw, 3rem);
+  line-height: 1;
+  color: #fff;
+}
+
+.auth-visual-content p {
+  margin: 0;
+  color: rgba(248, 250, 252, 0.88);
+  font-size: 0.95rem;
+}
+
 .auth-card {
   width: 100%;
   max-width: 480px;
@@ -282,6 +318,35 @@ h1 {
   padding: 2rem 2.2rem;
   background: rgba(255, 255, 255, 0.96);
   box-shadow: 0 18px 40px rgba(15, 23, 42, 0.14);
+}
+
+.auth-card-glass {
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.26);
+  box-shadow: 0 24px 55px rgba(2, 6, 23, 0.55);
+  backdrop-filter: blur(12px);
+}
+
+.auth-card-glass .auth-header h1,
+.auth-card-glass .auth-header p,
+.auth-card-glass .auth-footer,
+.auth-card-glass .field-group label {
+  color: #f8fafc;
+}
+
+.auth-card-glass .auth-header .logo-text {
+  color: #f8fafc;
+}
+
+.auth-card-glass .field-group input,
+.auth-card-glass .field-group select,
+.auth-card-glass textarea {
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.auth-card-glass .auth-footer a,
+.auth-card-glass .auth-link {
+  color: #c7d2fe;
 }
 
 .auth-header h1 {
@@ -598,14 +663,18 @@ h1 {
 .groups-page {
   min-height: 100vh;
   padding: 2rem 5vw;
+  background:
+    radial-gradient(circle at 10% 0%, rgba(129, 140, 248, 0.12), transparent 30%),
+    radial-gradient(circle at 95% 15%, rgba(45, 212, 191, 0.1), transparent 28%);
 }
 
 .groups-hero {
-  background: linear-gradient(130deg, #0f172a, #1f2937);
+  background: linear-gradient(130deg, #0f172a, #1e293b 55%, #334155);
   color: #f8fafc;
-  border-radius: 1.5rem;
-  padding: 1.4rem 1.6rem;
-  box-shadow: 0 24px 46px rgba(15, 23, 42, 0.45);
+  border-radius: 1.25rem;
+  padding: 1.55rem 1.7rem;
+  box-shadow: 0 24px 50px rgba(15, 23, 42, 0.42);
+  border: 1px solid rgba(148, 163, 184, 0.25);
 }
 
 .groups-hero h1 {
@@ -621,10 +690,12 @@ h1 {
 
 .groups-filter-card,
 .groups-card {
-  background: rgba(255, 255, 255, 0.96);
-  border-radius: 1.2rem;
-  box-shadow: 0 16px 34px rgba(15, 23, 42, 0.12);
-  padding: 1.2rem;
+  background: rgba(255, 255, 255, 0.84);
+  border-radius: 1.1rem;
+  box-shadow: 0 18px 34px rgba(15, 23, 42, 0.1);
+  padding: 1.25rem;
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(8px);
 }
 
 .groups-filter-card {
@@ -651,18 +722,20 @@ h1 {
 
 .groups-tab {
   border: 1px solid #e5e7eb;
-  background: #fff;
+  background: rgba(255, 255, 255, 0.85);
   color: #111827;
   border-radius: 999px;
-  padding: 0.52rem 0.95rem;
+  padding: 0.56rem 1rem;
   cursor: pointer;
   transition: all 0.15s ease;
+  font-weight: 500;
 }
 
 .groups-tab.active {
-  background: #111827;
+  background: linear-gradient(135deg, #4f46e5, #4338ca);
   color: #f9fafb;
-  border-color: #111827;
+  border-color: #4338ca;
+  box-shadow: 0 12px 24px rgba(79, 70, 229, 0.3);
 }
 
 .groups-layout {
@@ -679,10 +752,11 @@ h1 {
 }
 
 .group-poster {
-  border: 1px solid #e5e7eb;
+  border: 1px solid #e2e8f0;
   border-radius: 0.95rem;
-  padding: 0.85rem;
-  background: #fcfcff;
+  padding: 0.95rem;
+  background: linear-gradient(180deg, #ffffff, #f8fafc);
+  box-shadow: 0 10px 22px rgba(15, 23, 42, 0.06);
 }
 
 .group-banner {
@@ -703,8 +777,8 @@ h1 {
 }
 
 .group-poster-message {
-  margin: 0.5rem 0;
-  color: #1f2937;
+  margin: 0.55rem 0;
+  color: #0f172a;
   font-weight: 500;
 }
 
@@ -719,7 +793,7 @@ h1 {
   background: #eef2ff;
   color: #3730a3;
   border-radius: 999px;
-  padding: 0.2rem 0.58rem;
+  padding: 0.24rem 0.62rem;
   font-size: 0.76rem;
 }
 
@@ -729,6 +803,54 @@ h1 {
   gap: 0.45rem;
   font-size: 0.84rem;
   color: #374151;
+}
+
+.group-contact-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.45rem;
+  font-size: 0.82rem;
+}
+
+.group-contact-row a {
+  color: #4338ca;
+  font-weight: 500;
+}
+
+.group-contact-row span {
+  color: #334155;
+  background: #f1f5f9;
+  border-radius: 999px;
+  padding: 0.2rem 0.55rem;
+}
+
+.copy-btn {
+  border: 1px solid #cbd5e1;
+  background: #fff;
+  color: #1e293b;
+  border-radius: 999px;
+  padding: 0.2rem 0.6rem;
+  font-size: 0.74rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.copy-btn:hover {
+  background: #eef2ff;
+  border-color: #a5b4fc;
+  color: #312e81;
+}
+
+.copy-toast {
+  margin: 0.75rem 0 0;
+  display: inline-flex;
+  background: #111827;
+  color: #f9fafb;
+  border-radius: 999px;
+  padding: 0.35rem 0.7rem;
+  font-size: 0.78rem;
 }
 
 textarea {
@@ -772,6 +894,15 @@ textarea:focus {
   .groups-filter-grid,
   .groups-layout {
     grid-template-columns: 1fr;
+  }
+
+  .auth-split-page {
+    justify-content: center;
+    background-position: 35% center;
+  }
+
+  .auth-visual-panel {
+    display: none;
   }
 }
 
