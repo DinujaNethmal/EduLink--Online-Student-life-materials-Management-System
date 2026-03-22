@@ -51,7 +51,7 @@ function Navbar() {
             <span className="brand-icon">S</span>
           </div>
           <div className="brand-text">
-            <span className="brand-name">SLIIT Market</span>
+            <span className="brand-name">EduLink</span>
             <span className="brand-tagline">Student Marketplace</span>
           </div>
         </Link>
