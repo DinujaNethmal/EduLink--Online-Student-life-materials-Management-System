@@ -1,0 +1,142 @@
+.order-history {
+  padding-top: 24px;
+  padding-bottom: 40px;
+}
+
+.order-history h1 {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--sliit-gray-900);
+  margin-bottom: 24px;
+}
+
+/* ---- Empty State ---- */
+.empty-orders {
+  text-align: center;
+  padding: 80px 20px;
+  color: var(--sliit-gray-300);
+}
+
+.empty-orders h2 {
+  color: var(--sliit-gray-700);
+  font-size: 22px;
+  margin: 16px 0 8px;
+}
+
+.empty-orders p {
+  color: var(--sliit-gray-500);
+  margin-bottom: 24px;
+}
+
+/* ---- Orders List ---- */
+.orders-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.order-card {
+  background: var(--sliit-white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+.order-card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  background-color: var(--sliit-gray-50);
+  border-bottom: 1px solid var(--sliit-gray-100);
+}
+
+.order-card-id {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--sliit-blue);
+}
+
+.order-type-badge {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 20px;
+  background-color: var(--sliit-blue);
+  color: var(--sliit-white);
+}
+
+.order-status-badge {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 20px;
+  background-color: var(--sliit-gold);
+  color: var(--sliit-blue);
+}
+
+.payment-status-badge {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 20px;
+  margin-left: auto;
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.payment-status-badge.paid {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.order-card-items {
+  padding: 16px 20px;
+}
+
+.order-card-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  color: var(--sliit-gray-700);
+  padding: 6px 0;
+}
+
+.order-card-item .qty {
+  color: var(--sliit-gray-500);
+  font-size: 13px;
+}
+
+.item-total {
+  font-weight: 600;
+  color: var(--sliit-gray-900);
+}
+
+.order-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+  border-top: 1px solid var(--sliit-gray-100);
+}
+
+.order-date {
+  font-size: 13px;
+  color: var(--sliit-gray-500);
+}
+
+.order-card-total {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--sliit-blue);
+}
+
+@media (max-width: 768px) {
+  .order-card-header {
+    flex-wrap: wrap;
+  }
+}
