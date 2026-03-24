@@ -1,99 +1,287 @@
+import React from "react";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
+import { Shield, Key, Users, CheckCircle, LayoutDashboard, Heart, BookOpen, Clock, BarChart, Star, ListPlus, Filter, ShoppingCart, History } from "lucide-react";
+import "./Home.css"; // Import new landing page styles
 
 export default function Home() {
+  // Animation Variants
+  const fadeUp = {
+    hidden: { opacity: 0, y: 50 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } }
+  };
+
+  const slideLeft = {
+    hidden: { opacity: 0, x: -50 },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.8, ease: "easeOut" } }
+  };
+
+  const slideRight = {
+    hidden: { opacity: 0, x: 50 },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.8, ease: "easeOut" } }
+  };
+
+  const staggerContainer = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: { staggerChildren: 0.2 } }
+  };
+
   return (
-    <div className="home">
-      <header className="nav">
-        <div className="nav-left">
-          <span className="logo-mark">EL</span>
-          <span className="logo-text">EduLink</span>
+    <div className="landing-page">
+      {/* Navigation */}
+      <motion.nav 
+        className="landing-nav"
+        initial={{ y: -50, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.6 }}
+      >
+        <Link to="/" className="landing-logo">
+          EL EduLink
+        </Link>
+        <div className="landing-links">
+          <Link to="/">Home</Link>
+          <Link to="/profile">Profile</Link>
+          <Link to="/finding-groups">Finding Groups</Link>
+          <Link to="/login" className="btn-landing-secondary" style={{ padding: "0.5rem 1.25rem" }}>Login</Link>
+          <Link to="/register" className="btn-landing-primary">Register</Link>
         </div>
-        <nav className="nav-links">
-          <Link to="/" className="nav-link active">
-            Home
-          </Link>
-          <Link to="/login" className="nav-link">
-            Login
-          </Link>
-          <Link to="/register" className="nav-link primary-link">
-            Register
-          </Link>
-          <Link to="/profile" className="nav-link">
-            Profile
-          </Link>
-          <Link to="/finding-groups" className="nav-link">
-            Finding Groups
-          </Link>
-        </nav>
-      </header>
+      </motion.nav>
 
-      <main className="hero">
-        <section className="hero-text">
-          <p className="badge">University Student Platform</p>
-          <h1>
-            Smart Learning &amp; Group Formation
-            <span className="highlight"> for Every Student</span>
-          </h1>
-          <p className="hero-subtitle">
-            EduLink helps university students securely sign in, manage skills,
-            and form the right project groups so that no student is left
-            without a team.
-          </p>
+      {/* Hero Section */}
+      <section className="landing-section section-hero">
+        <div className="hero-content">
+          <motion.div 
+            className="hero-text"
+            initial="hidden"
+            animate="visible"
+            variants={staggerContainer}
+          >
+            <motion.div variants={fadeUp} className="hero-badge">
+              University Student Platform
+            </motion.div>
+            <motion.h1 variants={fadeUp}>
+              Smart Learning & Group Formation
+              <span>for Every Student</span>
+            </motion.h1>
+            <motion.p variants={fadeUp}>
+              EduLink helps university students securely sign in, manage skills, and form the right project groups so that no student is left without a team.
+            </motion.p>
+            <motion.div variants={fadeUp} className="hero-buttons">
+              <Link to="/register" className="btn-landing-primary large">
+                Get Started – Register
+              </Link>
+              <Link to="/finding-groups" className="btn-landing-secondary">
+                Find Groups
+              </Link>
+              <Link to="/profile" className="btn-landing-secondary">
+                View Profile
+              </Link>
+            </motion.div>
+          </motion.div>
+          
+          <motion.div 
+            className="hero-image-container"
+            initial={{ opacity: 0, scale: 0.9, rotateY: 15 }}
+            animate={{ opacity: 1, scale: 1, rotateY: 0 }}
+            transition={{ duration: 1, ease: "easeOut" }}
+          >
+            <img src="/images/hero.png" alt="University Students Platform" />
+          </motion.div>
+        </div>
+      </section>
 
-          <div className="hero-actions">
-            <Link to="/register" className="btn-primary">
-              Get Started – Register
-            </Link>
-            <Link to="/login" className="btn-secondary">
-              Already have an account?
-            </Link>
-            <Link to="/profile" className="btn-secondary">
-              View Profile
-            </Link>
-            <Link to="/finding-groups" className="btn-secondary">
-              Find Groups
-            </Link>
-          </div>
-
-          <div className="hero-meta">
-            <div>
-              <strong>Secure Authentication</strong>
-              <p>Role-based access (student, admin) with protected data.</p>
+      {/* Authentication Section */}
+      <section className="landing-section section-auth">
+        <motion.div 
+          className="feature-grid"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+        >
+          <motion.div className="feature-image" variants={slideLeft}>
+            <img src="/images/auth.png" alt="Secure Authentication" />
+          </motion.div>
+          
+          <motion.div className="feature-text" variants={slideRight}>
+            <h2>Secure Authentication</h2>
+            <p>
+              Your data safety is our priority. We offer robust, role-based access for students and administrators, ensuring all protected records remain private.
+            </p>
+            <div className="glass-list">
+              <div className="glass-item">
+                <div className="icon-box"><Shield size={24} /></div>
+                <span>Role-based access (student, admin)</span>
+              </div>
+              <div className="glass-item">
+                <div className="icon-box"><Key size={24} /></div>
+                <span>Encrypted protected data</span>
+              </div>
             </div>
-            <div>
-              <strong>Smart Grouping</strong>
-              <p>
-                Group creation, join requests, skill tags and capacity control.
-              </p>
-            </div>
-          </div>
-        </section>
+          </motion.div>
+        </motion.div>
+      </section>
 
-        <section className="hero-panel">
+      {/* Smart Grouping Section */}
+      <section className="landing-section section-grouping">
+        <motion.div 
+          className="feature-grid reverse"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+        >
+          <motion.div className="feature-image" variants={slideRight}>
+            <img src="/images/grouping.png" alt="Smart Grouping" />
+          </motion.div>
+          
+          <motion.div className="feature-text" variants={slideLeft}>
+            <h2>Smart Grouping</h2>
+            <p>
+              Never get left behind. Create groups, send join requests, set specific skill tags, and efficiently manage team capacities dynamically.
+            </p>
+            <div className="glass-list">
+              <div className="glass-item">
+                <div className="icon-box"><Users size={24} /></div>
+                <span>Group creation & join requests</span>
+              </div>
+              <div className="glass-item">
+                <div className="icon-box"><CheckCircle size={24} /></div>
+                <span>Skill tags and capacity control</span>
+              </div>
+            </div>
+          </motion.div>
+        </motion.div>
+      </section>
+
+      {/* Quiz & Review Management Section */}
+      <section className="landing-section section-quiz">
+        <motion.div 
+          className="feature-grid"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+        >
+          <motion.div className="feature-image" variants={slideLeft}>
+            <img src="/images/quiz.png" alt="Quiz & Review System" />
+          </motion.div>
+          
+          <motion.div className="feature-text" variants={slideRight}>
+            <h2>Smart Quiz & Review System</h2>
+            <p>
+              Practice past papers using dynamic quizzes with automatic grading and performance tracking. Identify weak areas and significantly improve learning outcomes.
+            </p>
+            <div className="glass-list">
+              <div className="glass-item">
+                <div className="icon-box"><BookOpen size={24} /></div>
+                <span>Dynamic quiz generation</span>
+              </div>
+              <div className="glass-item">
+                <div className="icon-box"><Clock size={24} /></div>
+                <span>Timed quizzes with auto-submit</span>
+              </div>
+              <div className="glass-item">
+                <div className="icon-box"><BarChart size={24} /></div>
+                <span>Instant scoring & performance dashboard</span>
+              </div>
+              <div className="glass-item">
+                <div className="icon-box"><Star size={24} /></div>
+                <span>User reviews and ratings</span>
+              </div>
+            </div>
+          </motion.div>
+        </motion.div>
+      </section>
+
+      {/* Marketplace Section */}
+      <section className="landing-section section-marketplace">
+        <motion.div 
+          className="feature-grid reverse"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+        >
+          <motion.div className="feature-image" variants={slideRight}>
+            <img src="/images/marketplace.png" alt="Student Marketplace" />
+          </motion.div>
+          
+          <motion.div className="feature-text" variants={slideLeft}>
+            <h2>Student Marketplace</h2>
+            <p>
+              A seamless, secure platform tailored for students to buy, sell, or exchange academic items such as books, notes, and technical equipment right on campus.
+            </p>
+            <div className="glass-list">
+              <div className="glass-item">
+                <div className="icon-box"><ListPlus size={24} /></div>
+                <span>Product listing and management</span>
+              </div>
+              <div className="glass-item">
+                <div className="icon-box"><Filter size={24} /></div>
+                <span>Category filtering and search</span>
+              </div>
+              <div className="glass-item">
+                <div className="icon-box"><ShoppingCart size={24} /></div>
+                <span>Add to cart and order placement</span>
+              </div>
+              <div className="glass-item">
+                <div className="icon-box"><History size={24} /></div>
+                <span>Order history tracking</span>
+              </div>
+            </div>
+          </motion.div>
+        </motion.div>
+      </section>
+
+      {/* Why EduLink Section */}
+      <section className="landing-section section-why">
+        <motion.div 
+          className="why-header"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={fadeUp}
+        >
           <h2>Why EduLink?</h2>
-          <ul className="feature-list">
-            <li>
-              <span className="feature-dot" /> Skill-based group formation so
-              teams are balanced and productive.
-            </li>
-            <li>
-              <span className="feature-dot" /> Simple approval workflow for
-              join requests.
-            </li>
-            <li>
-              <span className="feature-dot" /> Dashboard to see your groups and
-              skills at a glance.
-            </li>
-            <li>
-              <span className="feature-dot" /> Avoids overcrowded groups and
-              ensures no student is left behind.
-            </li>
-          </ul>
-        </section>
-      </main>
+          <p>Designed precisely to elevate the university project experience, resolving teamwork challenges before they even happen.</p>
+        </motion.div>
 
-      <footer className="footer">
-        <span>© {new Date().getFullYear()} EduLink. Designed for university projects.</span>
+        <motion.div 
+          className="why-cards"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+          variants={staggerContainer}
+        >
+          <motion.div className="why-card" variants={fadeUp}>
+            <div className="card-icon"><Users size={28} /></div>
+            <h3>Balanced Teams</h3>
+            <p>Skill-based group formation so that each team is robust, balanced, and productive.</p>
+          </motion.div>
+
+          <motion.div className="why-card" variants={fadeUp}>
+            <div className="card-icon"><CheckCircle size={28} /></div>
+            <h3>Simple Workflow</h3>
+            <p>Effortlessly send and approve join requests with an extremely seamless review process.</p>
+          </motion.div>
+
+          <motion.div className="why-card" variants={fadeUp}>
+            <div className="card-icon"><LayoutDashboard size={28} /></div>
+            <h3>Unified Dashboard</h3>
+            <p>Always stay updated—see your current groups, pending requests, and skills at a single glance.</p>
+          </motion.div>
+
+          <motion.div className="why-card" variants={fadeUp}>
+            <div className="card-icon"><Heart size={28} /></div>
+            <h3>Total Inclusivity</h3>
+            <p>Automatically avoids overcrowded groups and actively ensures no student is ever left behind.</p>
+          </motion.div>
+        </motion.div>
+      </section>
+
+      {/* Footer */}
+      <footer className="landing-footer">
+        <div className="landing-footer-content">
+          <div className="landing-logo" style={{ fontSize: "1.2rem" }}>EL EduLink</div>
+          <p>© {new Date().getFullYear()} EduLink. Designed for university projects.</p>
+        </div>
       </footer>
     </div>
   );

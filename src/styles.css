@@ -145,6 +145,7 @@ h1 {
   display: block;
   background-image: linear-gradient(120deg, #4f46e5, #22c55e);
   -webkit-background-clip: text;
+  background-clip: text;
   color: transparent;
 }
 
@@ -740,15 +741,15 @@ h1 {
 
 .groups-layout {
   margin-top: 1rem;
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 }
 
 .groups-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.25rem;
 }
 
 .group-poster {
@@ -920,4 +921,193 @@ textarea:focus {
     align-items: stretch;
   }
 }
+
+/* =========================================================
+   MODERN GLASS THEME OVERRIDES (Edu/LMS Styled)
+   ========================================================= */
+
+.home, .profile-page, .groups-page {
+  color: #f8fafc;
+}
+
+.home {
+  background-image: 
+    linear-gradient(135deg, rgba(2, 6, 23, 0.75), rgba(2, 6, 23, 0.4)), 
+    url("https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1800&q=80");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+.profile-page {
+  background-image: 
+    linear-gradient(135deg, rgba(2, 6, 23, 0.8), rgba(2, 6, 23, 0.5)), 
+    url("https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=1800&q=80");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+.groups-page {
+  background-image: 
+    linear-gradient(135deg, rgba(2, 6, 23, 0.8), rgba(2, 6, 23, 0.5)), 
+    url("https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1800&q=80");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+/* Glass nav overrides */
+.home .nav, .profile-page .nav, .groups-page .nav {
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.26);
+  backdrop-filter: blur(16px);
+  box-shadow: 0 18px 40px rgba(2, 6, 23, 0.2);
+}
+
+.home .nav-left .logo-text, .home .nav-links .nav-link,
+.profile-page .nav-left .logo-text, .profile-page .nav-links .nav-link,
+.groups-page .nav-left .logo-text, .groups-page .nav-links .nav-link {
+  color: #f8fafc;
+}
+
+.home .nav-links .nav-link.active, .profile-page .nav-links .nav-link.active, .groups-page .nav-links .nav-link.active {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.home .nav-links .nav-link:hover, .profile-page .nav-links .nav-link:hover, .groups-page .nav-links .nav-link:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+}
+
+.home .nav-links .primary-link, .profile-page .nav-links .primary-link, .groups-page .nav-links .primary-link {
+  background: #f8fafc;
+  color: #020617;
+}
+
+/* Home text overrides */
+.home h1 {
+  color: #fff;
+}
+.home .hero-subtitle {
+  color: #e2e8f0;
+}
+.home .hero-meta strong {
+  color: #ffffff;
+}
+.home .hero-meta p {
+  color: #cbd5e1;
+}
+.home .badge {
+  background: rgba(255, 255, 255, 0.2);
+  color: #f8fafc;
+  backdrop-filter: blur(8px);
+}
+.home .badge::before {
+  background: #38bdf8;
+}
+
+/* Glass cards overrides */
+.profile-header-card, .profile-card, .groups-filter-card, .groups-card {
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.26);
+  box-shadow: 0 24px 55px rgba(2, 6, 23, 0.55);
+  backdrop-filter: blur(16px);
+  color: #f8fafc;
+}
+
+.profile-card h2, .groups-card h2, .groups-filter-card h2, .profile-title, .group-poster-top h3 {
+  color: #f8fafc;
+}
+
+.profile-subtitle, .profile-note, .group-poster-message {
+  color: #cbd5e1;
+}
+
+.field-group label {
+  color: #e2e8f0;
+}
+
+.field-group input, .field-group select, textarea {
+  background: rgba(255, 255, 255, 0.85);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Tables and stats */
+.summary-stat {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+.summary-stat span {
+  color: #e2e8f0;
+}
+.summary-stat strong {
+  color: #fff;
+}
+.profile-table th, .profile-table td {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  color: #f8fafc;
+}
+
+/* Posters & tags */
+.group-poster {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: none;
+}
+.group-poster.group-banner {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.group-tags span {
+  background: rgba(255, 255, 255, 0.15);
+  color: #f8fafc;
+}
+
+.groups-tab {
+  background: rgba(255, 255, 255, 0.15);
+  color: #f8fafc;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+.groups-tab.active {
+  background: linear-gradient(135deg, #4f46e5, #6366f1);
+  border-color: #4f46e5;
+  color: #fff;
+}
+
+.groups-checkbox {
+  color: #f8fafc;
+}
+
+.groups-hero {
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(16px);
+  color: #fff;
+}
+.groups-hero p {
+  color: #e2e8f0;
+}
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.15);
+  color: #f8fafc;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.25);
+  color: #fff;
+}
+
+.profile-pill {
+  background: rgba(255, 255, 255, 0.18);
+  color: #f8fafc;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.footer {
+  color: #cbd5e1;
+}
+
 
