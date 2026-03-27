@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 
 // Route files
 const userRoutes = require('./routes/userRoutes');
+const adminRoutes = require('./routes/adminRoutes');
 
 // Load env vars
 dotenv.config();
@@ -19,6 +20,7 @@ app.use(cors());
 
 // Mount routers
 app.use('/api/users', userRoutes);
+app.use('/api/admin', adminRoutes);
 
 // Basic Default Route
 app.get('/', (req, res) => {
