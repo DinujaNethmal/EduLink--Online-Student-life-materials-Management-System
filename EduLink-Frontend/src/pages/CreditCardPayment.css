@@ -1,0 +1,200 @@
+/* ======================================================
+   Shared Payment Page Base Styles
+   Used by CreditCardPayment.jsx and imported by BankTransfer.css
+   ====================================================== */
+
+.payment-page {
+  max-width: 540px;
+  margin: 40px auto;
+  padding: 0 16px 60px;
+}
+
+/* ── Back Button ── */
+.btn-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  color: #6b7280;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  padding: 0;
+  margin-bottom: 24px;
+  transition: color 0.15s;
+}
+.btn-back:hover { color: #111827; }
+
+/* ── Card Wrapper ── */
+.payment-card-wrapper {
+  background: #fff;
+  border-radius: 20px;
+  padding: 32px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+  border: 1px solid #f0f0f0;
+}
+
+/* ── Page Header ── */
+.payment-card-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 28px;
+  padding-bottom: 22px;
+  border-bottom: 1px solid #f3f4f6;
+}
+.payment-header-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.card-icon  { background: #ede9fe; color: #6366f1; }
+.bank-icon  { background: #dcfce7; color: #16a34a; }
+.payment-header-icon svg { color: inherit; }
+
+.payment-card-header h1 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin: 0 0 4px;
+  color: #111827;
+}
+.payment-card-header p {
+  font-size: 0.8rem;
+  color: #9ca3af;
+  margin: 0;
+}
+
+/* ── Form Layout ── */
+.payment-form { display: flex; flex-direction: column; gap: 20px; }
+.form-group   { display: flex; flex-direction: column; gap: 6px; }
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #374151;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+input[type="text"],
+input[type="password"],
+select,
+textarea {
+  padding: 12px 14px;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  color: #111827;
+  background: #fff;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  font-family: inherit;
+}
+input:focus,
+select:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
+}
+
+.has-error input,
+.has-error select {
+  border-color: #ef4444;
+}
+.has-error input:focus,
+.has-error select:focus {
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.12);
+}
+
+.field-error {
+  font-size: 0.78rem;
+  color: #ef4444;
+}
+.field-hint {
+  font-size: 0.78rem;
+  color: #9ca3af;
+}
+
+/* ── Card brand badge ── */
+.card-brand-badge {
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: #ede9fe;
+  color: #6366f1;
+}
+
+/* ── Submit button ── */
+.btn-submit {
+  background: linear-gradient(135deg, #6366f1, #4f46e5);
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  padding: 15px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 4px;
+  transition: opacity 0.2s, transform 0.15s, box-shadow 0.15s;
+  letter-spacing: 0.3px;
+}
+.btn-submit:hover:not(:disabled) {
+  opacity: 0.92;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(99, 102, 241, 0.35);
+}
+.btn-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ── Spinner inside button ── */
+.btn-spinner {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── Error alert box ── */
+.submit-error {
+  background: #fee2e2;
+  color: #b91c1c;
+  padding: 13px 16px;
+  border-radius: 10px;
+  font-size: 0.875rem;
+  border: 1px solid #fca5a5;
+}
+
+/* ── Footer note ── */
+.secure-note {
+  text-align: center;
+  font-size: 0.78rem;
+  color: #9ca3af;
+  margin: 0;
+}
+
+@media (max-width: 480px) {
+  .form-row { grid-template-columns: 1fr; }
+  .payment-card-wrapper { padding: 20px 16px; }
+}
