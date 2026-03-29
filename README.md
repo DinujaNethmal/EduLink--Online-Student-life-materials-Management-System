@@ -1,36 +1,55 @@
-## EduLink – Smart Learning, Group Formation & Student Marketplace Platform
+# EduLink – Smart Learning, Group Formation & Student Marketplace Platform
 
-This is the **frontend** for EduLink, focused on:
-
+EduLink is a comprehensive web platform focused on modern education, featuring:
 - **Secure authentication** (registration, login, role-based access)
 - **Smart group formation** (skill profiles, group management, join approval)
+- **Interactive dashboards** for students and administrators
 
-Currently implemented:
+This repository contains both the **frontend** (Vite + React) and **backend** (Node.js + Express) of the EduLink project.
 
-- **Home / Landing page** with:
-  - Overview of EduLink
-  - Clear description of authentication & smart grouping features
-  - Buttons to navigate to **Login** and **Register** pages
+---
 
-### How to run (development)
+## 🚀 Getting Started
 
-1. Install dependencies:
+Follow these instructions to set up the project on your local machine for development and testing.
 
-   ```bash
-   npm install
-   ```
+### Prerequisites
 
-2. Start the dev server:
+Ensure you have the following installed:
+- [Node.js](https://nodejs.org/) (which comes with npm)
+- [MongoDB](https://www.mongodb.com/) (Make sure to configure your `.env` file in the backend to point to your database cluster)
 
-   ```bash
-   npm run dev
-   ```
+### ⚙️ Installation
 
-3. Open the shown URL (usually `http://localhost:5173`) in the browser.
+To install all dependencies for both the frontend and backend, run the following script from the root of the project:
 
-Next steps (for your project part):
+```bash
+npm run install-all
+```
+*(Alternatively, you can manually `cd` into both `frontend/` and `backend/` and run `npm install` inside each folder).*
 
-- Implement **Registration page** (student signup form).
-- Implement **Login page**.
-- Implement **Dashboard** & **Group Management** pages.
+### 🏃‍♂️ Running the Project
 
+You can start both the frontend development server and the backend API server concurrently with a single command!
+
+From the **root directory**, simply run:
+
+```bash
+npm run dev
+```
+
+This will:
+- Start the server from the `backend/` folder on `http://localhost:5000` (or the port defined in your `.env`).
+- Start the React application from the `frontend/` folder, usually available at `http://localhost:5173`.
+
+---
+
+## 📁 Project Structure
+
+```text
+/EduLink--Online-Student-life-materials-Management-System
+ ├── backend/        # Node.js Express server, MongoDB models, controllers, and routes
+ ├── frontend/       # Vite + React UI, pages, styles, and assets
+ ├── package.json    # Root configuration for concurrently running the project
+ └── README.md       # Project documentation
+```
