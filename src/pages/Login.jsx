@@ -58,7 +58,14 @@ export default function Login() {
 
       // Normal Student Login process (redirects to standard user Dashboard/Home)
       await new Promise((res) => setTimeout(res, 600));
-      navigate("/");
+      const studentName = form.email.split('@')[0];
+      
+      localStorage.setItem('currentUser', JSON.stringify({
+        name: studentName.charAt(0).toUpperCase() + studentName.slice(1),
+        email: form.email
+      }));
+      
+      window.location.href = "/";
     } finally {
       setSubmitting(false);
     }

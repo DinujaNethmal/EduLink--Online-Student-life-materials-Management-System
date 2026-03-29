@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Users, Filter, PlusCircle, Search, Copy, CheckCircle } from "lucide-react";
@@ -102,6 +102,15 @@ const newBannerDefault = {
 };
 
 export default function FindingGroups() {
+  const [currentUser, setCurrentUser] = useState(null);
+
+  useEffect(() => {
+    const userStr = localStorage.getItem('currentUser');
+    if (userStr) {
+      try { setCurrentUser(JSON.parse(userStr)); } catch (e) {}
+    }
+  }, []);
+
   const [activeTab, setActiveTab] = useState("member");
   const [filters, setFilters] = useState(filterDefaults);
   const [memberPosts, setMemberPosts] = useState(memberPostsSeed);
@@ -198,8 +207,32 @@ export default function FindingGroups() {
           <Link to="/">Home</Link>
           <Link to="/profile">Profile</Link>
           <Link to="/finding-groups">Finding Groups</Link>
-          <Link to="/login" className="btn-landing-secondary" style={{ padding: "0.5rem 1.25rem" }}>Login</Link>
-          <Link to="/register" className="btn-landing-primary">Register</Link>
+          {currentUser ? (
+            <div style={{ display: "flex", alignItems: "center", gap: "1.2rem", marginLeft: "0.5rem" }}>
+              <span style={{ color: "#fff", fontWeight: "600", fontSize: "1rem" }}>Welcome, {currentUser.name}</span>
+              <Link to="/profile" style={{ 
+                width: "42px", height: "42px", borderRadius: "50%", 
+                background: "linear-gradient(135deg, #0ea5e9, #38bdf8)", 
+                display: "flex", alignItems: "center", justifyContent: "center", 
+                color: "white", fontWeight: "bold", fontSize: "1.2rem", textDecoration: "none",
+                boxShadow: "0 4px 14px rgba(14, 165, 233, 0.4)"
+              }}>
+                {currentUser.name.charAt(0).toUpperCase()}
+              </Link>
+              <button 
+                onClick={() => { localStorage.removeItem('currentUser'); window.location.reload(); }} 
+                className="btn-landing-secondary" 
+                style={{ padding: "0.4rem 0.8rem", fontSize: "0.85rem", border: "1px solid rgba(255,255,255,0.1)", background: "rgba(0,0,0,0.2)" }}
+              >
+                Logout
+              </button>
+            </div>
+          ) : (
+            <>
+              <Link to="/login" className="btn-landing-secondary" style={{ padding: "0.5rem 1.25rem" }}>Login</Link>
+              <Link to="/register" className="btn-landing-primary">Register</Link>
+            </>
+          )}
         </div>
       </motion.nav>
 

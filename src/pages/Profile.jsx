@@ -28,8 +28,14 @@ export default function Profile() {
   const [quizMarks] = useState(initialQuizMarks);
   const [profilePhoto, setProfilePhoto] = useState("");
   const [saveMessage, setSaveMessage] = useState("");
+  const [currentUser, setCurrentUser] = useState(null);
 
   useEffect(() => {
+    const userStr = localStorage.getItem('currentUser');
+    if (userStr) {
+      try { setCurrentUser(JSON.parse(userStr)); } catch (e) {}
+    }
+
     // Fetch live MongoDB Data from the new Express Server we built
     const fetchMongoDBProfile = async () => {
       try {
@@ -107,8 +113,23 @@ export default function Profile() {
           <Link to="/">Home</Link>
           <Link to="/profile">Profile</Link>
           <Link to="/finding-groups">Finding Groups</Link>
-          <Link to="/login" className="btn-landing-secondary" style={{ padding: "0.5rem 1.25rem" }}>Login</Link>
-          <Link to="/register" className="btn-landing-primary">Register</Link>
+          {currentUser ? (
+            <div style={{ display: "flex", alignItems: "center", gap: "1.2rem", marginLeft: "0.5rem" }}>
+              <span style={{ color: "#fff", fontWeight: "600", fontSize: "1rem" }}>Welcome, {currentUser.name}</span>
+              <button 
+                onClick={() => { localStorage.removeItem('currentUser'); window.location.href = "/"; }} 
+                className="btn-landing-secondary" 
+                style={{ padding: "0.4rem 0.8rem", fontSize: "0.85rem", border: "1px solid rgba(255,255,255,0.1)", background: "rgba(0,0,0,0.2)" }}
+              >
+                Logout
+              </button>
+            </div>
+          ) : (
+            <>
+              <Link to="/login" className="btn-landing-secondary" style={{ padding: "0.5rem 1.25rem" }}>Login</Link>
+              <Link to="/register" className="btn-landing-primary">Register</Link>
+            </>
+          )}
         </div>
       </motion.nav>
 

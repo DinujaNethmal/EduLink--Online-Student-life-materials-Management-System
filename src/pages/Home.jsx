@@ -1,10 +1,19 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Shield, Key, Users, CheckCircle, LayoutDashboard, Heart, BookOpen, Clock, BarChart, Star, ListPlus, Filter, ShoppingCart, History } from "lucide-react";
 import "./Home.css"; // Import new landing page styles
 
 export default function Home() {
+  const [currentUser, setCurrentUser] = useState(null);
+
+  useEffect(() => {
+    const userStr = localStorage.getItem('currentUser');
+    if (userStr) {
+      try { setCurrentUser(JSON.parse(userStr)); } catch (e) {}
+    }
+  }, []);
+
   // Animation Variants
   const fadeUp = {
     hidden: { opacity: 0, y: 50 },
@@ -42,8 +51,32 @@ export default function Home() {
           <Link to="/">Home</Link>
           <Link to="/profile">Profile</Link>
           <Link to="/finding-groups">Finding Groups</Link>
-          <Link to="/login" className="btn-landing-secondary" style={{ padding: "0.5rem 1.25rem" }}>Login</Link>
-          <Link to="/register" className="btn-landing-primary">Register</Link>
+          {currentUser ? (
+            <div style={{ display: "flex", alignItems: "center", gap: "1.2rem", marginLeft: "0.5rem" }}>
+              <span style={{ color: "#fff", fontWeight: "600", fontSize: "1rem" }}>Welcome, {currentUser.name}</span>
+              <Link to="/profile" style={{ 
+                width: "42px", height: "42px", borderRadius: "50%", 
+                background: "linear-gradient(135deg, #0ea5e9, #38bdf8)", 
+                display: "flex", alignItems: "center", justifyContent: "center", 
+                color: "white", fontWeight: "bold", fontSize: "1.2rem", textDecoration: "none",
+                boxShadow: "0 4px 14px rgba(14, 165, 233, 0.4)"
+              }}>
+                {currentUser.name.charAt(0).toUpperCase()}
+              </Link>
+              <button 
+                onClick={() => { localStorage.removeItem('currentUser'); window.location.reload(); }} 
+                className="btn-landing-secondary" 
+                style={{ padding: "0.4rem 0.8rem", fontSize: "0.85rem", border: "1px solid rgba(255,255,255,0.1)", background: "rgba(0,0,0,0.2)" }}
+              >
+                Logout
+              </button>
+            </div>
+          ) : (
+            <>
+              <Link to="/login" className="btn-landing-secondary" style={{ padding: "0.5rem 1.25rem" }}>Login</Link>
+              <Link to="/register" className="btn-landing-primary">Register</Link>
+            </>
+          )}
         </div>
       </motion.nav>
 
@@ -67,9 +100,15 @@ export default function Home() {
               EduLink helps university students securely sign in, manage skills, and form the right project groups so that no student is left without a team.
             </motion.p>
             <motion.div variants={fadeUp} className="hero-buttons">
-              <Link to="/register" className="btn-landing-primary large">
-                Get Started – Register
-              </Link>
+              {currentUser ? (
+                <Link to="/profile" className="btn-landing-primary large">
+                  Welcome back, {currentUser.name}
+                </Link>
+              ) : (
+                <Link to="/register" className="btn-landing-primary large">
+                  Get Started – Register
+                </Link>
+              )}
               <Link to="/finding-groups" className="btn-landing-secondary">
                 Find Groups
               </Link>
