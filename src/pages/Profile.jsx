@@ -36,22 +36,48 @@ export default function Profile() {
       try { setCurrentUser(JSON.parse(userStr)); } catch (e) {}
     }
 
+    // Read stored profile state directly from local storage cache to persist changes
+    const cachedProfile = localStorage.getItem('savedProfile');
+    if (cachedProfile) {
+      try { setProfile(JSON.parse(cachedProfile)); } catch (e) {}
+    }
+
+    const cachedPhoto = localStorage.getItem('savedProfilePhoto');
+    if (cachedPhoto) {
+      setProfilePhoto(cachedPhoto);
+    }
+
     // Fetch live MongoDB Data from the new Express Server we built
     const fetchMongoDBProfile = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/users/student");
+        const uStr = localStorage.getItem('currentUser');
+        let queryEmail = '';
+        if (uStr) {
+           const u = JSON.parse(uStr);
+           queryEmail = u.email;
+        }
+
+        const res = await fetch(`http://localhost:5000/api/users/student${queryEmail ? `?email=${queryEmail}` : ''}`);
         const json = await res.json();
         
         if (json.success) {
           const dbUser = json.data;
           setProfile((prev) => ({
             ...prev,
-            fullName: dbUser.name,
-            email: dbUser.email,
-            campus: dbUser.campus,
-            degreeProgram: dbUser.degreeProgram,
-            bio: `Skills: ${dbUser.skills.join(', ')}`
+            fullName: dbUser.name || prev.fullName,
+            email: dbUser.email || prev.email,
+            campus: dbUser.campus || prev.campus,
+            degreeProgram: dbUser.degreeProgram || prev.degreeProgram,
+            year: dbUser.year || prev.year,
+            semester: dbUser.semester || prev.semester,
+            hasGroup: dbUser.hasGroup || prev.hasGroup,
+            groupName: dbUser.groupName || prev.groupName,
+            bio: dbUser.bio || prev.bio
           }));
+          
+          if (dbUser.profilePhoto) {
+            setProfilePhoto(dbUser.profilePhoto);
+          }
         }
       } catch (err) {
         console.error("Express API Not Running - Using Default Profile Data", err);
@@ -81,14 +107,47 @@ export default function Profile() {
   const handlePhotoChange = (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    const localUrl = URL.createObjectURL(file);
-    setProfilePhoto(localUrl);
-    setSaveMessage("");
+    
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setProfilePhoto(reader.result);
+      setSaveMessage("");
+    };
+    reader.readAsDataURL(file);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setSaveMessage("Profile saved securely!");
+    
+    // Fallback: save to persistence memory cache
+    localStorage.setItem('savedProfile', JSON.stringify(profile));
+    if (profilePhoto) {
+      localStorage.setItem('savedProfilePhoto', profilePhoto);
+    }
+    
+    try {
+      const uStr = localStorage.getItem('currentUser');
+      let currentEmail = profile.email;
+      if (uStr) currentEmail = JSON.parse(uStr).email;
+
+      const res = await fetch("http://localhost:5000/api/users/student", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...profile, profilePhoto, email: currentEmail })
+      });
+      
+      const json = await res.json();
+      
+      if (json.success) {
+        setSaveMessage("Profile saved successfully to Database!");
+      } else {
+        setSaveMessage("Profile saved offline securely!");
+      }
+    } catch (err) {
+      console.error(err);
+      setSaveMessage("Profile saved offline securely!");
+    }
+    
     setTimeout(() => setSaveMessage(""), 3000);
   };
 

@@ -13,7 +13,7 @@ dotenv.config();
 const app = express();
 
 // Body parser
-app.use(express.json());
+app.use(express.json({ limit: '50mb' }));
 
 // Enable CORS allowing React Frontend to communicate
 app.use(cors());

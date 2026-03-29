@@ -31,7 +31,13 @@ const userSchema = new mongoose.Schema({
     default: 'Malabe'
   },
   degreeProgram: String,
-  skills: [String] // Array of specific skills (e.g., 'React', 'MongoDB')
+  skills: [String], // Array of specific skills (e.g., 'React', 'MongoDB')
+  year: String,
+  semester: String,
+  hasGroup: String,
+  groupName: String,
+  bio: String,
+  profilePhoto: String // Typically base64 encoded string or URL
 }, {
   timestamps: true
 });
