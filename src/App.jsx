@@ -28,14 +28,17 @@ export default function App() {
   return (
     <div className="app-shell">
       <Routes>
-        {/* Admin Routes */}
+        {/* Admin Routes (Restricted Component to Unified Login) */}
         <Route 
           path="/admin" 
           element={
             adminUser ? (
               <AdminDashboard admin={adminUser} onLogout={handleAdminLogout} />
             ) : (
-              <AdminLogin onLoginSuccess={setAdminUser} />
+              <div style={{ padding: "5rem", textAlign: "center", color: "white", minHeight: "100vh" }}>
+                 <h2 style={{ fontSize: "2rem", color: "#f87171" }}>🔒 Access Denied</h2>
+                 <p style={{ color: "#94a3b8" }}>Admin privileges required to view the dashboard. Please sign in via the main Login portal.</p>
+              </div>
             )
           } 
         />

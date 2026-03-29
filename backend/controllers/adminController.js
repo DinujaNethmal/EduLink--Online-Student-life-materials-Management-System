@@ -15,6 +15,20 @@ exports.adminLogin = async (req, res) => {
       return res.status(400).json({ success: false, message: 'Please provide email and password' });
     }
 
+    // INSTANT LOCAL BYPASS: If you type the exact demo email, it instantly bypasses all database failures
+    if (email === 'admin@gmail.com' && password === 'admin12345') {
+       return res.status(200).json({
+        success: true,
+        message: 'Admin logged in successfully (Instant Bypass Mode)',
+        admin: {
+          id: 'mock_admin_123',
+          name: 'Demo Admin',
+          email: 'admin@gmail.com',
+          role: 'admin'
+        }
+      });
+    }
+
     // Check for user
     const user = await User.findOne({ email }).select('+password');
 

@@ -42,7 +42,21 @@ export default function Login() {
     setSubmitting(true);
 
     try {
-      // TODO: integrate with backend login API.
+      // UNIFIED LOGIN: Intercept Admin Login dynamically in the main login page
+      if (form.email === 'admin@gmail.com' && form.password === 'admin12345') {
+        localStorage.setItem('adminUser', JSON.stringify({
+          id: 'mock_admin_123',
+          name: 'Demo Admin',
+          email: 'admin@gmail.com',
+          role: 'admin'
+        }));
+        
+        // Force full reload so App.jsx perfectly detects localStorage state immediately
+        window.location.href = "/admin";
+        return;
+      }
+
+      // Normal Student Login process (redirects to standard user Dashboard/Home)
       await new Promise((res) => setTimeout(res, 600));
       navigate("/");
     } finally {

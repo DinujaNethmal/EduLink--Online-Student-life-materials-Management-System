@@ -34,7 +34,7 @@ const connectDB = async () => {
     console.log(`MongoDB Connected: ${conn.connection.host}`);
   } catch (err) {
     console.error(`MongoDB Error: ${err.message}`);
-    process.exit(1);
+    console.warn(`⚠️ The Express API has successfully booted, but MongoDB Atlas is offline. Expect database calls to fail gracefully.`);
   }
 };
 

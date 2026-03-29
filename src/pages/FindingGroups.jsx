@@ -294,7 +294,7 @@ export default function FindingGroups() {
                     </div>
                     <div className="field-group">
                       <label>Contact Number</label>
-                      <input name="contactNumber" type="tel" className="modern-input" value={memberForm.contactNumber} onChange={handleMemberFormChange} placeholder="07XXXXXXXX" />
+                      <input name="contactNumber" type="tel" className="modern-input" value={memberForm.contactNumber} onChange={handleMemberFormChange} placeholder="07XXXXXXXX" minLength="10" pattern="[0-9]{10,}" title="Contact number must be at least 10 digits" required />
                     </div>
                   </div>
 
@@ -417,7 +417,7 @@ export default function FindingGroups() {
                   <div className="form-grid-2">
                     <div className="field-group">
                       <label>Contact Number</label>
-                      <input name="contactNumber" type="tel" className="modern-input" value={bannerForm.contactNumber} onChange={handleBannerFormChange} placeholder="07XXXXXXXX" />
+                      <input name="contactNumber" type="tel" className="modern-input" value={bannerForm.contactNumber} onChange={handleBannerFormChange} placeholder="07XXXXXXXX" minLength="10" pattern="[0-9]{10,}" title="Contact number must be at least 10 digits" required />
                     </div>
                     <div className="field-group">
                       <label>Campus</label>
