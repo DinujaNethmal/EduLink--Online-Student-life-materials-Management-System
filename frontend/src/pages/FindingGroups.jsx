@@ -115,6 +115,35 @@ export default function FindingGroups() {
   const [filters, setFilters] = useState(filterDefaults);
   const [memberPosts, setMemberPosts] = useState(memberPostsSeed);
   const [groupBanners, setGroupBanners] = useState(groupBannersSeed);
+
+  const fetchMemberPosts = async () => {
+    try {
+      const res = await fetch('http://localhost:5000/api/finding-groups/members');
+      const data = await res.json();
+      if (data.success) {
+        setMemberPosts(data.data);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const fetchGroupBanners = async () => {
+    try {
+      const res = await fetch('http://localhost:5000/api/finding-groups/banners');
+      const data = await res.json();
+      if (data.success) {
+        setGroupBanners(data.data);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  useEffect(() => {
+    fetchMemberPosts();
+    fetchGroupBanners();
+  }, []);
   const [memberForm, setMemberForm] = useState(newMemberDefault);
   const [bannerForm, setBannerForm] = useState(newBannerDefault);
   const [copyMessage, setCopyMessage] = useState("");
@@ -161,18 +190,42 @@ export default function FindingGroups() {
     setBannerForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const submitMemberPost = (e) => {
+  const submitMemberPost = async (e) => {
     e.preventDefault();
     if (!memberForm.name.trim() || !memberForm.personalEmail.trim() || !memberForm.contactNumber.trim() || !memberForm.miniPoster.trim()) return;
-    setMemberPosts((prev) => [{ id: Date.now(), ...memberForm }, ...prev]);
-    setMemberForm(newMemberDefault);
+    try {
+      const res = await fetch('http://localhost:5000/api/finding-groups/members', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(memberForm)
+      });
+      const data = await res.json();
+      if (data.success) {
+        setMemberPosts((prev) => [data.data, ...prev]);
+        setMemberForm(newMemberDefault);
+      }
+    } catch (err) {
+      console.error(err);
+    }
   };
 
-  const submitGroupBanner = (e) => {
+  const submitGroupBanner = async (e) => {
     e.preventDefault();
     if (!bannerForm.groupName.trim() || !bannerForm.personalEmail.trim() || !bannerForm.contactNumber.trim() || !bannerForm.banner.trim()) return;
-    setGroupBanners((prev) => [{ id: Date.now(), ...bannerForm }, ...prev]);
-    setBannerForm(newBannerDefault);
+    try {
+      const res = await fetch('http://localhost:5000/api/finding-groups/banners', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(bannerForm)
+      });
+      const data = await res.json();
+      if (data.success) {
+        setGroupBanners((prev) => [data.data, ...prev]);
+        setBannerForm(newBannerDefault);
+      }
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const copyToClipboard = async (value, label) => {
@@ -215,12 +268,17 @@ export default function FindingGroups() {
                 background: "linear-gradient(135deg, #0ea5e9, #38bdf8)", 
                 display: "flex", alignItems: "center", justifyContent: "center", 
                 color: "white", fontWeight: "bold", fontSize: "1.2rem", textDecoration: "none",
-                boxShadow: "0 4px 14px rgba(14, 165, 233, 0.4)"
+                boxShadow: "0 4px 14px rgba(14, 165, 233, 0.4)",
+                overflow: "hidden"
               }}>
-                {currentUser.name.charAt(0).toUpperCase()}
+                {currentUser.profilePhoto ? (
+                  <img src={currentUser.profilePhoto} alt="Profile" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                ) : (
+                  currentUser.name.charAt(0).toUpperCase()
+                )}
               </Link>
               <button 
-                onClick={() => { localStorage.removeItem('currentUser'); window.location.reload(); }} 
+                onClick={() => { localStorage.clear(); window.location.reload(); }} 
                 className="btn-landing-secondary" 
                 style={{ padding: "0.4rem 0.8rem", fontSize: "0.85rem", border: "1px solid rgba(255,255,255,0.1)", background: "rgba(0,0,0,0.2)" }}
               >
@@ -395,7 +453,7 @@ export default function FindingGroups() {
                 ) : (
                   <div className="posters-grid">
                     {filteredMemberPosts.map(post => (
-                      <div key={post.id} className="poster-card">
+                      <div key={post._id || post.id} className="poster-card">
                         <div className="poster-header">
                           <h3>{post.name}</h3>
                           <span className="poster-badge">{post.campus}</span>
@@ -511,7 +569,7 @@ export default function FindingGroups() {
                 ) : (
                   <div className="posters-grid">
                     {filteredGroupBanners.map(banner => (
-                      <div key={banner.id} className="poster-card" style={{ borderColor: 'rgba(249,115,22,0.2)' }}>
+                      <div key={banner._id || banner.id} className="poster-card" style={{ borderColor: 'rgba(249,115,22,0.2)' }}>
                         <div className="poster-header">
                           <h3 style={{ color: "#f97316" }}>{banner.groupName}</h3>
                           <span className="poster-badge" style={{ background: "rgba(249,115,22,0.15)", color: "#fdba74" }}>{banner.campus}</span>

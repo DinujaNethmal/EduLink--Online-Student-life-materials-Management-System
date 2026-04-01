@@ -57,6 +57,39 @@ exports.updateStudentProfile = async (req, res) => {
   }
 };
 
+// @desc    Auth User & get token (Login)
+// @route   POST /api/users/login
+// @access  Public
+exports.loginStudent = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    const user = await User.findOne({ email }).select('+password');
+    if (!user) {
+      return res.status(401).json({ success: false, error: 'Invalid credentials' });
+    }
+
+    const isMatch = await user.matchPassword(password);
+    if (!isMatch) {
+      return res.status(401).json({ success: false, error: 'Invalid credentials' });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        profilePhoto: user.profilePhoto || null,
+      }
+    });
+
+  } catch (error) {
+    console.error("Login Error:", error);
+    res.status(500).json({ success: false, error: 'Server error during login' });
+  }
+};
+
 // @desc    Register Student
 // @route   POST /api/users/register
 // @access  Public

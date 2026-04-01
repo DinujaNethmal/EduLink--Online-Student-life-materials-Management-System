@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Home from "./pages/Home.jsx";
 import Register from "./pages/Register.jsx";
@@ -11,6 +11,7 @@ import AdminDashboard from "./pages/AdminDashboard.jsx";
 
 export default function App() {
   const [adminUser, setAdminUser] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Check if admin is already logged in
@@ -23,6 +24,7 @@ export default function App() {
   const handleAdminLogout = () => {
     localStorage.removeItem('adminUser');
     setAdminUser(null);
+    navigate('/login');
   };
 
   return (

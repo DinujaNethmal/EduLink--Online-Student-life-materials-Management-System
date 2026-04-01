@@ -5,15 +5,15 @@ import { Camera, Edit3, GraduationCap, School, AtSign, Settings } from "lucide-r
 import "./ModernPages.css";
 
 const initialProfile = {
-  fullName: "Student Name",
-  email: "it12345678@my.sliit.lk",
+  fullName: "",
+  email: "",
   campus: "Malabe",
-  year: "3",
-  semester: "2",
-  hasGroup: "yes",
-  groupName: "Team Alpha",
-  degreeProgram: "BSc (Hons) in IT",
-  bio: "Interested in full-stack development and teamwork projects.",
+  year: "",
+  semester: "",
+  hasGroup: "no",
+  groupName: "",
+  degreeProgram: "",
+  bio: "",
 };
 
 const initialQuizMarks = [
@@ -33,19 +33,14 @@ export default function Profile() {
   useEffect(() => {
     const userStr = localStorage.getItem('currentUser');
     if (userStr) {
-      try { setCurrentUser(JSON.parse(userStr)); } catch (e) {}
+      try { 
+        const parsed = JSON.parse(userStr);
+        setCurrentUser(parsed); 
+        setProfile(prev => ({ ...prev, fullName: parsed.name || prev.fullName, email: parsed.email || prev.email }));
+      } catch (e) {}
     }
 
-    // Read stored profile state directly from local storage cache to persist changes
-    const cachedProfile = localStorage.getItem('savedProfile');
-    if (cachedProfile) {
-      try { setProfile(JSON.parse(cachedProfile)); } catch (e) {}
-    }
-
-    const cachedPhoto = localStorage.getItem('savedProfilePhoto');
-    if (cachedPhoto) {
-      setProfilePhoto(cachedPhoto);
-    }
+    // Note: Local storage caching for 'savedProfile' removed to prevent cross-user leakage.
 
     // Fetch live MongoDB Data from the new Express Server we built
     const fetchMongoDBProfile = async () => {
@@ -57,7 +52,9 @@ export default function Profile() {
            queryEmail = u.email;
         }
 
-        const res = await fetch(`http://localhost:5000/api/users/student${queryEmail ? `?email=${queryEmail}` : ''}`);
+        if (!queryEmail) return; // Do not fetch anything if not logged in
+
+        const res = await fetch(`http://localhost:5000/api/users/student?email=${queryEmail}`);
         const json = await res.json();
         
         if (json.success) {
@@ -100,6 +97,10 @@ export default function Profile() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    if (name === "fullName" && /\d/.test(value)) {
+      setSaveMessage("Numbers are not allowed in the full name.");
+      return;
+    }
     setProfile((prev) => ({ ...prev, [name]: value }));
     setSaveMessage("");
   };
@@ -118,13 +119,6 @@ export default function Profile() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    // Fallback: save to persistence memory cache
-    localStorage.setItem('savedProfile', JSON.stringify(profile));
-    if (profilePhoto) {
-      localStorage.setItem('savedProfilePhoto', profilePhoto);
-    }
-    
     try {
       const uStr = localStorage.getItem('currentUser');
       let currentEmail = profile.email;
@@ -140,6 +134,13 @@ export default function Profile() {
       
       if (json.success) {
         setSaveMessage("Profile saved successfully to Database!");
+        if (uStr) {
+           const u = JSON.parse(uStr);
+           u.name = profile.fullName;
+           u.profilePhoto = profilePhoto;
+           localStorage.setItem('currentUser', JSON.stringify(u));
+           setCurrentUser(u);
+        }
       } else {
         setSaveMessage("Profile saved offline securely!");
       }
@@ -175,8 +176,22 @@ export default function Profile() {
           {currentUser ? (
             <div style={{ display: "flex", alignItems: "center", gap: "1.2rem", marginLeft: "0.5rem" }}>
               <span style={{ color: "#fff", fontWeight: "600", fontSize: "1rem" }}>Welcome, {currentUser.name}</span>
+              <Link to="/profile" style={{ 
+                width: "42px", height: "42px", borderRadius: "50%", 
+                background: "linear-gradient(135deg, #0ea5e9, #38bdf8)", 
+                display: "flex", alignItems: "center", justifyContent: "center", 
+                color: "white", fontWeight: "bold", fontSize: "1.2rem", textDecoration: "none",
+                boxShadow: "0 4px 14px rgba(14, 165, 233, 0.4)",
+                overflow: "hidden"
+              }}>
+                {currentUser.profilePhoto ? (
+                  <img src={currentUser.profilePhoto} alt="Profile" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                ) : (
+                  currentUser.name.charAt(0).toUpperCase()
+                )}
+              </Link>
               <button 
-                onClick={() => { localStorage.removeItem('currentUser'); window.location.href = "/"; }} 
+                onClick={() => { localStorage.clear(); window.location.href = "/"; }} 
                 className="btn-landing-secondary" 
                 style={{ padding: "0.4rem 0.8rem", fontSize: "0.85rem", border: "1px solid rgba(255,255,255,0.1)", background: "rgba(0,0,0,0.2)" }}
               >
@@ -206,7 +221,7 @@ export default function Profile() {
               <img src={profilePhoto} alt="Profile" className="modern-avatar" />
             ) : (
               <div className="modern-avatar">
-                {profile.fullName.slice(0, 2).toUpperCase()}
+                {profile.fullName && profile.fullName.length > 0 ? profile.fullName.slice(0, 2).toUpperCase() : "U"}
               </div>
             )}
             <label className="btn-modern-primary" style={{ position: "absolute", bottom: "-10px", right: "-10px", padding: "0.5rem", borderRadius: "50%", cursor: "pointer" }}>

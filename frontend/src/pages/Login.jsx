@@ -57,12 +57,22 @@ export default function Login() {
       }
 
       // Normal Student Login process (redirects to standard user Dashboard/Home)
-      await new Promise((res) => setTimeout(res, 600));
-      const studentName = form.email.split('@')[0];
+      const res = await fetch('http://localhost:5000/api/users/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: form.email, password: form.password })
+      });
+      const data = await res.json();
+      
+      if (!data.success) {
+        setErrors({ password: data.error || 'Invalid credentials' });
+        return;
+      }
       
       localStorage.setItem('currentUser', JSON.stringify({
-        name: studentName.charAt(0).toUpperCase() + studentName.slice(1),
-        email: form.email
+        name: data.data.name,
+        email: data.data.email,
+        profilePhoto: data.data.profilePhoto
       }));
       
       window.location.href = "/";

@@ -59,12 +59,17 @@ export default function Home() {
                 background: "linear-gradient(135deg, #0ea5e9, #38bdf8)", 
                 display: "flex", alignItems: "center", justifyContent: "center", 
                 color: "white", fontWeight: "bold", fontSize: "1.2rem", textDecoration: "none",
-                boxShadow: "0 4px 14px rgba(14, 165, 233, 0.4)"
+                boxShadow: "0 4px 14px rgba(14, 165, 233, 0.4)",
+                overflow: "hidden"
               }}>
-                {currentUser.name.charAt(0).toUpperCase()}
+                {currentUser.profilePhoto ? (
+                  <img src={currentUser.profilePhoto} alt="Profile" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                ) : (
+                  currentUser.name.charAt(0).toUpperCase()
+                )}
               </Link>
               <button 
-                onClick={() => { localStorage.removeItem('currentUser'); window.location.reload(); }} 
+                onClick={() => { localStorage.clear(); window.location.reload(); }} 
                 className="btn-landing-secondary" 
                 style={{ padding: "0.4rem 0.8rem", fontSize: "0.85rem", border: "1px solid rgba(255,255,255,0.1)", background: "rgba(0,0,0,0.2)" }}
               >

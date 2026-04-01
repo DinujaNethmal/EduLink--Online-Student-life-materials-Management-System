@@ -16,6 +16,10 @@ export default function Register() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    if (name === "name" && /\d/.test(value)) {
+      setErrors((prev) => ({ ...prev, [name]: "Numbers are not allowed in the full name." }));
+      return;
+    }
     setForm((prev) => ({ ...prev, [name]: value }));
     setErrors((prev) => ({ ...prev, [name]: "" }));
   };
