@@ -48,3 +48,63 @@ exports.createGroupBanner = async (req, res) => {
     res.status(400).json({ success: false, error: err.message });
   }
 };
+
+// @desc    Update member post
+// @route   PUT /api/finding-groups/members/:id
+// @access  Public
+exports.updateMemberPost = async (req, res) => {
+  try {
+    const post = await MemberPost.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+    if (!post) {
+      return res.status(404).json({ success: false, error: 'Post not found' });
+    }
+    res.status(200).json({ success: true, data: post });
+  } catch (err) {
+    res.status(400).json({ success: false, error: err.message });
+  }
+};
+
+// @desc    Delete member post
+// @route   DELETE /api/finding-groups/members/:id
+// @access  Public
+exports.deleteMemberPost = async (req, res) => {
+  try {
+    const post = await MemberPost.findByIdAndDelete(req.params.id);
+    if (!post) {
+      return res.status(404).json({ success: false, error: 'Post not found' });
+    }
+    res.status(200).json({ success: true, data: {} });
+  } catch (err) {
+    res.status(400).json({ success: false, error: err.message });
+  }
+};
+
+// @desc    Update group banner
+// @route   PUT /api/finding-groups/banners/:id
+// @access  Public
+exports.updateGroupBanner = async (req, res) => {
+  try {
+    const banner = await GroupBanner.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+    if (!banner) {
+      return res.status(404).json({ success: false, error: 'Banner not found' });
+    }
+    res.status(200).json({ success: true, data: banner });
+  } catch (err) {
+    res.status(400).json({ success: false, error: err.message });
+  }
+};
+
+// @desc    Delete group banner
+// @route   DELETE /api/finding-groups/banners/:id
+// @access  Public
+exports.deleteGroupBanner = async (req, res) => {
+  try {
+    const banner = await GroupBanner.findByIdAndDelete(req.params.id);
+    if (!banner) {
+      return res.status(404).json({ success: false, error: 'Banner not found' });
+    }
+    res.status(200).json({ success: true, data: {} });
+  } catch (err) {
+    res.status(400).json({ success: false, error: err.message });
+  }
+};

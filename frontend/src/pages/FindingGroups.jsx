@@ -107,7 +107,12 @@ export default function FindingGroups() {
   useEffect(() => {
     const userStr = localStorage.getItem('currentUser');
     if (userStr) {
-      try { setCurrentUser(JSON.parse(userStr)); } catch (e) {}
+      try { 
+        const parsed = JSON.parse(userStr);
+        setCurrentUser(parsed); 
+        setMemberForm(prev => ({ ...prev, personalEmail: parsed.email }));
+        setBannerForm(prev => ({ ...prev, personalEmail: parsed.email }));
+      } catch (e) {}
     }
   }, []);
 
@@ -193,16 +198,32 @@ export default function FindingGroups() {
   const submitMemberPost = async (e) => {
     e.preventDefault();
     if (!memberForm.name.trim() || !memberForm.personalEmail.trim() || !memberForm.contactNumber.trim() || !memberForm.miniPoster.trim()) return;
+
+    const payload = { ...memberForm, personalEmail: currentUser ? currentUser.email : memberForm.personalEmail };
+
     try {
-      const res = await fetch('http://localhost:5000/api/finding-groups/members', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(memberForm)
-      });
-      const data = await res.json();
-      if (data.success) {
-        setMemberPosts((prev) => [data.data, ...prev]);
-        setMemberForm(newMemberDefault);
+      if (memberForm._id) {
+        const res = await fetch(`http://localhost:5000/api/finding-groups/members/${memberForm._id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (data.success) {
+          setMemberPosts(prev => prev.map(p => p._id === data.data._id ? data.data : p));
+          setMemberForm({ ...newMemberDefault, personalEmail: currentUser ? currentUser.email : '' });
+        }
+      } else {
+        const res = await fetch('http://localhost:5000/api/finding-groups/members', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (data.success) {
+          setMemberPosts((prev) => [data.data, ...prev]);
+          setMemberForm({ ...newMemberDefault, personalEmail: currentUser ? currentUser.email : '' });
+        }
       }
     } catch (err) {
       console.error(err);
@@ -212,20 +233,64 @@ export default function FindingGroups() {
   const submitGroupBanner = async (e) => {
     e.preventDefault();
     if (!bannerForm.groupName.trim() || !bannerForm.personalEmail.trim() || !bannerForm.contactNumber.trim() || !bannerForm.banner.trim()) return;
+
+    const payload = { ...bannerForm, personalEmail: currentUser ? currentUser.email : bannerForm.personalEmail };
+
     try {
-      const res = await fetch('http://localhost:5000/api/finding-groups/banners', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(bannerForm)
-      });
-      const data = await res.json();
-      if (data.success) {
-        setGroupBanners((prev) => [data.data, ...prev]);
-        setBannerForm(newBannerDefault);
+      if (bannerForm._id) {
+        const res = await fetch(`http://localhost:5000/api/finding-groups/banners/${bannerForm._id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (data.success) {
+          setGroupBanners(prev => prev.map(p => p._id === data.data._id ? data.data : p));
+          setBannerForm({ ...newBannerDefault, personalEmail: currentUser ? currentUser.email : '' });
+        }
+      } else {
+        const res = await fetch('http://localhost:5000/api/finding-groups/banners', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (data.success) {
+          setGroupBanners((prev) => [data.data, ...prev]);
+          setBannerForm({ ...newBannerDefault, personalEmail: currentUser ? currentUser.email : '' });
+        }
       }
     } catch (err) {
       console.error(err);
     }
+  };
+
+  const handleDeleteMemberPost = async (id) => {
+    if(!window.confirm("Are you sure you want to delete your member post?")) return;
+    try {
+      const res = await fetch(`http://localhost:5000/api/finding-groups/members/${id}`, { method: 'DELETE' });
+      if(res.ok) setMemberPosts(prev => prev.filter(p => (p._id || p.id) !== id));
+    } catch (err) { console.error(err); }
+  };
+
+  const handleEditMemberPost = (post) => {
+    setActiveTab("member");
+    setMemberForm(post);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleDeleteGroupBanner = async (id) => {
+    if(!window.confirm("Are you sure you want to delete your group banner?")) return;
+    try {
+      const res = await fetch(`http://localhost:5000/api/finding-groups/banners/${id}`, { method: 'DELETE' });
+      if(res.ok) setGroupBanners(prev => prev.filter(b => (b._id || b.id) !== id));
+    } catch (err) { console.error(err); }
+  };
+
+  const handleEditGroupBanner = (banner) => {
+    setActiveTab("group");
+    setBannerForm(banner);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const copyToClipboard = async (value, label) => {
@@ -381,7 +446,7 @@ export default function FindingGroups() {
                     </div>
                     <div className="field-group">
                       <label>Personal Gmail</label>
-                      <input name="personalEmail" type="email" className="modern-input" value={memberForm.personalEmail} onChange={handleMemberFormChange} placeholder="user@gmail.com" />
+                      <input name="personalEmail" type="email" className="modern-input" value={memberForm.personalEmail} onChange={handleMemberFormChange} placeholder="user@gmail.com" disabled={!!currentUser} />
                     </div>
                     <div className="field-group">
                       <label>Contact Number</label>
@@ -473,6 +538,16 @@ export default function FindingGroups() {
                           <button className="action-btn" onClick={() => copyToClipboard(post.contactNumber, "Number")}>
                             <Copy size={14}/> {post.contactNumber}
                           </button>
+                          {currentUser && currentUser.email === post.personalEmail && (
+                            <>
+                              <button className="action-btn" style={{ borderColor: "#38bdf8", color: "#38bdf8" }} onClick={() => handleEditMemberPost(post)}>
+                                Edit
+                              </button>
+                              <button className="action-btn" style={{ borderColor: "#ef4444", color: "#ef4444" }} onClick={() => handleDeleteMemberPost(post._id || post.id)}>
+                                Delete
+                              </button>
+                            </>
+                          )}
                         </div>
                       </div>
                     ))}
@@ -500,8 +575,8 @@ export default function FindingGroups() {
                       <input name="leaderName" className="modern-input" value={bannerForm.leaderName} onChange={handleBannerFormChange} placeholder="Lahiru" />
                     </div>
                     <div className="field-group">
-                      <label>Group Email</label>
-                      <input name="personalEmail" type="email" className="modern-input" value={bannerForm.personalEmail} onChange={handleBannerFormChange} placeholder="leader@gmail.com" />
+                      <label>Group Email (Leader)</label>
+                      <input name="personalEmail" type="email" className="modern-input" value={bannerForm.personalEmail} onChange={handleBannerFormChange} placeholder="leader@gmail.com" disabled={!!currentUser} />
                     </div>
                   </div>
 
@@ -591,6 +666,16 @@ export default function FindingGroups() {
                           <button className="action-btn" onClick={() => copyToClipboard(banner.contactNumber, "Number")}>
                             <Copy size={14}/> {banner.contactNumber}
                           </button>
+                          {currentUser && currentUser.email === banner.personalEmail && (
+                            <>
+                              <button className="action-btn" style={{ borderColor: "#38bdf8", color: "#38bdf8" }} onClick={() => handleEditGroupBanner(banner)}>
+                                Edit
+                              </button>
+                              <button className="action-btn" style={{ borderColor: "#ef4444", color: "#ef4444" }} onClick={() => handleDeleteGroupBanner(banner._id || banner.id)}>
+                                Delete
+                              </button>
+                            </>
+                          )}
                         </div>
                       </div>
                     ))}
