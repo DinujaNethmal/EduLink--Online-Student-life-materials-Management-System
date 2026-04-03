@@ -93,7 +93,7 @@ const QuizAttempt = () => {
   return (
     <div style={{ background: "rgba(255,255,255,0.05)" }}>
       {/* HEADER */}
-      <div className="bg-white rounded-xl shadow p-5 mb-6">
+      <div className="bg-gray-600 rounded-xl shadow p-5 mb-6 text-blue-500">
         <h2 className="text-xl font-bold">{quizTitle}</h2>
         <div className="flex justify-between text-sm text-gray-600 mt-2">
           <span>Progress: {currentQuestion + 1} of {questions.length}</span>
@@ -106,13 +106,14 @@ const QuizAttempt = () => {
 
       <div className="flex gap-6 max-w-6xl mx-auto">
         {/* LEFT PANEL */}
-        <div className="flex-1 bg-white rounded-xl shadow p-6">
+        <div className="flex-1 bg-rgba(255,255,255,0.05) rounded-xl shadow p-6">
           <div className="flex items-center gap-3 mb-4">
             <span className="bg-blue-100 text-blue-600 px-3 py-1 rounded text-sm">
               Question {currentQuestion + 1}
             </span>
             <span className="text-sm text-gray-500">{q.marks || 1} marks</span>
           </div>
+          <br />
 
           <h3 style={{ fontSize: "1.3rem", marginBottom: "1.2rem" }}>{q.text}</h3>
 
@@ -237,6 +238,7 @@ const QuizAttempt = () => {
                 </button>
               ))}
             </div>
+            <br/>
             <button
               onClick={() => handleSubmit(false)}
               className="btn-modern-primary" style={{ background: "linear-gradient(135deg, #10b981, #34d399)" }}

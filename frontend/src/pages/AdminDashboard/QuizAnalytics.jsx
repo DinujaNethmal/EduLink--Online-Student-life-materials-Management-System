@@ -80,7 +80,7 @@ const QuizAnalytics = () => {
           className={`nav-item ${activeQuizTab === "results" ? "active" : ""}`}
           onClick={() => setActiveQuizTab("results")}
         >
-          🏆Student Progress
+          🏆Student Performance
         </div>
       </div>
 

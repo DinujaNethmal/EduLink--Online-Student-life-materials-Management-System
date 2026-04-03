@@ -53,7 +53,7 @@ const QuizForm = () => {
     }
 
     try {
-      const res = await fetch("http://localhost:5000/api/quiz/generate", {
+      const res = await fetch("http://localhost:5000/api/questions/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -61,7 +61,7 @@ const QuizForm = () => {
           semester: quizInfo.semester,
           subject: quizInfo.subject,
           difficulty: quizInfo.difficulty,
-          count: 5, // number of questions
+          count: 5, 
         }),
       });
 
@@ -72,7 +72,7 @@ const QuizForm = () => {
 
       const data = await res.json();
       console.log("Generated questions:", data);
-      setQuestions(data.questions); // 🔥 update your state with fetched questions
+      setQuestions(data); // 🔥 update your state with fetched questions
     } catch (err) {
       console.error(err);
       alert("❌ Auto generation failed: " + err.message);
@@ -93,7 +93,7 @@ const QuizForm = () => {
   );
 
   try {
-    const response = await fetch("http://localhost:5000/api/quiz/create", {
+    const response = await fetch("http://localhost:5000/api/quiz", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -182,7 +182,7 @@ const QuizForm = () => {
               }
             >
               <option value="">Select year</option>
-              <option>2022</option>
+              <option value="2022">2022</option>
               <option>2023</option>
               <option>2024</option>
               <option>2025</option>

@@ -56,11 +56,34 @@ const deleteQuestion = async (req, res) => {
   }
 };
 
+const generateQuestionsFromDB = async (req, res) => {
+  try {
+    const { year, semester, subject, difficulty, count } = req.body;
+
+    console.log("Incoming:", req.body);
+
+    const questions = await Question.find().limit(count);
+
+    if (!questions.length) {
+      return res.status(404).json({
+        message: "No questions found for this academic year/semester/subject/difficulty",
+      });
+    }
+    res.status(200).json(questions);
+    //res.json({ questions });
+  } catch (err) {
+    console.error("🔥 ERROR:", err);
+    res.status(500).json({ message: err.message });
+  }
+};
+
+
 module.exports = {
   createQuestion,
   getQuestions,
   getQuestionById,
   updateQuestion,
-  deleteQuestion
+  deleteQuestion,
+  generateQuestionsFromDB
 };
 

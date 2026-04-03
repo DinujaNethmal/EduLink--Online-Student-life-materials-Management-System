@@ -89,12 +89,12 @@ const ViewQuizzes = () => {
               onChange={(e) => setFilters({ ...filters, subject: e.target.value })}
             >
               <option value="All">All Subjects</option>
-              <option value="Web Development">Web Development</option>
-              <option value="Computer Science">Computer Science</option>
-              <option value="Frontend Development">Frontend Development</option>
-              <option value="Full Stack Development">Full Stack Development</option>
-              <option value="Programming">Programming</option>
-              <option value="Database Systems">Database Systems</option>
+              <option value="OOP">OOP</option>
+              <option value="SE">SE</option>
+              <option value="DS">DS</option>
+              <option value="DSA">DSA</option>
+              <option value="PAF">PAF</option>
+              <option value="DS">DS</option>
             </select>
           </div>
 
@@ -130,7 +130,7 @@ const ViewQuizzes = () => {
           </thead>
           <tbody>
             {filteredQuizzes.map((quiz) => (
-              <tr key={quiz._id} className="hover:bg-gray-50">
+              <tr key={quiz._id} className="hover:bg-gray-500">
                 <td>{quiz.title}</td>
                 <td>{quiz.subject}</td>
                 <td>{quiz.duration}</td>

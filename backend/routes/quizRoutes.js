@@ -9,8 +9,7 @@ const {
   generateQuestionsFromDB,
 } = require("../controllers/quizController.js");
 
-// Auto-generate
-router.post("/generate", generateQuestionsFromDB);
+
 
 // CRUD
 router.post("/", createQuiz);
