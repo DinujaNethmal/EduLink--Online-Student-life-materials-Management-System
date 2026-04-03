@@ -1,7 +1,7 @@
 import React, { useMemo, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Users, Filter, PlusCircle, Search, Copy, CheckCircle } from "lucide-react";
+import { Users, Filter, PlusCircle, Search, Copy, CheckCircle, LogOut } from "lucide-react";
 import "./ModernPages.css";
 import ChatSidebar from "../components/ChatSidebar";
 import { MessageSquare } from "lucide-react";
@@ -348,9 +348,21 @@ export default function FindingGroups() {
               <button 
                 onClick={() => { localStorage.clear(); window.location.reload(); }} 
                 className="btn-landing-secondary" 
-                style={{ padding: "0.4rem 0.8rem", fontSize: "0.85rem", border: "1px solid rgba(255,255,255,0.1)", background: "rgba(0,0,0,0.2)" }}
+                style={{ 
+                  padding: "0.5rem 1rem", 
+                  fontSize: "0.85rem", 
+                  border: "1px solid rgba(239, 68, 68, 0.2)", 
+                  background: "rgba(239, 68, 68, 0.1)",
+                  color: "#f87171",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.5rem",
+                  transition: "all 0.3s ease"
+                }}
+                onMouseOver={(e) => { e.currentTarget.style.background = "rgba(239, 68, 68, 0.2)"; }}
+                onMouseOut={(e) => { e.currentTarget.style.background = "rgba(239, 68, 68, 0.1)"; }}
               >
-                Logout
+                <LogOut size={16} /> Logout
               </button>
             </div>
           ) : (

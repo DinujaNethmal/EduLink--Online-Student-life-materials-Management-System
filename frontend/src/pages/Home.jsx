@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Shield, Key, Users, CheckCircle, LayoutDashboard, Heart, BookOpen, Clock, BarChart, Star, ListPlus, Filter, ShoppingCart, History } from "lucide-react";
+import { Shield, Key, Users, CheckCircle, LayoutDashboard, Heart, BookOpen, Clock, BarChart, Star, ListPlus, Filter, ShoppingCart, History, LogOut } from "lucide-react";
 import "./Home.css"; // Import new landing page styles
 
 export default function Home() {
@@ -71,9 +71,21 @@ export default function Home() {
               <button 
                 onClick={() => { localStorage.clear(); window.location.reload(); }} 
                 className="btn-landing-secondary" 
-                style={{ padding: "0.4rem 0.8rem", fontSize: "0.85rem", border: "1px solid rgba(255,255,255,0.1)", background: "rgba(0,0,0,0.2)" }}
+                style={{ 
+                  padding: "0.5rem 1rem", 
+                  fontSize: "0.85rem", 
+                  border: "1px solid rgba(239, 68, 68, 0.2)", 
+                  background: "rgba(239, 68, 68, 0.1)",
+                  color: "#f87171",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.5rem",
+                  transition: "all 0.3s ease"
+                }}
+                onMouseOver={(e) => { e.currentTarget.style.background = "rgba(239, 68, 68, 0.2)"; }}
+                onMouseOut={(e) => { e.currentTarget.style.background = "rgba(239, 68, 68, 0.1)"; }}
               >
-                Logout
+                <LogOut size={16} /> Logout
               </button>
             </div>
           ) : (
