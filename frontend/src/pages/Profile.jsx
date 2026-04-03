@@ -171,7 +171,6 @@ export default function Profile() {
         </Link>
         <div className="landing-links">
           <Link to="/">Home</Link>
-          <Link to="/profile">Profile</Link>
           <Link to="/finding-groups">Finding Groups</Link>
           <Link to="/view-quizzes">Quizzes</Link>
           {currentUser ? (
