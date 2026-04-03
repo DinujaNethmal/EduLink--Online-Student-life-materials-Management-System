@@ -1,1 +1,148 @@
 @import "tailwindcss";
+
+html {
+  scroll-behavior: smooth;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(11, 11, 16, 1);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 99px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #0b0b10;
+  color: #ffffff;
+  min-height: 100vh;
+}
+
+.page-transition-wrapper {
+  perspective: 1000px;
+}
+
+/* --- THEME TOKENS --- */
+:root {
+  --bg-dark: #0b0b10;
+  --glass-bg: rgba(255, 255, 255, 0.03);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --primary-gradient: linear-gradient(135deg, #4f46e5, #c026d3);
+  --accent-purple: #a855f7;
+  --text-main: #ffffff;
+  --text-muted: #94a3b8;
+}
+
+/* --- GLOBAL LAYOUT --- */
+.modern-layout {
+  min-height: 100vh;
+  background-color: var(--bg-dark);
+  background-image: radial-gradient(circle at top right, rgba(79, 70, 229, 0.12), transparent 45%),
+                    radial-gradient(circle at bottom left, rgba(192, 38, 211, 0.08), transparent 45%);
+  padding-top: 100px;
+  padding-bottom: 3rem;
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+/* --- GLASS PANELS --- */
+.glass-panel {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 24px;
+  backdrop-filter: blur(20px);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  transition: transform 0.3s ease, background 0.3s ease;
+}
+
+/* --- MODERN INPUTS --- */
+.modern-input, 
+.modern-select, 
+.modern-textarea {
+  width: 100%;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-main);
+  border-radius: 12px;
+  padding: 0.85rem 1.25rem;
+  font-size: 0.95rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.modern-input:focus, 
+.modern-select:focus,
+.modern-textarea:focus {
+  outline: none;
+  border-color: var(--accent-purple);
+  background: rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 0 4px rgba(168, 85, 247, 0.1);
+}
+
+/* --- MODERN BUTTONS --- */
+.btn-modern-primary {
+  background: var(--primary-gradient);
+  color: white !important;
+  font-weight: 600;
+  padding: 0.85rem 1.75rem;
+  border-radius: 99px;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.3);
+}
+
+.btn-modern-primary:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 20px 25px -5px rgba(79, 70, 229, 0.4);
+}
+
+.btn-modern-primary:active {
+  transform: translateY(0);
+}
+
+/* --- TABLES --- */
+.modern-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.modern-table th {
+  padding: 1.25rem 1rem;
+  text-align: left;
+  color: var(--text-muted);
+  font-weight: 600;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.05);
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+}
+
+.modern-table td {
+  padding: 1.25rem 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+  color: var(--text-main);
+  font-size: 0.95rem;
+}
+
+.modern-table tr:hover td {
+  background: rgba(255, 255, 255, 0.02);
+}
