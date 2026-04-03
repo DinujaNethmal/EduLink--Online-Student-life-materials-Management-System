@@ -1,4 +1,4 @@
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Home from "./pages/Home.jsx";
 import Register from "./pages/Register.jsx";
@@ -25,6 +25,7 @@ import { MessageCircle } from "lucide-react";
 export default function App() {
   const [adminUser, setAdminUser] = useState(null);
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     // Check if admin is already logged in
@@ -99,40 +100,49 @@ export default function App() {
 
   return (
     <div className="app-shell">
-      <Routes>
-        {/* Admin Routes (Restricted Component to Unified Login) */}
-        <Route 
-          path="/admin" 
-          element={
-            adminUser ? (
-              <AdminDashboard admin={adminUser} onLogout={handleAdminLogout} />
-            ) : (
-              <div style={{ padding: "5rem", textAlign: "center", color: "white", minHeight: "100vh" }}>
-                 <h2 style={{ fontSize: "2rem", color: "#f87171" }}>🔒 Access Denied</h2>
-                 <p style={{ color: "#94a3b8" }}>Admin privileges required to view the dashboard. Please sign in via the main Login portal.</p>
-              </div>
-            )
-          } 
-        />
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={location.pathname}
+          initial={{ opacity: 0, scale: 1.02, y: 10 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          exit={{ opacity: 0, scale: 0.98, y: -10 }}
+          transition={{ duration: 0.35, ease: "easeOut" }}
+          className="page-transition-wrapper"
+        >
+          <Routes location={location}>
+            {/* Admin Routes (Restricted Component to Unified Login) */}
+            <Route 
+              path="/admin" 
+              element={
+                adminUser ? (
+                  <AdminDashboard admin={adminUser} onLogout={handleAdminLogout} />
+                ) : (
+                  <div style={{ padding: "5rem", textAlign: "center", color: "white", minHeight: "100vh" }}>
+                    <h2 style={{ fontSize: "2rem", color: "#f87171" }}>🔒 Access Denied</h2>
+                    <p style={{ color: "#94a3b8" }}>Admin privileges required to view the dashboard. Please sign in via the main Login portal.</p>
+                  </div>
+                )
+              } 
+            />
 
-        {/* Regular User Routes */}
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/finding-groups" element={<FindingGroups />} />
+            {/* Regular User Routes */}
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/finding-groups" element={<FindingGroups />} />
 
-        <Route path="/quiz-form" element={<ModernLayout><QuizForm /></ModernLayout>} />
-        <Route path="/quiz-results" element={<ModernLayout><QuizResults /></ModernLayout>} />
-        <Route path="/question-bank" element={<ModernLayout><QuestionBank /></ModernLayout>} />
-        <Route path="/view-quizzes" element={<ModernLayout><ViewQuizzes /></ModernLayout>} />
-        <Route path="/quiz-attempt/:id" element={<ModernLayout><QuizAttempt/></ModernLayout>} />
-        <Route path="/edit-quiz/:id" element={<ModernLayout><EditQuiz /></ModernLayout>} />
-        <Route path="/charts" element={<ModernLayout><Charts /></ModernLayout>} />
-
-        
-      </Routes>
+            <Route path="/quiz-form" element={<ModernLayout><QuizForm /></ModernLayout>} />
+            <Route path="/quiz-results" element={<ModernLayout><QuizResults /></ModernLayout>} />
+            <Route path="/question-bank" element={<ModernLayout><QuestionBank /></ModernLayout>} />
+            <Route path="/view-quizzes" element={<ModernLayout><ViewQuizzes /></ModernLayout>} />
+            <Route path="/quiz-attempt/:id" element={<ModernLayout><QuizAttempt/></ModernLayout>} />
+            <Route path="/edit-quiz/:id" element={<ModernLayout><EditQuiz /></ModernLayout>} />
+            <Route path="/charts" element={<ModernLayout><Charts /></ModernLayout>} />
+          </Routes>
+        </motion.div>
+      </AnimatePresence>
 
       {/* Global Chat FAB */}
       {currentUser && !isChatOpen && (

@@ -389,8 +389,13 @@ export default function FindingGroups() {
           <p>Post your request, discover matching students, and reliably build the right project team using Smart Filters.</p>
         </motion.section>
 
-        {/* Filters */}
-        <motion.div className="glass-panel" initial="hidden" animate="visible" variants={fadeUp} transition={{ delay: 0.2 }}>
+        {/* FILTERS */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="glass-panel" 
+          style={{ padding: "2rem", marginBottom: "3rem" }}
+        >
           <h2 style={{ fontSize: "1.3rem", marginBottom: "1.2rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
             <Filter size={20} color="#a855f7" /> Filter Posters & Banners
           </h2>
