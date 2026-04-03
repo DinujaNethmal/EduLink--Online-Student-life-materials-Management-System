@@ -1,45 +1,27 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-const quizSchema = new mongoose.Schema({
-  title: {
-    type: String,
-    required: [true, 'Please add a quiz title']
-  },
-  module: {
-    type: String,
-    required: [true, 'Please add the module name']
-  },
-  description: String,
-  timeLimit: {
-    type: Number, // In minutes
-    required: true,
-    default: 30
-  },
-  questions: [{
-    questionText: {
-      type: String,
-      required: true
-    },
-    options: [{
-      type: String,
-      required: true
-    }],
-    correctAnswer: {
-      type: String,
-      required: true
-    },
-    points: {
-      type: Number,
-      default: 1
-    }
-  }],
-  createdBy: {
-    type: mongoose.Schema.ObjectId,
-    ref: 'User',
-    required: true
-  }
-}, {
-  timestamps: true
+const questionSchema = new mongoose.Schema({
+  type: { type: String, required: true }, // mcq / truefalse / shortanswer
+  text: { type: String, required: true },
+  options: { type: [String], default: [] }, // only for MCQ
+  correctAnswer: { type: String, required: true },
+  explanation: String,
+  topic: String,
+  difficulty: String,
+  subject:String,
+  marks: { type: Number, default: 1 },
 });
 
-module.exports = mongoose.model('Quiz', quizSchema);
+const quizSchema = new mongoose.Schema({
+  title: String,
+  year: String,
+  semester: String,
+  subject: String,
+  difficulty: String,
+  duration: Number,
+  totalMarks: Number,
+  questions: [questionSchema],
+});
+
+
+module.exports = mongoose.model("Quiz", quizSchema);
