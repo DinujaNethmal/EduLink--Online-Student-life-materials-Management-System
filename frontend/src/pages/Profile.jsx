@@ -257,6 +257,42 @@ export default function Profile() {
             </h3>
             
             <form className="modern-form" onSubmit={handleSubmit}>
+              <div className="field-group" style={{ marginBottom: "2rem" }}>
+                <label>Profile Picture</label>
+                <div style={{ display: "flex", alignItems: "center", gap: "1.5rem", marginTop: "0.5rem" }}>
+                  <div style={{ 
+                    width: "80px", height: "80px", borderRadius: "50%", 
+                    background: "rgba(255,255,255,0.05)", border: "2px solid rgba(255,255,255,0.1)",
+                    display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden"
+                  }}>
+                    {profilePhoto ? (
+                      <img src={profilePhoto} alt="Preview" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                    ) : (
+                      <Camera size={30} color="#94a3b8" />
+                    )}
+                  </div>
+                  <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+                    <div style={{ display: "flex", gap: "0.75rem" }}>
+                      <label className="btn-modern-secondary" style={{ cursor: "pointer", fontSize: "0.9rem" }}>
+                        <span>Change Photo</span>
+                        <input type="file" accept="image/*" onChange={handlePhotoChange} style={{ display: "none" }} />
+                      </label>
+                      {profilePhoto && (
+                        <button 
+                          type="button" 
+                          className="btn-modern-secondary" 
+                          style={{ fontSize: "0.9rem", color: "#f87171", borderColor: "rgba(248, 113, 113, 0.2)" }}
+                          onClick={() => setProfilePhoto("")}
+                        >
+                          Remove
+                        </button>
+                      )}
+                    </div>
+                    <p style={{ fontSize: "0.8rem", color: "#64748b", margin: 0 }}>Recommended: Square JPG or PNG, max 2MB</p>
+                  </div>
+                </div>
+              </div>
+
               <div className="field-group">
                 <label htmlFor="fullName">Full Name</label>
                 <input id="fullName" name="fullName" className="modern-input" value={profile.fullName} onChange={handleChange} />
