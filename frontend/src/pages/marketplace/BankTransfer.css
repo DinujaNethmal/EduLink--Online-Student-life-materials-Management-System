@@ -1,0 +1,139 @@
+/* Imports all shared payment styles */
+@import "./CreditCardPayment.css";
+
+/* ======================================================
+   Bank Info Box (store's account details)
+   ====================================================== */
+.bank-info-box {
+  background: #f0fdf4;
+  border: 1.5px solid #86efac;
+  border-radius: 14px;
+  padding: 20px 22px;
+  margin-bottom: 24px;
+}
+.bank-info-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: #166534;
+  margin: 0 0 14px;
+}
+.bank-info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid #d1fae5;
+  font-size: 0.875rem;
+}
+.bank-info-row:last-child { border-bottom: none; }
+.bank-info-row span  { color: #6b7280; }
+.bank-info-row strong { color: #111827; text-align: right; }
+.highlight-text {
+  color: #166534 !important;
+  font-family: monospace;
+  font-size: 1rem;
+}
+
+/* ── Section label inside form ── */
+.form-section-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: #9ca3af;
+  margin: 4px 0 0;
+}
+
+/* ── Read-only input ── */
+.input-readonly {
+  background: #f9fafb !important;
+  color: #6b7280 !important;
+  cursor: default;
+  font-family: monospace;
+}
+
+/* ── File Upload Zone ── */
+.file-upload-zone {
+  display: block;
+  cursor: pointer;
+  border: 2px dashed #d1d5db;
+  border-radius: 14px;
+  overflow: hidden;
+  transition: border-color 0.2s, background 0.2s;
+  background: #fafafa;
+}
+.file-upload-zone:hover {
+  border-color: #6366f1;
+  background: #f5f3ff;
+}
+.has-error .file-upload-zone {
+  border-color: #ef4444;
+}
+.file-upload-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 36px 20px;
+  color: #9ca3af;
+  text-align: center;
+}
+.file-upload-placeholder svg { color: #6366f1; }
+.file-upload-placeholder span { font-size: 0.875rem; color: #6b7280; }
+.file-upload-placeholder small { font-size: 0.75rem; color: #d1d5db; }
+
+/* ── Image preview after upload ── */
+.slip-img-wrapper {
+  position: relative;
+  overflow: hidden;
+}
+.slip-img-preview {
+  width: 100%;
+  max-height: 220px;
+  object-fit: cover;
+  display: block;
+  border-radius: 12px;
+}
+.slip-img-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.35);
+  color: #fff;
+  font-size: 0.875rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.slip-img-wrapper:hover .slip-img-overlay { opacity: 1; }
+
+/* ── PDF preview after upload ── */
+.slip-pdf-preview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 24px 20px;
+  color: #166534;
+  text-align: center;
+  font-size: 0.875rem;
+}
+.slip-pdf-preview small {
+  font-size: 0.75rem;
+  color: #9ca3af;
+}
+
+/* ── Hidden actual file input ── */
+.file-input-hidden { display: none; }
+
+/* Bank transfer confirm button — green variant */
+.payment-page .btn-submit {
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+}
+.payment-page .btn-submit:hover:not(:disabled) {
+  box-shadow: 0 8px 20px rgba(34, 197, 94, 0.35);
+}
