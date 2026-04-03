@@ -8,6 +8,11 @@ const userRoutes = require('./routes/userRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 const findingGroupsRoutes = require('./routes/findingGroupsRoutes');
 
+//quiz files
+const quizRoutes = require('./routes/quizRoutes');
+const questionRoutes = require('./routes/questionRoutes');
+const resultRoutes = require('./routes/resultRoutes');
+
 // Load env vars
 dotenv.config();
 
@@ -23,6 +28,11 @@ app.use(cors());
 app.use('/api/users', userRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/finding-groups', findingGroupsRoutes);
+
+//quiz routes
+app.use('/api/quiz', quizRoutes);
+app.use('/api/questions', questionRoutes);
+app.use('/api/result', resultRoutes);
 
 // Basic Default Route
 app.get('/', (req, res) => {

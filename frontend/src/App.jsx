@@ -9,6 +9,14 @@ import FindingGroups from "./pages/FindingGroups.jsx";
 import AdminLogin from "./pages/AdminLogin.jsx";
 import AdminDashboard from "./pages/AdminDashboard.jsx";
 
+import QuizForm from "./pages/QuizComponents/QuizForm.jsx";
+import QuizResults from "./pages/QuizComponents/QuizResults.jsx";
+import QuestionBank from "./pages/QuizComponents/QuestionBank.jsx"; 
+import ViewQuizzes from "./pages/QuizComponents/ViewQuizzes.jsx";
+import QuizAttempt from "./pages/QuizComponents/QuizAttempt.jsx";
+import EditQuiz from "./pages/QuizComponents/EditQuiz.jsx";
+import Charts from "./pages/QuizComponents/Charts.jsx";
+
 export default function App() {
   const [adminUser, setAdminUser] = useState(null);
   const navigate = useNavigate();
@@ -52,6 +60,16 @@ export default function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/finding-groups" element={<FindingGroups />} />
+
+        <Route path="/quiz-form" element={<QuizForm />} />
+        <Route path="/quiz-results" element={<QuizResults />} />
+        <Route path="/question-bank" element={<QuestionBank />} />
+        <Route path="/view-quizzes" element={<ViewQuizzes />} />
+        <Route path="/quiz-attempt/:id" element={<QuizAttempt/>} />
+        <Route path="/edit-quiz/:id" element={<EditQuiz />} />
+        <Route path="/charts" element={<Charts />} />
+
+        
       </Routes>
     </div>
   );
