@@ -1,0 +1,164 @@
+.confirm-order {
+  padding-top: 24px;
+  padding-bottom: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.confirm-order .back-btn {
+  align-self: flex-start;
+  margin-bottom: 20px;
+}
+
+.confirm-card {
+  background: var(--sliit-white);
+  border-radius: var(--radius-lg);
+  padding: 40px;
+  box-shadow: var(--shadow-md);
+  max-width: 520px;
+  width: 100%;
+}
+
+.confirm-card h1 {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--sliit-gray-900);
+  margin-bottom: 6px;
+}
+
+.confirm-subtitle {
+  color: var(--sliit-gray-500);
+  font-size: 14px;
+  margin-bottom: 24px;
+}
+
+/* ---- Items ---- */
+.confirm-items {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-bottom: 16px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid var(--sliit-gray-200);
+}
+
+.confirm-item-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.confirm-item-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.confirm-item-name {
+  font-size: 14px;
+  color: var(--sliit-gray-700);
+  font-weight: 500;
+}
+
+.confirm-item-qty {
+  font-size: 13px;
+  color: var(--sliit-gray-500);
+}
+
+.confirm-item-price {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--sliit-gray-900);
+}
+
+/* ---- Total ---- */
+.confirm-total-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+.confirm-total {
+  color: var(--sliit-blue);
+}
+
+.confirm-payment-notice {
+  font-size: 13px;
+  color: var(--sliit-gray-500);
+  text-align: center;
+  margin-bottom: 24px;
+  font-style: italic;
+}
+
+/* ---- Actions ---- */
+.confirm-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.confirm-actions .btn {
+  flex: 1;
+}
+
+/* ---- Payment Method Selection ---- */
+.payment-select-icon {
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.payment-methods {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.payment-method-btn {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  padding: 20px;
+  border: 2px solid var(--sliit-gray-200);
+  border-radius: var(--radius-lg);
+  background: var(--sliit-white);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+  color: var(--sliit-blue);
+}
+
+.payment-method-btn:hover {
+  border-color: var(--sliit-gold);
+  background: #fffbf0;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.payment-method-btn div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.payment-method-btn strong {
+  font-size: 15px;
+  color: var(--sliit-gray-900);
+}
+
+.payment-method-btn span {
+  font-size: 13px;
+  color: var(--sliit-gray-500);
+}
+
+@media (max-width: 768px) {
+  .confirm-card {
+    padding: 24px 20px;
+  }
+
+  .confirm-actions {
+    flex-direction: column;
+  }
+}

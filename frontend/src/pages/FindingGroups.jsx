@@ -1,10 +1,9 @@
 import React, { useMemo, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Users, Filter, PlusCircle, Search, Copy, CheckCircle } from "lucide-react";
+import { Users, Filter, PlusCircle, Search, Copy, CheckCircle, LogOut, MessageSquare } from "lucide-react";
+import { useAuth } from "../context/AuthContext";
 import "./ModernPages.css";
-import ChatSidebar from "../components/ChatSidebar";
-import { MessageSquare } from "lucide-react";
 
 const memberPostsSeed = [
   {
@@ -104,26 +103,12 @@ const newBannerDefault = {
 };
 
 export default function FindingGroups() {
-  const [currentUser, setCurrentUser] = useState(null);
-
-  useEffect(() => {
-    const userStr = localStorage.getItem('currentUser');
-    if (userStr) {
-      try { 
-        const parsed = JSON.parse(userStr);
-        setCurrentUser(parsed); 
-        setMemberForm(prev => ({ ...prev, personalEmail: parsed.email }));
-        setBannerForm(prev => ({ ...prev, personalEmail: parsed.email }));
-      } catch (e) {}
-    }
-  }, []);
+  const { user: currentUser } = useAuth();
 
   const [activeTab, setActiveTab] = useState("member");
   const [filters, setFilters] = useState(filterDefaults);
   const [memberPosts, setMemberPosts] = useState(memberPostsSeed);
   const [groupBanners, setGroupBanners] = useState(groupBannersSeed);
-  const [isChatOpen, setIsChatOpen] = useState(false);
-  const [chatReceiver, setChatReceiver] = useState("");
 
   const fetchMemberPosts = async () => {
     try {
@@ -153,6 +138,7 @@ export default function FindingGroups() {
     fetchMemberPosts();
     fetchGroupBanners();
   }, []);
+
   const [memberForm, setMemberForm] = useState(newMemberDefault);
   const [bannerForm, setBannerForm] = useState(newBannerDefault);
   const [copyMessage, setCopyMessage] = useState("");
@@ -215,7 +201,7 @@ export default function FindingGroups() {
         const data = await res.json();
         if (data.success) {
           setMemberPosts(prev => prev.map(p => p._id === data.data._id ? data.data : p));
-          setMemberForm({ ...newMemberDefault, personalEmail: currentUser ? currentUser.email : '' });
+          setMemberForm(newMemberDefault);
         }
       } else {
         const res = await fetch('http://localhost:5000/api/finding-groups/members', {
@@ -226,7 +212,7 @@ export default function FindingGroups() {
         const data = await res.json();
         if (data.success) {
           setMemberPosts((prev) => [data.data, ...prev]);
-          setMemberForm({ ...newMemberDefault, personalEmail: currentUser ? currentUser.email : '' });
+          setMemberForm(newMemberDefault);
         }
       }
     } catch (err) {
@@ -250,7 +236,7 @@ export default function FindingGroups() {
         const data = await res.json();
         if (data.success) {
           setGroupBanners(prev => prev.map(p => p._id === data.data._id ? data.data : p));
-          setBannerForm({ ...newBannerDefault, personalEmail: currentUser ? currentUser.email : '' });
+          setBannerForm(newBannerDefault);
         }
       } else {
         const res = await fetch('http://localhost:5000/api/finding-groups/banners', {
@@ -261,7 +247,7 @@ export default function FindingGroups() {
         const data = await res.json();
         if (data.success) {
           setGroupBanners((prev) => [data.data, ...prev]);
-          setBannerForm({ ...newBannerDefault, personalEmail: currentUser ? currentUser.email : '' });
+          setBannerForm(newBannerDefault);
         }
       }
     } catch (err) {
@@ -300,8 +286,8 @@ export default function FindingGroups() {
   const copyToClipboard = async (value, label) => {
     try {
       await navigator.clipboard.writeText(value);
-      setCopyMessage(`${label} copied`);
-      window.setTimeout(() => setCopyMessage(""), 1400);
+      setCopyMessage(`${label} copied successfully!`);
+      window.setTimeout(() => setCopyMessage(""), 2000);
     } catch {
       setCopyMessage("Copy failed");
       window.setTimeout(() => setCopyMessage(""), 1400);
@@ -327,7 +313,6 @@ export default function FindingGroups() {
         </Link>
         <div className="landing-links">
           <Link to="/">Home</Link>
-          <Link to="/profile">Profile</Link>
           <Link to="/finding-groups">Finding Groups</Link>
           <Link to="/view-quizzes">Quizzes</Link>
           {currentUser ? (
@@ -348,11 +333,23 @@ export default function FindingGroups() {
                 )}
               </Link>
               <button 
-                onClick={() => { localStorage.clear(); window.location.reload(); }} 
+                onClick={() => { localStorage.removeItem('currentUser'); window.location.reload(); }} 
                 className="btn-landing-secondary" 
-                style={{ padding: "0.4rem 0.8rem", fontSize: "0.85rem", border: "1px solid rgba(255,255,255,0.1)", background: "rgba(0,0,0,0.2)" }}
+                style={{ 
+                  padding: "0.5rem 1rem", 
+                  fontSize: "0.85rem", 
+                  border: "1px solid rgba(239, 68, 68, 0.2)", 
+                  background: "rgba(239, 68, 68, 0.1)",
+                  color: "#f87171",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.5rem",
+                  transition: "all 0.3s ease"
+                }}
+                onMouseOver={(e) => { e.currentTarget.style.background = "rgba(239, 68, 68, 0.2)"; }}
+                onMouseOut={(e) => { e.currentTarget.style.background = "rgba(239, 68, 68, 0.1)"; }}
               >
-                Logout
+                <LogOut size={16} /> Logout
               </button>
             </div>
           ) : (
@@ -364,19 +361,30 @@ export default function FindingGroups() {
         </div>
       </motion.nav>
 
-      {/* Copy notification popup */}
+      {/* Premium Copy Notification */}
       <AnimatePresence>
         {copyMessage && (
           <motion.div
-            initial={{ opacity: 0, y: -20, x: "-50%" }}
-            animate={{ opacity: 1, y: 20, x: "-50%" }}
-            exit={{ opacity: 0, y: -20, x: "-50%" }}
+            initial={{ opacity: 0, y: -50, x: "-50%", scale: 0.9 }}
+            animate={{ opacity: 1, y: 100, x: "-50%", scale: 1 }}
+            exit={{ opacity: 0, y: -20, x: "-50%", scale: 0.95 }}
+            transition={{ type: "spring", stiffness: 300, damping: 25 }}
             style={{ 
-              position: "fixed", top: "80px", left: "50%", zIndex: 9999, 
-              background: "#4ade80", color: "#166534", padding: "0.75rem 1.5rem", borderRadius: "99px", fontWeight: "bold", boxShadow: "0 10px 25px rgba(0,0,0,0.3)", display: "flex", gap: "0.5rem", alignItems: "center" 
+              position: "fixed", top: 0, left: "50%", zIndex: 10000, 
+              background: "rgba(16, 185, 129, 0.15)",
+              backdropFilter: "blur(12px)",
+              webkitBackdropFilter: "blur(12px)",
+              border: "1px solid rgba(16, 185, 129, 0.3)",
+              color: "#4ade80", 
+              padding: "1rem 2rem", 
+              borderRadius: "20px", 
+              fontWeight: "700", 
+              boxShadow: "0 20px 40px rgba(0,0,0,0.3), 0 0 20px rgba(16, 185, 129, 0.2)",
+              display: "flex", gap: "0.75rem", alignItems: "center",
+              fontSize: "1rem"
             }}
           >
-            <CheckCircle size={18} /> {copyMessage}
+            <CheckCircle size={20} /> {copyMessage}
           </motion.div>
         )}
       </AnimatePresence>
@@ -385,37 +393,64 @@ export default function FindingGroups() {
         <motion.section 
           className="groups-hero-modern"
           initial="hidden" animate="visible" variants={fadeUp}
+          style={{ textAlign: "center", marginBottom: "4rem" }}
         >
-          <h1><Users size={48} style={{ display: "inline", verticalAlign: "bottom", marginRight: "1rem", color: "#f97316" }}/>Finding Groups</h1>
-          <p>Post your request, discover matching students, and reliably build the right project team using Smart Filters.</p>
+          <motion.div
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ type: "spring", stiffness: 100 }}
+            style={{ 
+              width: "80px", height: "80px", borderRadius: "24px", 
+              background: "rgba(139, 92, 246, 0.1)", border: "1px solid rgba(139, 92, 246, 0.2)",
+              display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 1.5rem"
+            }}
+          >
+            <Users size={40} color="#8b5cf6" />
+          </motion.div>
+          <h1 style={{ 
+            fontSize: "3.5rem", fontWeight: "900", letterSpacing: "-0.02em",
+            background: "linear-gradient(to right, #fff, #94a3b8)",
+            WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
+            marginBottom: "1rem"
+          }}>
+            Finding Groups
+          </h1>
+          <p style={{ fontSize: "1.2rem", color: "#94a3b8", maxWidth: "600px", margin: "0 auto" }}>
+            Discover matching students and reliably build the right project team using <span style={{ color: "#8b5cf6", fontWeight: "600" }}>Smart Filters</span>.
+          </p>
         </motion.section>
 
-        {/* Filters */}
-        <motion.div className="glass-panel" initial="hidden" animate="visible" variants={fadeUp} transition={{ delay: 0.2 }}>
-          <h2 style={{ fontSize: "1.3rem", marginBottom: "1.2rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
-            <Filter size={20} color="#a855f7" /> Filter Posters & Banners
-          </h2>
-          <div className="form-grid-2 form-grid-3">
-            <div className="modern-form">
-              <label>Campus</label>
+        {/* FILTERS */}
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.98 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="glass-panel" 
+          style={{ padding: "2.5rem", marginBottom: "4rem" }}
+        >
+          <h3 style={{ fontSize: "1.4rem", marginBottom: "2rem", display: "flex", alignItems: "center", gap: "0.75rem", fontWeight: "800" }}>
+            <Filter size={24} color="#8b5cf6" /> Filter Posters & Banners
+          </h3>
+          <div className="form-grid-4">
+            <div className="field-group">
+              <label style={{ color: "#94a3b8", fontWeight: "600", fontSize: "0.85rem", textTransform: "uppercase", letterSpacing: "0.05em" }}>Campus</label>
               <select name="campus" value={filters.campus} onChange={handleFilterChange} className="modern-select">
                 <option>All</option><option>Malabe</option><option>Metro</option><option>Kandy</option><option>Matara</option>
               </select>
             </div>
-            <div className="modern-form">
-              <label>Subject</label>
+            <div className="field-group">
+              <label style={{ color: "#94a3b8", fontWeight: "600", fontSize: "0.85rem", textTransform: "uppercase", letterSpacing: "0.05em" }}>Subject</label>
               <select name="subject" value={filters.subject} onChange={handleFilterChange} className="modern-select">
                 <option>All</option><option>SE</option><option>DBMS</option><option>DSA</option><option>OOP</option>
               </select>
             </div>
-            <div className="modern-form">
-              <label>Group Type</label>
+            <div className="field-group">
+              <label style={{ color: "#94a3b8", fontWeight: "600", fontSize: "0.85rem", textTransform: "uppercase", letterSpacing: "0.05em" }}>Group Type</label>
               <select name="groupType" value={filters.groupType} onChange={handleFilterChange} className="modern-select">
                 <option>All</option><option>Research</option><option>Development</option><option>Assignment</option>
               </select>
             </div>
-            <div className="modern-form">
-              <label>Gender Preference</label>
+            <div className="field-group">
+              <label style={{ color: "#94a3b8", fontWeight: "600", fontSize: "0.85rem", textTransform: "uppercase", letterSpacing: "0.05em" }}>Gender Preference</label>
               <select name="gender" value={filters.gender} onChange={handleFilterChange} className="modern-select">
                 <option>All</option><option>Any</option><option>Male</option><option>Female</option>
               </select>
@@ -451,7 +486,7 @@ export default function FindingGroups() {
                     </div>
                     <div className="field-group">
                       <label>Personal Gmail</label>
-                      <input name="personalEmail" type="email" className="modern-input" value={memberForm.personalEmail} onChange={handleMemberFormChange} placeholder="user@gmail.com" disabled={!!currentUser} />
+                      <input name="personalEmail" type="email" className="modern-input" value={memberForm.personalEmail} onChange={handleMemberFormChange} placeholder="user@gmail.com" />
                     </div>
                     <div className="field-group">
                       <label>Contact Number</label>
@@ -523,7 +558,7 @@ export default function FindingGroups() {
                 ) : (
                   <div className="posters-grid">
                     {filteredMemberPosts.map(post => (
-                      <div key={post._id || post.id} className="poster-card">
+                      <div key={post.id} className="poster-card">
                         <div className="poster-header">
                           <h3>{post.name}</h3>
                           <span className="poster-badge">{post.campus}</span>
@@ -538,20 +573,20 @@ export default function FindingGroups() {
                         <p style={{ color: "#cbd5e1", fontSize: "0.9rem", marginBottom: "1.5rem" }}>{post.details}</p>
                         <div className="poster-actions">
                           <button className="action-btn" onClick={() => copyToClipboard(post.personalEmail, "Email")}>
-                            <Copy size={14}/> {post.personalEmail}
+                            <Copy size={14}/> Copy Email
                           </button>
                           <button className="action-btn" onClick={() => copyToClipboard(post.contactNumber, "Number")}>
-                            <Copy size={14}/> {post.contactNumber}
+                            <Copy size={14}/> Copy Phone
                           </button>
-                          <button className="action-btn" style={{ borderColor: "#10b981", color: "#10b981" }} onClick={() => { setChatReceiver(post.personalEmail); setIsChatOpen(true); }}>
-                            <MessageSquare size={14}/> Chat
+                          <button className="action-btn chat" onClick={() => { window.dispatchEvent(new CustomEvent('openChat', { detail: post.personalEmail })); }}>
+                            <MessageSquare size={14}/> Chat Now
                           </button>
                           {currentUser && currentUser.email === post.personalEmail && (
                             <>
-                              <button className="action-btn" style={{ borderColor: "#38bdf8", color: "#38bdf8" }} onClick={() => handleEditMemberPost(post)}>
-                                Edit
+                              <button className="action-btn edit" onClick={() => handleEditMemberPost(post)}>
+                                Edit Poster
                               </button>
-                              <button className="action-btn" style={{ borderColor: "#ef4444", color: "#ef4444" }} onClick={() => handleDeleteMemberPost(post._id || post.id)}>
+                              <button className="action-btn delete" onClick={() => handleDeleteMemberPost(post._id || post.id)}>
                                 Delete
                               </button>
                             </>
@@ -583,8 +618,8 @@ export default function FindingGroups() {
                       <input name="leaderName" className="modern-input" value={bannerForm.leaderName} onChange={handleBannerFormChange} placeholder="Lahiru" />
                     </div>
                     <div className="field-group">
-                      <label>Group Email (Leader)</label>
-                      <input name="personalEmail" type="email" className="modern-input" value={bannerForm.personalEmail} onChange={handleBannerFormChange} placeholder="leader@gmail.com" disabled={!!currentUser} />
+                      <label>Group Email</label>
+                      <input name="personalEmail" type="email" className="modern-input" value={bannerForm.personalEmail} onChange={handleBannerFormChange} placeholder="leader@gmail.com" />
                     </div>
                   </div>
 
@@ -652,7 +687,7 @@ export default function FindingGroups() {
                 ) : (
                   <div className="posters-grid">
                     {filteredGroupBanners.map(banner => (
-                      <div key={banner._id || banner.id} className="poster-card" style={{ borderColor: 'rgba(249,115,22,0.2)' }}>
+                      <div key={banner.id} className="poster-card" style={{ borderColor: 'rgba(249,115,22,0.2)' }}>
                         <div className="poster-header">
                           <h3 style={{ color: "#f97316" }}>{banner.groupName}</h3>
                           <span className="poster-badge" style={{ background: "rgba(249,115,22,0.15)", color: "#fdba74" }}>{banner.campus}</span>
@@ -662,27 +697,27 @@ export default function FindingGroups() {
                           <span className="poster-tag">{banner.subject}</span>
                           <span className="poster-tag">{banner.subgroup}</span>
                           <span className="poster-tag">Require: {banner.wantedGender}</span>
-                          {banner.minGpa && <span className="poster-tag" style={{ border: "1px solid #f97316", color: "#fdba74" }}>Min GPA {banner.minGpa}</span>}
+                          {banner.minGpa && <span className="poster-tag gpa-tag" style={{ border: "1px solid #f97316", color: "#fdba74" }}>Min GPA {banner.minGpa}</span>}
                         </div>
                         <p style={{ color: "#cbd5e1", fontSize: "0.9rem", marginBottom: "1.5rem" }}>
                           Leader: <strong>{banner.leaderName}</strong> | {banner.details}
                         </p>
                         <div className="poster-actions">
                           <button className="action-btn" onClick={() => copyToClipboard(banner.personalEmail, "Email")}>
-                            <Copy size={14}/> {banner.personalEmail}
+                            <Copy size={14}/> Copy Email
                           </button>
                           <button className="action-btn" onClick={() => copyToClipboard(banner.contactNumber, "Number")}>
-                            <Copy size={14}/> {banner.contactNumber}
+                            <Copy size={14}/> Copy Phone
                           </button>
-                          <button className="action-btn" style={{ borderColor: "#10b981", color: "#10b981" }} onClick={() => { setChatReceiver(banner.personalEmail); setIsChatOpen(true); }}>
-                            <MessageSquare size={14}/> Chat
+                          <button className="action-btn chat" onClick={() => { window.dispatchEvent(new CustomEvent('openChat', { detail: banner.personalEmail })); }}>
+                            <MessageSquare size={14}/> Chat Group
                           </button>
                           {currentUser && currentUser.email === banner.personalEmail && (
                             <>
-                              <button className="action-btn" style={{ borderColor: "#38bdf8", color: "#38bdf8" }} onClick={() => handleEditGroupBanner(banner)}>
-                                Edit
+                              <button className="action-btn edit" onClick={() => handleEditGroupBanner(banner)}>
+                                Edit Banner
                               </button>
-                              <button className="action-btn" style={{ borderColor: "#ef4444", color: "#ef4444" }} onClick={() => handleDeleteGroupBanner(banner._id || banner.id)}>
+                              <button className="action-btn delete" onClick={() => handleDeleteGroupBanner(banner._id || banner.id)}>
                                 Delete
                               </button>
                             </>
@@ -702,16 +737,6 @@ export default function FindingGroups() {
       <div style={{ textAlign: "center", paddingTop: "2rem", borderTop: "1px solid rgba(255,255,255,0.05)", marginTop: "3rem" }}>
          <p style={{ color: "#64748b", fontSize: "0.95rem" }}>© {new Date().getFullYear()} EduLink. Designed for university projects.</p>
       </div>
-
-      <AnimatePresence>
-        {isChatOpen && (
-          <ChatSidebar 
-            currentUser={currentUser} 
-            receiverEmail={chatReceiver} 
-            onClose={() => setIsChatOpen(false)} 
-          />
-        )}
-      </AnimatePresence>
     </div>
   );
 }

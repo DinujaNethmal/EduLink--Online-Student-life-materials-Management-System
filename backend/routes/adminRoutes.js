@@ -1,27 +1,44 @@
-const express = require('express');
+const express = require("express");
+const router = express.Router();
+const { protect, adminOnly } = require("../middleware/auth");
 const {
+  // Tarini's admin CRUD
+  getStats,
+  getUsers,
+  deleteUser,
+  updateUserRole,
+  getAllProducts,
+  adminDeleteProduct,
+  // Dinuja's admin analytics
   adminLogin,
+  getDashboardSummary,
   getMarketplaceAnalytics,
   getQuizAnalytics,
   getStudentProgress,
   getPendingProducts,
   approveProduct,
-  getDashboardSummary
-} = require('../controllers/adminController');
+} = require("../controllers/adminController");
 
-const router = express.Router();
+// Dinuja's admin login (no auth required)
+router.post("/login", adminLogin);
 
-// Public route
-router.post('/login', adminLogin);
+// All remaining admin routes require authentication + admin role
+router.use(protect, adminOnly);
 
-// Admin analytics routes
-router.get('/dashboard-summary', getDashboardSummary);
-router.get('/analytics/marketplace', getMarketplaceAnalytics);
-router.get('/analytics/quizzes', getQuizAnalytics);
-router.get('/student-progress', getStudentProgress);
+// Tarini's admin CRUD
+router.get("/stats", getStats);
+router.get("/users", getUsers);
+router.delete("/users/:id", deleteUser);
+router.put("/users/:id/role", updateUserRole);
+router.get("/products", getAllProducts);
+router.delete("/products/:id", adminDeleteProduct);
 
-// Product management
-router.get('/products/pending', getPendingProducts);
-router.put('/products/:id/approve', approveProduct);
+// Dinuja's admin analytics
+router.get("/dashboard-summary", getDashboardSummary);
+router.get("/analytics/marketplace", getMarketplaceAnalytics);
+router.get("/analytics/quizzes", getQuizAnalytics);
+router.get("/student-progress", getStudentProgress);
+router.get("/products/pending", getPendingProducts);
+router.put("/products/:id/approve", approveProduct);
 
 module.exports = router;

@@ -1,1 +1,293 @@
 @import "tailwindcss";
+
+html {
+  scroll-behavior: smooth;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(11, 11, 16, 1);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 99px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #0b0b10;
+  color: #ffffff;
+  min-height: 100vh;
+}
+
+.page-transition-wrapper {
+  perspective: 1000px;
+}
+
+/* --- THEME TOKENS --- */
+:root {
+  --bg-dark: #030014;
+  --glass-bg: rgba(255, 255, 255, 0.02);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-glow: rgba(139, 92, 246, 0.1);
+  --primary-gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%);
+  --secondary-gradient: linear-gradient(135deg, #0ea5e9 0%, #22d3ee 100%);
+  --accent-purple: #8b5cf6;
+  --accent-teal: #2dd4bf;
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --card-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+
+  /* ========== SLIIT Brand Colors (Integrated from feature/Tarini2) ========== */
+  --sliit-blue: #0C2340;
+  --sliit-blue-light: #1a3a5c;
+  --sliit-blue-lighter: #2a5a8c;
+  --sliit-gold: #F2A900;
+  --sliit-gold-light: #f5bc3a;
+  --sliit-white: #ffffff;
+  --sliit-gray-50: #f8f9fa;
+  --sliit-gray-100: #e9ecef;
+  --sliit-gray-200: #dee2e6;
+  --sliit-gray-300: #ced4da;
+  --sliit-gray-500: #6c757d;
+  --sliit-gray-700: #495057;
+  --sliit-gray-900: #212529;
+  --sliit-red: #dc3545;
+  --sliit-green: #28a745;
+  
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+  --radius: 8px;
+  --radius-lg: 12px;
+}
+
+/* --- GLOBAL LAYOUT --- */
+.modern-layout {
+  min-height: 100vh;
+  background-color: var(--bg-dark);
+  background-image: 
+    radial-gradient(circle at 20% 20%, rgba(99, 102, 241, 0.15), transparent 40%),
+    radial-gradient(circle at 80% 80%, rgba(236, 72, 153, 0.1), transparent 40%),
+    radial-gradient(circle at 50% 50%, rgba(139, 92, 246, 0.05), transparent 60%);
+  padding-top: 100px;
+  padding-bottom: 3rem;
+  font-family: 'Outfit', 'Inter', system-ui, sans-serif;
+  overflow-x: hidden;
+}
+
+.modern-layout::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url("https://grainy-gradients.vercel.app/noise.svg");
+  opacity: 0.2;
+  pointer-events: none;
+  z-index: 100;
+}
+
+/* --- GLASS PANELS --- */
+.glass-panel {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 28px;
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  box-shadow: var(--card-shadow);
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.glass-panel::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+  transition: 0.5s;
+}
+
+.glass-panel:hover::after {
+  left: 100%;
+}
+
+.glass-panel:hover {
+  transform: translateY(-5px) scale(1.01);
+  border-color: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.04);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 20px var(--glass-glow);
+}
+
+/* --- MODERN INPUTS --- */
+.modern-input, 
+.modern-select, 
+.modern-textarea {
+  width: 100%;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-main);
+  border-radius: 12px;
+  padding: 0.85rem 1.25rem;
+  font-size: 0.95rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.modern-input:focus, 
+.modern-select:focus,
+.modern-textarea:focus {
+  outline: none;
+  border-color: var(--accent-purple);
+  background: rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 0 4px rgba(168, 85, 247, 0.1);
+}
+
+/* --- MODERN BUTTONS --- */
+.btn-modern-primary {
+  background: var(--primary-gradient);
+  background-size: 200% auto;
+  color: white !important;
+  font-weight: 700;
+  padding: 0.9rem 2rem;
+  border-radius: 16px;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  box-shadow: 0 10px 20px -5px rgba(99, 102, 241, 0.4);
+  letter-spacing: 0.02em;
+}
+
+.btn-modern-primary:hover {
+  background-position: right center;
+  transform: translateY(-3px);
+  box-shadow: 0 20px 30px -10px rgba(168, 85, 247, 0.5);
+}
+
+.btn-modern-secondary {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-main);
+  font-weight: 600;
+  padding: 0.9rem 2rem;
+  border-radius: 16px;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.btn-modern-secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+/* ========== Legacy / Brand Utility Classes (feature/Tarini2) ========== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: var(--radius);
+  font-weight: 600;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.btn-primary {
+  background-color: var(--sliit-blue);
+  color: var(--sliit-white);
+}
+.btn-primary:hover {
+  background-color: var(--sliit-blue-light);
+}
+
+.btn-gold {
+  background-color: var(--sliit-gold);
+  color: var(--sliit-blue);
+}
+.btn-gold:hover {
+  background-color: var(--sliit-gold-light);
+}
+
+.btn-outline {
+  background-color: transparent;
+  color: var(--sliit-blue);
+  border: 2px solid var(--sliit-blue);
+}
+.btn-outline:hover {
+  background-color: var(--sliit-blue);
+  color: var(--sliit-white);
+}
+
+.btn-danger {
+  background-color: var(--sliit-red);
+  color: var(--sliit-white);
+}
+.btn-danger:hover {
+  background-color: #c82333;
+}
+
+/* --- TABLES --- */
+.modern-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 8px;
+}
+
+.modern-table th {
+  padding: 1.25rem 1.5rem;
+  text-align: left;
+  color: var(--text-muted);
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+}
+
+.modern-table td {
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.02);
+  color: var(--text-main);
+  font-size: 0.95rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.modern-table td:first-child {
+  border-left: 1px solid rgba(255, 255, 255, 0.05);
+  border-top-left-radius: 16px;
+  border-bottom-left-radius: 16px;
+}
+
+.modern-table td:last-child {
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
+  border-top-right-radius: 16px;
+  border-bottom-right-radius: 16px;
+}
+
+.modern-table tr:hover td {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.1);
+}

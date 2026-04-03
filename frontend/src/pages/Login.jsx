@@ -1,5 +1,9 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+import { loginUser } from "../services/api";
+import toast from "react-hot-toast";
+import "./styles.css";
 
 const initialForm = {
   email: "",
@@ -11,6 +15,7 @@ export default function Login() {
   const [errors, setErrors] = useState({});
   const [submitting, setSubmitting] = useState(false);
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -42,40 +47,20 @@ export default function Login() {
     setSubmitting(true);
 
     try {
-      // UNIFIED LOGIN: Intercept Admin Login dynamically in the main login page
-      if (form.email === 'admin@gmail.com' && form.password === 'admin12345') {
-        localStorage.setItem('adminUser', JSON.stringify({
-          id: 'mock_admin_123',
-          name: 'Demo Admin',
-          email: 'admin@gmail.com',
-          role: 'admin'
-        }));
-        
-        // Force full reload so App.jsx perfectly detects localStorage state immediately
-        window.location.href = "/admin";
-        return;
-      }
+      const res = await loginUser({ email: form.email, password: form.password });
+      const { token, user } = res.data;
 
-      // Normal Student Login process (redirects to standard user Dashboard/Home)
-      const res = await fetch('http://localhost:5000/api/users/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: form.email, password: form.password })
-      });
-      const data = await res.json();
-      
-      if (!data.success) {
-        setErrors({ password: data.error || 'Invalid credentials' });
-        return;
+      login(user, token);
+      toast.success(`Welcome back, ${user.name}!`);
+
+      if (user.role === "admin") {
+        navigate("/admin");
+      } else {
+        navigate("/");
       }
-      
-      localStorage.setItem('currentUser', JSON.stringify({
-        name: data.data.name,
-        email: data.data.email,
-        profilePhoto: data.data.profilePhoto
-      }));
-      
-      window.location.href = "/";
+    } catch (err) {
+      const msg = err.response?.data?.message || "Login failed. Please check your credentials.";
+      setErrors({ email: msg });
     } finally {
       setSubmitting(false);
     }

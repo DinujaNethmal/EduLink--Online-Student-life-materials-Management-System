@@ -4,7 +4,7 @@ import "../pages/ModernPages.css";
 
 export default function ModernLayout({ children }) {
   return (
-    <div className="modern-page-container">
+    <div className="modern-layout">
       <SharedNav />
       <div className="modern-content-wrapper">
         {children}
