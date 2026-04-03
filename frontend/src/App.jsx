@@ -16,6 +16,7 @@ import ViewQuizzes from "./pages/QuizComponents/ViewQuizzes.jsx";
 import QuizAttempt from "./pages/QuizComponents/QuizAttempt.jsx";
 import EditQuiz from "./pages/QuizComponents/EditQuiz.jsx";
 import Charts from "./pages/QuizComponents/Charts.jsx";
+import ModernLayout from "./components/ModernLayout.jsx";
 
 export default function App() {
   const [adminUser, setAdminUser] = useState(null);
@@ -61,13 +62,13 @@ export default function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/finding-groups" element={<FindingGroups />} />
 
-        <Route path="/quiz-form" element={<QuizForm />} />
-        <Route path="/quiz-results" element={<QuizResults />} />
-        <Route path="/question-bank" element={<QuestionBank />} />
-        <Route path="/view-quizzes" element={<ViewQuizzes />} />
-        <Route path="/quiz-attempt/:id" element={<QuizAttempt/>} />
-        <Route path="/edit-quiz/:id" element={<EditQuiz />} />
-        <Route path="/charts" element={<Charts />} />
+        <Route path="/quiz-form" element={<ModernLayout><QuizForm /></ModernLayout>} />
+        <Route path="/quiz-results" element={<ModernLayout><QuizResults /></ModernLayout>} />
+        <Route path="/question-bank" element={<ModernLayout><QuestionBank /></ModernLayout>} />
+        <Route path="/view-quizzes" element={<ModernLayout><ViewQuizzes /></ModernLayout>} />
+        <Route path="/quiz-attempt/:id" element={<ModernLayout><QuizAttempt/></ModernLayout>} />
+        <Route path="/edit-quiz/:id" element={<ModernLayout><EditQuiz /></ModernLayout>} />
+        <Route path="/charts" element={<ModernLayout><Charts /></ModernLayout>} />
 
         
       </Routes>

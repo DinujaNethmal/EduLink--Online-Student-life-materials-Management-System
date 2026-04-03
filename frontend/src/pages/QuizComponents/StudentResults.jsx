@@ -20,8 +20,8 @@ const StudentResults = () => {
   }, []);
 
   return (
-    <div className="p-6 bg-gray-100 min-h-screen">
-      <h2 className="text-2xl font-bold mb-6">Student Results</h2>
+    <div style={{ background: "rgba(255,255,255,0.05)" }}>
+      <h2 style={{ fontSize: "2rem", marginBottom: "1.5rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>Student Results</h2>
 
       {loading ? (
         <p className="text-gray-500">Loading results...</p>
@@ -40,7 +40,7 @@ const StudentResults = () => {
             >
               {/* LEFT SIDE */}
               <div>
-                <h3 className="text-lg font-semibold">
+                <h3 style={{ fontSize: "1.3rem", marginBottom: "1.2rem" }}>
                   {r.studentName || "Unknown Student"}
                 </h3>
 
@@ -61,7 +61,7 @@ const StudentResults = () => {
                   <p className="text-gray-400 text-xs">
                     QUIZZES ATTEMPTED
                   </p>
-                  <h3 className="text-xl font-bold">1</h3>
+                  <h3 style={{ fontSize: "1.5rem", marginBottom: "1rem" }}>1</h3>
                 </div>
 
                 {/* Average Score */}
@@ -69,7 +69,7 @@ const StudentResults = () => {
                   <p className="text-gray-400 text-xs">
                     AVERAGE SCORE
                   </p>
-                  <h3 className="text-xl font-bold">
+                  <h3 style={{ fontSize: "1.5rem", marginBottom: "1rem" }}>
                     {percentage}%
                   </h3>
                 </div>

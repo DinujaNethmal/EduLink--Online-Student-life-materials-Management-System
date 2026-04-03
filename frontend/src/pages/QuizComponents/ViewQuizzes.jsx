@@ -46,17 +46,16 @@ const ViewQuizzes = () => {
 
   return (
     <div className="p-6 max-w-6xl mx-auto">
-      <h2 className="text-2xl font-bold mb-4">Available Quizzes</h2>
+      <h2 style={{ fontSize: "2rem", marginBottom: "1.5rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>Available Quizzes</h2>
 
       {/* Filters */}
-      <div className="bg-white shadow rounded p-4 mb-6">
-        <h3 className="text-lg font-bold mb-4">Filters</h3>
+      <div className="glass-panel" style={{ padding: "1rem", marginBottom: "1.5rem" }}>
+        <h3 style={{ fontSize: "1.2rem", marginBottom: "1rem" }}>Filters</h3>
         <div className="grid grid-cols-4 gap-4">
           {/* Academic Year */}
           <div className="flex flex-col">
             <label className="font-semibold mb-1">Academic Year</label>
-            <select
-              className="border p-2 rounded"
+            <select  className="modern-select"
               value={filters.year}
               onChange={(e) => setFilters({ ...filters, year: e.target.value })}
             >
@@ -72,8 +71,7 @@ const ViewQuizzes = () => {
           {/* Semester */}
           <div className="flex flex-col">
             <label className="font-semibold mb-1">Semester</label>
-            <select
-              className="border p-2 rounded"
+            <select  className="modern-select"
               value={filters.semester}
               onChange={(e) => setFilters({ ...filters, semester: e.target.value })}
             >
@@ -86,8 +84,7 @@ const ViewQuizzes = () => {
           {/* Subject */}
           <div className="flex flex-col">
             <label className="font-semibold mb-1">Subject</label>
-            <select
-              className="border p-2 rounded"
+            <select  className="modern-select"
               value={filters.subject}
               onChange={(e) => setFilters({ ...filters, subject: e.target.value })}
             >
@@ -104,8 +101,7 @@ const ViewQuizzes = () => {
           {/* Difficulty */}
           <div className="flex flex-col">
             <label className="font-semibold mb-1">Difficulty</label>
-            <select
-              className="border p-2 rounded"
+            <select  className="modern-select"
               value={filters.difficulty}
               onChange={(e) => setFilters({ ...filters, difficulty: e.target.value })}
             >
@@ -119,30 +115,30 @@ const ViewQuizzes = () => {
       </div>
 
       {/* Quiz Table */}
-      <div className="bg-white shadow rounded p-4">
-        <h3 className="text-xl font-bold mb-4">Available Quizzes</h3>
-        <table className="w-full border-collapse border">
+      <div className="glass-panel" style={{ padding: "1rem", marginBottom: "1.5rem" }}>
+        <h3 style={{ fontSize: "1.5rem", marginBottom: "1rem" }}>Available Quizzes</h3>
+        <table className="modern-table">
           <thead>
-            <tr className="bg-gray-100">
-              <th className="border p-2 text-left">Title</th>
-              <th className="border p-2 text-left">Subject</th>
-              <th className="border p-2 text-left">Duration</th>
-              <th className="border p-2 text-left">Questions</th>
-              <th className="border p-2 text-left">Difficulty</th>
-              <th className="border p-2 text-left">Action</th>
+            <tr style={{ background: "rgba(255,255,255,0.05)" }}>
+              <th >Title</th>
+              <th >Subject</th>
+              <th >Duration</th>
+              <th >Questions</th>
+              <th >Difficulty</th>
+              <th >Action</th>
             </tr>
           </thead>
           <tbody>
             {filteredQuizzes.map((quiz) => (
               <tr key={quiz._id} className="hover:bg-gray-50">
-                <td className="border p-2">{quiz.title}</td>
-                <td className="border p-2">{quiz.subject}</td>
-                <td className="border p-2">{quiz.duration}</td>
-                <td className="border p-2">{quiz.questions.length}</td>
-                <td className="border p-2">{quiz.difficulty}</td>
-                <td className="border p-2">
+                <td>{quiz.title}</td>
+                <td>{quiz.subject}</td>
+                <td>{quiz.duration}</td>
+                <td>{quiz.questions.length}</td>
+                <td>{quiz.difficulty}</td>
+                <td>
                   <button
-                    className="bg-blue-600 text-white px-3 py-1 rounded"
+                    className="btn-modern-primary"
                     onClick={() => navigate(`/quiz-attempt/${quiz._id}`)}
                   >
                     View Quiz

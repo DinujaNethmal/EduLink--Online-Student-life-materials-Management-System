@@ -78,7 +78,7 @@ const QuizAnalytics = () => {
 
   return (
     <div>
-        <h2 className="text-2xl font-bold mb-6">Quiz Analytics</h2>
+        <h2 style={{ fontSize: "2rem", marginBottom: "1.5rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>Quiz Analytics</h2>
             <div className="chart-grid">
                 <div className="chart-card">
                     <h3>Quiz Status Distribution</h3>

@@ -325,6 +325,7 @@ export default function FindingGroups() {
           <Link to="/">Home</Link>
           <Link to="/profile">Profile</Link>
           <Link to="/finding-groups">Finding Groups</Link>
+          <Link to="/view-quizzes">Quizzes</Link>
           {currentUser ? (
             <div style={{ display: "flex", alignItems: "center", gap: "1.2rem", marginLeft: "0.5rem" }}>
               <span style={{ color: "#fff", fontWeight: "600", fontSize: "1rem" }}>Welcome, {currentUser.name}</span>

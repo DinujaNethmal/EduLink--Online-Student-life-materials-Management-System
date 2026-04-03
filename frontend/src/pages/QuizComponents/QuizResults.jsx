@@ -14,7 +14,7 @@ const QuizResults = () => {
         <p>❌ No result data available.</p>
         <button
           onClick={() => navigate("/")}
-          className="mt-4 bg-orange-500 text-white px-4 py-2 rounded"
+          className="btn-modern-primary" style={{ background: "linear-gradient(135deg, #f97316, #fb923c)" }}
         >
           Go Home
         </button>
@@ -39,8 +39,8 @@ const QuizResults = () => {
   return (
     <div className="p-6 max-w-5xl mx-auto space-y-8">
       {/* Quiz Summary */}
-      <div className="bg-white shadow rounded p-6 text-center">
-        <h2 className="text-2xl font-bold mb-4">Quiz Completed!</h2>
+      <div className="glass-panel" style={{ padding: "1.5rem", marginBottom: "1.5rem" }}>
+        <h2 style={{ fontSize: "2rem", marginBottom: "1.5rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>Quiz Completed!</h2>
         <h3 className="text-xl font-semibold mb-2">{location.state?.quizTitle || "Quiz"}</h3>
         <p
           className={`text-4xl font-bold mb-4 ${
@@ -58,7 +58,7 @@ const QuizResults = () => {
       </div>
 
       {/* Answer Review */}
-      <div className="bg-white shadow rounded p-6">
+      <div className="glass-panel" style={{ padding: "1.5rem", marginBottom: "1.5rem" }}>
         <h2 className="text-xl font-bold mb-4">Answer Review</h2>
         {questions.map((q, idx) => {
           const userAns = answers[idx] || "No Answer";

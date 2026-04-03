@@ -64,7 +64,7 @@ const QuestionBank = () => {
 
   return (
     <div className="p-6">
-      <h2 className="text-2xl font-bold mb-4">Question Bank</h2>
+      <h2 style={{ fontSize: "2rem", marginBottom: "1.5rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>Question Bank</h2>
 
       {/* Search + Filter */}
       <div className="flex gap-4 mb-4">
@@ -79,7 +79,7 @@ const QuestionBank = () => {
         <select
           value={difficultyFilter}
           onChange={(e) => setDifficultyFilter(e.target.value)}
-          className="border p-2 rounded"
+          className="modern-input"
         >
           <option value="All">All Difficulties</option>
           <option value="Easy">Easy</option>
@@ -90,7 +90,7 @@ const QuestionBank = () => {
         <select
           value={subjectsFilter}
           onChange={(e) => setSubjectsFilter(e.target.value)}
-          className="border p-2 rounded"
+          className="modern-input"
         >
           
           <option value="Select Subject">Select Subject</option>

@@ -91,7 +91,7 @@ const QuizAttempt = () => {
   console.log("Options 👉", q.options);
 
   return (
-    <div className="bg-gray-100 min-h-screen p-6">
+    <div style={{ background: "rgba(255,255,255,0.05)" }}>
       {/* HEADER */}
       <div className="bg-white rounded-xl shadow p-5 mb-6">
         <h2 className="text-xl font-bold">{quizTitle}</h2>
@@ -114,7 +114,7 @@ const QuizAttempt = () => {
             <span className="text-sm text-gray-500">{q.marks || 1} marks</span>
           </div>
 
-          <h3 className="text-lg font-semibold mb-5">{q.text}</h3>
+          <h3 style={{ fontSize: "1.3rem", marginBottom: "1.2rem" }}>{q.text}</h3>
 
           {/* OPTIONS */}
           <div className="space-y-3">
@@ -196,14 +196,14 @@ const QuizAttempt = () => {
             {currentQuestion < questions.length - 1 ? (
               <button
                 onClick={() => setCurrentQuestion((q) => q + 1)}
-                className="px-4 py-2 bg-blue-600 text-white rounded"
+                className="btn-modern-primary"
               >
                 Next →
               </button>
             ) : (
               <button
                 onClick={() => handleSubmit(false)}
-                className="px-4 py-2 bg-green-600 text-white rounded"
+                className="btn-modern-primary" style={{ background: "linear-gradient(135deg, #10b981, #34d399)" }}
               >
                 Submit
               </button>
@@ -213,12 +213,12 @@ const QuizAttempt = () => {
 
         {/* RIGHT PANEL */}
         <div className="w-72 flex flex-col gap-5">
-          <div className="bg-white shadow rounded-xl p-5 text-center">
+          <div className="glass-panel">
             <p>⏱ Time Remaining</p>
-            <h2 className="text-2xl font-bold">{formatTime(timeLeft)}</h2>
+            <h2 style={{ fontSize: "2rem", marginBottom: "1.5rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>{formatTime(timeLeft)}</h2>
           </div>
 
-          <div className="bg-white shadow rounded-xl p-5">
+          <div className="glass-panel">
             <h3 className="font-bold mb-3">Questions</h3>
             <div className="grid grid-cols-5 gap-2">
               {questions.map((_, idx) => (
@@ -239,7 +239,7 @@ const QuizAttempt = () => {
             </div>
             <button
               onClick={() => handleSubmit(false)}
-              className="mt-5 w-full bg-green-600 text-white py-2 rounded"
+              className="btn-modern-primary" style={{ background: "linear-gradient(135deg, #10b981, #34d399)" }}
             >
               Submit Quiz
             </button>

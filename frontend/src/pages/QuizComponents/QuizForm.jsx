@@ -165,18 +165,17 @@ const QuizForm = () => {
 };
   return (
     <div className="p-6 max-w-4xl mx-auto">
-      <h2 className="text-2xl font-bold mb-4">Create New Quiz</h2>
+      <h2 style={{ fontSize: "2rem", marginBottom: "1.5rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>Create New Quiz</h2>
 
       {/* Quiz Information */}
-      <div className="bg-white shadow rounded p-6 mb-6">
-        <h3 className="text-lg font-semibold mb-4">Quiz Information</h3>
+      <div className="glass-panel" style={{ padding: "1.5rem", marginBottom: "1.5rem" }}>
+        <h3 style={{ fontSize: "1.3rem", marginBottom: "1.2rem" }}>Quiz Information</h3>
         <div className="grid grid-cols-2 gap-6">
           
           {/* Year */}
           <div className="flex flex-col">
             <label className="font-semibold mb-1">Academic Year</label>
-            <select
-              className="border p-2 rounded"
+            <select  className="modern-select"
               value={quizInfo.year}
               onChange={(e) =>
                 setQuizInfo({ ...quizInfo, year: e.target.value })
@@ -194,8 +193,7 @@ const QuizForm = () => {
           {/* Semester */}
           <div className="flex flex-col">
             <label className="font-semibold mb-1">Semester</label>
-            <select
-              className="border p-2 rounded"
+            <select  className="modern-select"
               value={quizInfo.semester}
               onChange={(e) =>
                 setQuizInfo({ ...quizInfo, semester: e.target.value })
@@ -210,8 +208,7 @@ const QuizForm = () => {
           {/* Subject */}
           <div className="flex flex-col">
             <label className="font-semibold mb-1">Subject</label>
-            <select
-              className="border p-2 rounded"
+            <select  className="modern-select"
               value={quizInfo.subject}
               onChange={(e) =>
                 setQuizInfo({ ...quizInfo, subject: e.target.value })
@@ -230,8 +227,7 @@ const QuizForm = () => {
           {/* Title */}
           <div className="flex flex-col">
             <label className="font-semibold mb-1">Quiz Title</label>
-            <input
-              className="border p-2 rounded"
+            <input  className="modern-input"
               placeholder="Enter quiz title"
               value={quizInfo.title}
               onChange={(e) => {
@@ -247,8 +243,7 @@ const QuizForm = () => {
           {/* Difficulty */}
           <div className="flex flex-col">
             <label className="font-semibold mb-1">Difficulty</label>
-            <select
-              className="border p-2 rounded"
+            <select  className="modern-select"
               value={quizInfo.difficulty}
               onChange={(e) =>
                 setQuizInfo({ ...quizInfo, difficulty: e.target.value })
@@ -264,9 +259,8 @@ const QuizForm = () => {
           {/* Duration */}
           <div className="flex flex-col">
             <label className="font-semibold mb-1">Duration (minutes)</label>
-            <input
-              type="number"
-              className="border p-2 rounded"
+            <input type="number"
+               className="modern-input"
               value={quizInfo.duration}
               onChange={(e) =>
                 setQuizInfo({ ...quizInfo, duration: Number(e.target.value) })
@@ -277,10 +271,9 @@ const QuizForm = () => {
           {/* Total Marks */}
           <div className="flex flex-col">
             <label className="font-semibold mb-1">Total Marks</label>
-            <input
-              type="number"
+            <input type="number"
               min={0}
-              className="border p-2 rounded"
+               className="modern-input"
               value={quizInfo.totalMarks}
               onChange={(e) =>
                 setQuizInfo({ ...quizInfo, totalMarks: Number(e.target.value) })
@@ -292,14 +285,13 @@ const QuizForm = () => {
 
       {/* Questions */}
       {questions.map((q, idx) => (
-        <div key={idx} className="bg-white shadow rounded p-6 mb-6">
-          <h3 className="text-lg font-semibold mb-4">Question {idx + 1}</h3>
+        <div key={idx} className="glass-panel" style={{ padding: "1.5rem", marginBottom: "1.5rem" }}>
+          <h3 style={{ fontSize: "1.3rem", marginBottom: "1.2rem" }}>Question {idx + 1}</h3>
 
           {/* Question Type */}
           <div className="flex flex-col mb-2">
             <label className="font-semibold mb-1">Question Type</label>
-            <select
-              className="border p-2 rounded"
+            <select  className="modern-select"
               value={q.type}
               onChange={(e) => {
                 const updated = [...questions];
@@ -317,8 +309,7 @@ const QuizForm = () => {
           {/* Question Text */}
           <div className="flex flex-col mb-2">
             <label className="font-semibold mb-1">Question</label>
-            <input
-              className="border p-2 rounded"
+            <input  className="modern-input"
               placeholder="Enter your question..."
               value={q.text}
               onChange={(e) => {
@@ -347,7 +338,7 @@ const QuizForm = () => {
                     }}
                   />
                   <input
-                    className="border p-2 rounded flex-1"
+                    className="modern-input flex-1"
                     placeholder={`Option ${i + 1}`}
                     value={opt}
                     onChange={(e) => {
@@ -400,9 +391,8 @@ const QuizForm = () => {
           {q.type === "ShortAnswer" && (
             <div className="flex flex-col mb-2">
               <label className="font-semibold mb-1">Correct Answer</label>
-              <input
-                type="text"
-                className="border p-2 rounded"
+              <input type="text"
+                 className="modern-input"
                 placeholder="Enter correct answer..."
                 value={q.answer || ""}
                 onChange={(e) => {
@@ -417,8 +407,7 @@ const QuizForm = () => {
           {/* Explanation */}
           <div className="flex flex-col mb-2">
             <label className="font-semibold mb-1">Explanation</label>
-            <textarea
-              className="border p-2 rounded"
+            <textarea  className="modern-input"
               placeholder="Explain why this is correct..."
               value={q.explanation}
               onChange={(e) => {
@@ -432,10 +421,9 @@ const QuizForm = () => {
           {/* Marks */}
           <div className="flex flex-col mb-2">
             <label className="font-semibold mb-1">Marks</label>
-            <input
-              type="number"
+            <input type="number"
               min={0}
-              className="border p-2 rounded"
+               className="modern-input"
               value={q.marks}
               onChange={(e) => {
                 const updated = [...questions];
@@ -451,21 +439,21 @@ const QuizForm = () => {
       <div className="flex gap-4">
         <button
           onClick={addQuestion}
-          className="bg-orange-500 text-white px-4 py-2 rounded"
+          className="btn-modern-primary" style={{ background: "linear-gradient(135deg, #f97316, #fb923c)" }}
         >
           + Add Question
         </button>
 
         <button
           onClick={handlePublish}
-          className="bg-green-600 text-white px-4 py-2 rounded"
+          className="btn-modern-primary" style={{ background: "linear-gradient(135deg, #10b981, #34d399)" }}
         >
           Publish Quiz
         </button>
 
         <button
           onClick={handleAutoGenerate}
-          className="bg-blue-600 text-white px-4 py-2 rounded"
+          className="btn-modern-primary"
         >
           ⚡ Auto Generate Questions
         </button>
