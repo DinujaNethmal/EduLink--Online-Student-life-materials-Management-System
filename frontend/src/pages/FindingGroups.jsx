@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Users, Filter, PlusCircle, Search, Copy, CheckCircle } from "lucide-react";
 import "./ModernPages.css";
+import ChatSidebar from "../components/ChatSidebar";
+import { MessageSquare } from "lucide-react";
 
 const memberPostsSeed = [
   {
@@ -120,6 +122,8 @@ export default function FindingGroups() {
   const [filters, setFilters] = useState(filterDefaults);
   const [memberPosts, setMemberPosts] = useState(memberPostsSeed);
   const [groupBanners, setGroupBanners] = useState(groupBannersSeed);
+  const [isChatOpen, setIsChatOpen] = useState(false);
+  const [chatReceiver, setChatReceiver] = useState("");
 
   const fetchMemberPosts = async () => {
     try {
@@ -539,6 +543,9 @@ export default function FindingGroups() {
                           <button className="action-btn" onClick={() => copyToClipboard(post.contactNumber, "Number")}>
                             <Copy size={14}/> {post.contactNumber}
                           </button>
+                          <button className="action-btn" style={{ borderColor: "#10b981", color: "#10b981" }} onClick={() => { setChatReceiver(post.personalEmail); setIsChatOpen(true); }}>
+                            <MessageSquare size={14}/> Chat
+                          </button>
                           {currentUser && currentUser.email === post.personalEmail && (
                             <>
                               <button className="action-btn" style={{ borderColor: "#38bdf8", color: "#38bdf8" }} onClick={() => handleEditMemberPost(post)}>
@@ -667,6 +674,9 @@ export default function FindingGroups() {
                           <button className="action-btn" onClick={() => copyToClipboard(banner.contactNumber, "Number")}>
                             <Copy size={14}/> {banner.contactNumber}
                           </button>
+                          <button className="action-btn" style={{ borderColor: "#10b981", color: "#10b981" }} onClick={() => { setChatReceiver(banner.personalEmail); setIsChatOpen(true); }}>
+                            <MessageSquare size={14}/> Chat
+                          </button>
                           {currentUser && currentUser.email === banner.personalEmail && (
                             <>
                               <button className="action-btn" style={{ borderColor: "#38bdf8", color: "#38bdf8" }} onClick={() => handleEditGroupBanner(banner)}>
@@ -692,6 +702,16 @@ export default function FindingGroups() {
       <div style={{ textAlign: "center", paddingTop: "2rem", borderTop: "1px solid rgba(255,255,255,0.05)", marginTop: "3rem" }}>
          <p style={{ color: "#64748b", fontSize: "0.95rem" }}>© {new Date().getFullYear()} EduLink. Designed for university projects.</p>
       </div>
+
+      <AnimatePresence>
+        {isChatOpen && (
+          <ChatSidebar 
+            currentUser={currentUser} 
+            receiverEmail={chatReceiver} 
+            onClose={() => setIsChatOpen(false)} 
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 }
