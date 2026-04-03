@@ -39,34 +39,79 @@ body {
 
 /* --- THEME TOKENS --- */
 :root {
-  --bg-dark: #0b0b10;
-  --glass-bg: rgba(255, 255, 255, 0.03);
+  --bg-dark: #030014;
+  --glass-bg: rgba(255, 255, 255, 0.02);
   --glass-border: rgba(255, 255, 255, 0.08);
-  --primary-gradient: linear-gradient(135deg, #4f46e5, #c026d3);
-  --accent-purple: #a855f7;
-  --text-main: #ffffff;
+  --glass-glow: rgba(139, 92, 246, 0.1);
+  --primary-gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%);
+  --secondary-gradient: linear-gradient(135deg, #0ea5e9 0%, #22d3ee 100%);
+  --accent-purple: #8b5cf6;
+  --accent-teal: #2dd4bf;
+  --text-main: #f8fafc;
   --text-muted: #94a3b8;
+  --card-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
 }
 
 /* --- GLOBAL LAYOUT --- */
 .modern-layout {
   min-height: 100vh;
   background-color: var(--bg-dark);
-  background-image: radial-gradient(circle at top right, rgba(79, 70, 229, 0.12), transparent 45%),
-                    radial-gradient(circle at bottom left, rgba(192, 38, 211, 0.08), transparent 45%);
+  background-image: 
+    radial-gradient(circle at 20% 20%, rgba(99, 102, 241, 0.15), transparent 40%),
+    radial-gradient(circle at 80% 80%, rgba(236, 72, 153, 0.1), transparent 40%),
+    radial-gradient(circle at 50% 50%, rgba(139, 92, 246, 0.05), transparent 60%);
   padding-top: 100px;
   padding-bottom: 3rem;
-  font-family: 'Inter', system-ui, sans-serif;
+  font-family: 'Outfit', 'Inter', system-ui, sans-serif;
+  overflow-x: hidden;
+}
+
+.modern-layout::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url("https://grainy-gradients.vercel.app/noise.svg");
+  opacity: 0.2;
+  pointer-events: none;
+  z-index: 100;
 }
 
 /* --- GLASS PANELS --- */
 .glass-panel {
   background: var(--glass-bg);
   border: 1px solid var(--glass-border);
-  border-radius: 24px;
-  backdrop-filter: blur(20px);
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-  transition: transform 0.3s ease, background 0.3s ease;
+  border-radius: 28px;
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  box-shadow: var(--card-shadow);
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.glass-panel::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+  transition: 0.5s;
+}
+
+.glass-panel:hover::after {
+  left: 100%;
+}
+
+.glass-panel:hover {
+  transform: translateY(-5px) scale(1.01);
+  border-color: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.04);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 20px var(--glass-glow);
 }
 
 /* --- MODERN INPUTS --- */
@@ -95,54 +140,84 @@ body {
 /* --- MODERN BUTTONS --- */
 .btn-modern-primary {
   background: var(--primary-gradient);
+  background-size: 200% auto;
   color: white !important;
-  font-weight: 600;
-  padding: 0.85rem 1.75rem;
-  border-radius: 99px;
+  font-weight: 700;
+  padding: 0.9rem 2rem;
+  border-radius: 16px;
   border: none;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.75rem;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.3);
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  box-shadow: 0 10px 20px -5px rgba(99, 102, 241, 0.4);
+  letter-spacing: 0.02em;
 }
 
 .btn-modern-primary:hover {
-  transform: translateY(-2px) scale(1.02);
-  box-shadow: 0 20px 25px -5px rgba(79, 70, 229, 0.4);
+  background-position: right center;
+  transform: translateY(-3px);
+  box-shadow: 0 20px 30px -10px rgba(168, 85, 247, 0.5);
 }
 
-.btn-modern-primary:active {
-  transform: translateY(0);
+.btn-modern-secondary {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-main);
+  font-weight: 600;
+  padding: 0.9rem 2rem;
+  border-radius: 16px;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.btn-modern-secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
 }
 
 /* --- TABLES --- */
 .modern-table {
   width: 100%;
   border-collapse: separate;
-  border-spacing: 0;
+  border-spacing: 0 8px;
 }
 
 .modern-table th {
-  padding: 1.25rem 1rem;
+  padding: 1.25rem 1.5rem;
   text-align: left;
   color: var(--text-muted);
-  font-weight: 600;
-  border-bottom: 2px solid rgba(255, 255, 255, 0.05);
+  font-weight: 700;
   text-transform: uppercase;
-  font-size: 0.75rem;
-  letter-spacing: 0.05em;
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
 }
 
 .modern-table td {
-  padding: 1.25rem 1rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.02);
   color: var(--text-main);
   font-size: 0.95rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.modern-table td:first-child {
+  border-left: 1px solid rgba(255, 255, 255, 0.05);
+  border-top-left-radius: 16px;
+  border-bottom-left-radius: 16px;
+}
+
+.modern-table td:last-child {
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
+  border-top-right-radius: 16px;
+  border-bottom-right-radius: 16px;
 }
 
 .modern-table tr:hover td {
-  background: rgba(255, 255, 255, 0.02);
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.1);
 }

@@ -299,8 +299,8 @@ export default function FindingGroups() {
   const copyToClipboard = async (value, label) => {
     try {
       await navigator.clipboard.writeText(value);
-      setCopyMessage(`${label} copied`);
-      window.setTimeout(() => setCopyMessage(""), 1400);
+      setCopyMessage(`${label} copied successfully!`);
+      window.setTimeout(() => setCopyMessage(""), 2000);
     } catch {
       setCopyMessage("Copy failed");
       window.setTimeout(() => setCopyMessage(""), 1400);
@@ -374,19 +374,30 @@ export default function FindingGroups() {
         </div>
       </motion.nav>
 
-      {/* Copy notification popup */}
+      {/* Premium Copy Notification */}
       <AnimatePresence>
         {copyMessage && (
           <motion.div
-            initial={{ opacity: 0, y: -20, x: "-50%" }}
-            animate={{ opacity: 1, y: 20, x: "-50%" }}
-            exit={{ opacity: 0, y: -20, x: "-50%" }}
+            initial={{ opacity: 0, y: -50, x: "-50%", scale: 0.9 }}
+            animate={{ opacity: 1, y: 100, x: "-50%", scale: 1 }}
+            exit={{ opacity: 0, y: -20, x: "-50%", scale: 0.95 }}
+            transition={{ type: "spring", stiffness: 300, damping: 25 }}
             style={{ 
-              position: "fixed", top: "80px", left: "50%", zIndex: 9999, 
-              background: "#4ade80", color: "#166534", padding: "0.75rem 1.5rem", borderRadius: "99px", fontWeight: "bold", boxShadow: "0 10px 25px rgba(0,0,0,0.3)", display: "flex", gap: "0.5rem", alignItems: "center" 
+              position: "fixed", top: 0, left: "50%", zIndex: 10000, 
+              background: "rgba(16, 185, 129, 0.15)",
+              backdropFilter: "blur(12px)",
+              webkitBackdropFilter: "blur(12px)",
+              border: "1px solid rgba(16, 185, 129, 0.3)",
+              color: "#4ade80", 
+              padding: "1rem 2rem", 
+              borderRadius: "20px", 
+              fontWeight: "700", 
+              boxShadow: "0 20px 40px rgba(0,0,0,0.3), 0 0 20px rgba(16, 185, 129, 0.2)",
+              display: "flex", gap: "0.75rem", alignItems: "center",
+              fontSize: "1rem"
             }}
           >
-            <CheckCircle size={18} /> {copyMessage}
+            <CheckCircle size={20} /> {copyMessage}
           </motion.div>
         )}
       </AnimatePresence>
@@ -395,42 +406,64 @@ export default function FindingGroups() {
         <motion.section 
           className="groups-hero-modern"
           initial="hidden" animate="visible" variants={fadeUp}
+          style={{ textAlign: "center", marginBottom: "4rem" }}
         >
-          <h1><Users size={48} style={{ display: "inline", verticalAlign: "bottom", marginRight: "1rem", color: "#f97316" }}/>Finding Groups</h1>
-          <p>Post your request, discover matching students, and reliably build the right project team using Smart Filters.</p>
+          <motion.div
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ type: "spring", stiffness: 100 }}
+            style={{ 
+              width: "80px", height: "80px", borderRadius: "24px", 
+              background: "rgba(139, 92, 246, 0.1)", border: "1px solid rgba(139, 92, 246, 0.2)",
+              display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 1.5rem"
+            }}
+          >
+            <Users size={40} color="#8b5cf6" />
+          </motion.div>
+          <h1 style={{ 
+            fontSize: "3.5rem", fontWeight: "900", letterSpacing: "-0.02em",
+            background: "linear-gradient(to right, #fff, #94a3b8)",
+            WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
+            marginBottom: "1rem"
+          }}>
+            Finding Groups
+          </h1>
+          <p style={{ fontSize: "1.2rem", color: "#94a3b8", maxWidth: "600px", margin: "0 auto" }}>
+            Discover matching students and reliably build the right project team using <span style={{ color: "#8b5cf6", fontWeight: "600" }}>Smart Filters</span>.
+          </p>
         </motion.section>
 
         {/* FILTERS */}
         <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, scale: 0.98 }}
+          animate={{ opacity: 1, scale: 1 }}
           className="glass-panel" 
-          style={{ padding: "2rem", marginBottom: "3rem" }}
+          style={{ padding: "2.5rem", marginBottom: "4rem" }}
         >
-          <h2 style={{ fontSize: "1.3rem", marginBottom: "1.2rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
-            <Filter size={20} color="#a855f7" /> Filter Posters & Banners
-          </h2>
+          <h3 style={{ fontSize: "1.4rem", marginBottom: "2rem", display: "flex", alignItems: "center", gap: "0.75rem", fontWeight: "800" }}>
+            <Filter size={24} color="#8b5cf6" /> Filter Posters & Banners
+          </h3>
           <div className="form-grid-4">
-            <div className="modern-form">
-              <label>Campus</label>
+            <div className="field-group">
+              <label style={{ color: "#94a3b8", fontWeight: "600", fontSize: "0.85rem", textTransform: "uppercase", letterSpacing: "0.05em" }}>Campus</label>
               <select name="campus" value={filters.campus} onChange={handleFilterChange} className="modern-select">
                 <option>All</option><option>Malabe</option><option>Metro</option><option>Kandy</option><option>Matara</option>
               </select>
             </div>
-            <div className="modern-form">
-              <label>Subject</label>
+            <div className="field-group">
+              <label style={{ color: "#94a3b8", fontWeight: "600", fontSize: "0.85rem", textTransform: "uppercase", letterSpacing: "0.05em" }}>Subject</label>
               <select name="subject" value={filters.subject} onChange={handleFilterChange} className="modern-select">
                 <option>All</option><option>SE</option><option>DBMS</option><option>DSA</option><option>OOP</option>
               </select>
             </div>
-            <div className="modern-form">
-              <label>Group Type</label>
+            <div className="field-group">
+              <label style={{ color: "#94a3b8", fontWeight: "600", fontSize: "0.85rem", textTransform: "uppercase", letterSpacing: "0.05em" }}>Group Type</label>
               <select name="groupType" value={filters.groupType} onChange={handleFilterChange} className="modern-select">
                 <option>All</option><option>Research</option><option>Development</option><option>Assignment</option>
               </select>
             </div>
-            <div className="modern-form">
-              <label>Gender Preference</label>
+            <div className="field-group">
+              <label style={{ color: "#94a3b8", fontWeight: "600", fontSize: "0.85rem", textTransform: "uppercase", letterSpacing: "0.05em" }}>Gender Preference</label>
               <select name="gender" value={filters.gender} onChange={handleFilterChange} className="modern-select">
                 <option>All</option><option>Any</option><option>Male</option><option>Female</option>
               </select>
@@ -553,20 +586,20 @@ export default function FindingGroups() {
                         <p style={{ color: "#cbd5e1", fontSize: "0.9rem", marginBottom: "1.5rem" }}>{post.details}</p>
                         <div className="poster-actions">
                           <button className="action-btn" onClick={() => copyToClipboard(post.personalEmail, "Email")}>
-                            <Copy size={14}/> {post.personalEmail}
+                            <Copy size={14}/> Copy Email
                           </button>
                           <button className="action-btn" onClick={() => copyToClipboard(post.contactNumber, "Number")}>
-                            <Copy size={14}/> {post.contactNumber}
+                            <Copy size={14}/> Copy Phone
                           </button>
-                          <button className="action-btn" style={{ borderColor: "#10b981", color: "#10b981" }} onClick={() => { window.dispatchEvent(new CustomEvent('openChat', { detail: post.personalEmail })); }}>
-                            <MessageSquare size={14}/> Chat
+                          <button className="action-btn chat" onClick={() => { window.dispatchEvent(new CustomEvent('openChat', { detail: post.personalEmail })); }}>
+                            <MessageSquare size={14}/> Chat Now
                           </button>
                           {currentUser && currentUser.email === post.personalEmail && (
                             <>
-                              <button className="action-btn" style={{ borderColor: "#38bdf8", color: "#38bdf8" }} onClick={() => handleEditMemberPost(post)}>
-                                Edit
+                              <button className="action-btn edit" onClick={() => handleEditMemberPost(post)}>
+                                Edit Poster
                               </button>
-                              <button className="action-btn" style={{ borderColor: "#ef4444", color: "#ef4444" }} onClick={() => handleDeleteMemberPost(post._id || post.id)}>
+                              <button className="action-btn delete" onClick={() => handleDeleteMemberPost(post._id || post.id)}>
                                 Delete
                               </button>
                             </>
@@ -677,27 +710,27 @@ export default function FindingGroups() {
                           <span className="poster-tag">{banner.subject}</span>
                           <span className="poster-tag">{banner.subgroup}</span>
                           <span className="poster-tag">Require: {banner.wantedGender}</span>
-                          {banner.minGpa && <span className="poster-tag" style={{ border: "1px solid #f97316", color: "#fdba74" }}>Min GPA {banner.minGpa}</span>}
+                          {banner.minGpa && <span className="poster-tag gpa-tag" style={{ border: "1px solid #f97316", color: "#fdba74" }}>Min GPA {banner.minGpa}</span>}
                         </div>
                         <p style={{ color: "#cbd5e1", fontSize: "0.9rem", marginBottom: "1.5rem" }}>
                           Leader: <strong>{banner.leaderName}</strong> | {banner.details}
                         </p>
                         <div className="poster-actions">
                           <button className="action-btn" onClick={() => copyToClipboard(banner.personalEmail, "Email")}>
-                            <Copy size={14}/> {banner.personalEmail}
+                            <Copy size={14}/> Copy Email
                           </button>
                           <button className="action-btn" onClick={() => copyToClipboard(banner.contactNumber, "Number")}>
-                            <Copy size={14}/> {banner.contactNumber}
+                            <Copy size={14}/> Copy Phone
                           </button>
-                          <button className="action-btn" style={{ borderColor: "#10b981", color: "#10b981" }} onClick={() => { window.dispatchEvent(new CustomEvent('openChat', { detail: banner.personalEmail })); }}>
-                            <MessageSquare size={14}/> Chat
+                          <button className="action-btn chat" onClick={() => { window.dispatchEvent(new CustomEvent('openChat', { detail: banner.personalEmail })); }}>
+                            <MessageSquare size={14}/> Chat Group
                           </button>
                           {currentUser && currentUser.email === banner.personalEmail && (
                             <>
-                              <button className="action-btn" style={{ borderColor: "#38bdf8", color: "#38bdf8" }} onClick={() => handleEditGroupBanner(banner)}>
-                                Edit
+                              <button className="action-btn edit" onClick={() => handleEditGroupBanner(banner)}>
+                                Edit Banner
                               </button>
-                              <button className="action-btn" style={{ borderColor: "#ef4444", color: "#ef4444" }} onClick={() => handleDeleteGroupBanner(banner._id || banner.id)}>
+                              <button className="action-btn delete" onClick={() => handleDeleteGroupBanner(banner._id || banner.id)}>
                                 Delete
                               </button>
                             </>
