@@ -1,3 +1,9 @@
+// ============================================================
+// models/JoinRequest.js — Group Join Request Schema (Mongoose Model)
+// ============================================================
+// From Dinuja's backend. Tracks requests to join study groups.
+// ============================================================
+
 const mongoose = require('mongoose');
 
 const joinRequestSchema = new mongoose.Schema({

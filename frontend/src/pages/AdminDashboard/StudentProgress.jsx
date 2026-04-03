@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import { getStudentProgress as fetchStudentProgressAPI } from '../../services/api';
 import './StudentProgress.css';
 
 const StudentProgress = () => {
@@ -21,7 +21,7 @@ const StudentProgress = () => {
   const fetchStudentProgress = async () => {
     try {
       setLoading(true);
-      const response = await axios.get('http://localhost:5000/api/admin/student-progress');
+      const response = await fetchStudentProgressAPI();
       setStudents(response.data.data);
       setError('');
     } catch (err) {

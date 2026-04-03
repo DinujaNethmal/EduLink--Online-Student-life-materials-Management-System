@@ -1,18 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Shield, Key, Users, CheckCircle, LayoutDashboard, Heart, BookOpen, Clock, BarChart, Star, ListPlus, Filter, ShoppingCart, History, LogOut } from "lucide-react";
+import { useAuth } from "../context/AuthContext";
 import "./Home.css"; // Import new landing page styles
 
 export default function Home() {
-  const [currentUser, setCurrentUser] = useState(null);
-
-  useEffect(() => {
-    const userStr = localStorage.getItem('currentUser');
-    if (userStr) {
-      try { setCurrentUser(JSON.parse(userStr)); } catch (e) {}
-    }
-  }, []);
+  const { user } = useAuth();
+  const currentUser = user;
 
   // Animation Variants
   const fadeUp = {
@@ -342,4 +337,3 @@ export default function Home() {
     </div>
   );
 }
-

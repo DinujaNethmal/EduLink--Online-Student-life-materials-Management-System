@@ -1,11 +1,14 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+import { registerUser } from "../services/api";
+import toast from "react-hot-toast";
+import "./styles.css";
 
 const initialForm = {
   name: "",
   email: "",
   password: "",
-  role: "student",
 };
 
 export default function Register() {
@@ -13,13 +16,10 @@ export default function Register() {
   const [errors, setErrors] = useState({});
   const [submitting, setSubmitting] = useState(false);
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    if (name === "name" && /\d/.test(value)) {
-      setErrors((prev) => ({ ...prev, [name]: "Numbers are not allowed in the full name." }));
-      return;
-    }
     setForm((prev) => ({ ...prev, [name]: value }));
     setErrors((prev) => ({ ...prev, [name]: "" }));
   };
@@ -43,10 +43,6 @@ export default function Register() {
       nextErrors.password = "Password must be at least 6 characters.";
     }
 
-    if (!form.role) {
-      nextErrors.role = "Role is required.";
-    }
-
     setErrors(nextErrors);
     return Object.keys(nextErrors).length === 0;
   };
@@ -58,22 +54,18 @@ export default function Register() {
     setSubmitting(true);
 
     try {
-      // Send data to Express backend
-      const res = await fetch("http://localhost:5000/api/users/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form)
+      const res = await registerUser({
+        name: form.name,
+        email: form.email,
+        password: form.password,
       });
-      const data = await res.json();
-
-      // Proceed to login whether offline or successful to keep flow working
-      setForm(initialForm);
-      navigate("/login");
-    } catch(err) {
-      console.error("Database unavailable, skipping real save:", err);
-      // Fallback
-      setForm(initialForm);
-      navigate("/login");
+      const { token, user } = res.data;
+      login(user, token);
+      toast.success("Account created successfully!");
+      navigate("/");
+    } catch (err) {
+      const msg = err.response?.data?.message || "Registration failed. Please try again.";
+      setErrors({ email: msg });
     } finally {
       setSubmitting(false);
     }
@@ -145,22 +137,6 @@ export default function Register() {
             />
             {errors.password && (
               <span className="field-error">{errors.password}</span>
-            )}
-          </div>
-
-          <div className="field-group">
-            <label htmlFor="role">Role</label>
-            <select
-              id="role"
-              name="role"
-              value={form.role}
-              onChange={handleChange}
-            >
-              <option value="student">Student</option>
-              <option value="admin">Admin</option>
-            </select>
-            {errors.role && (
-              <span className="field-error">{errors.role}</span>
             )}
           </div>
 

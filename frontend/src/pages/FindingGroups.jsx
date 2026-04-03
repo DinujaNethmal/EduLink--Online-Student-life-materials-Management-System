@@ -1,10 +1,9 @@
 import React, { useMemo, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Users, Filter, PlusCircle, Search, Copy, CheckCircle, LogOut } from "lucide-react";
+import { Users, Filter, PlusCircle, Search, Copy, CheckCircle, LogOut, MessageSquare } from "lucide-react";
+import { useAuth } from "../context/AuthContext";
 import "./ModernPages.css";
-import ChatSidebar from "../components/ChatSidebar";
-import { MessageSquare } from "lucide-react";
 
 const memberPostsSeed = [
   {
@@ -104,25 +103,12 @@ const newBannerDefault = {
 };
 
 export default function FindingGroups() {
-  const [currentUser, setCurrentUser] = useState(null);
-
-  useEffect(() => {
-    const userStr = localStorage.getItem('currentUser');
-    if (userStr) {
-      try { 
-        const parsed = JSON.parse(userStr);
-        setCurrentUser(parsed); 
-        setMemberForm(prev => ({ ...prev, personalEmail: parsed.email }));
-        setBannerForm(prev => ({ ...prev, personalEmail: parsed.email }));
-      } catch (e) {}
-    }
-  }, []);
+  const { user: currentUser } = useAuth();
 
   const [activeTab, setActiveTab] = useState("member");
   const [filters, setFilters] = useState(filterDefaults);
   const [memberPosts, setMemberPosts] = useState(memberPostsSeed);
   const [groupBanners, setGroupBanners] = useState(groupBannersSeed);
-
 
   const fetchMemberPosts = async () => {
     try {
@@ -152,6 +138,7 @@ export default function FindingGroups() {
     fetchMemberPosts();
     fetchGroupBanners();
   }, []);
+
   const [memberForm, setMemberForm] = useState(newMemberDefault);
   const [bannerForm, setBannerForm] = useState(newBannerDefault);
   const [copyMessage, setCopyMessage] = useState("");
@@ -214,7 +201,7 @@ export default function FindingGroups() {
         const data = await res.json();
         if (data.success) {
           setMemberPosts(prev => prev.map(p => p._id === data.data._id ? data.data : p));
-          setMemberForm({ ...newMemberDefault, personalEmail: currentUser ? currentUser.email : '' });
+          setMemberForm(newMemberDefault);
         }
       } else {
         const res = await fetch('http://localhost:5000/api/finding-groups/members', {
@@ -225,7 +212,7 @@ export default function FindingGroups() {
         const data = await res.json();
         if (data.success) {
           setMemberPosts((prev) => [data.data, ...prev]);
-          setMemberForm({ ...newMemberDefault, personalEmail: currentUser ? currentUser.email : '' });
+          setMemberForm(newMemberDefault);
         }
       }
     } catch (err) {
@@ -249,7 +236,7 @@ export default function FindingGroups() {
         const data = await res.json();
         if (data.success) {
           setGroupBanners(prev => prev.map(p => p._id === data.data._id ? data.data : p));
-          setBannerForm({ ...newBannerDefault, personalEmail: currentUser ? currentUser.email : '' });
+          setBannerForm(newBannerDefault);
         }
       } else {
         const res = await fetch('http://localhost:5000/api/finding-groups/banners', {
@@ -260,7 +247,7 @@ export default function FindingGroups() {
         const data = await res.json();
         if (data.success) {
           setGroupBanners((prev) => [data.data, ...prev]);
-          setBannerForm({ ...newBannerDefault, personalEmail: currentUser ? currentUser.email : '' });
+          setBannerForm(newBannerDefault);
         }
       }
     } catch (err) {
@@ -346,7 +333,7 @@ export default function FindingGroups() {
                 )}
               </Link>
               <button 
-                onClick={() => { localStorage.clear(); window.location.reload(); }} 
+                onClick={() => { localStorage.removeItem('currentUser'); window.location.reload(); }} 
                 className="btn-landing-secondary" 
                 style={{ 
                   padding: "0.5rem 1rem", 
@@ -499,7 +486,7 @@ export default function FindingGroups() {
                     </div>
                     <div className="field-group">
                       <label>Personal Gmail</label>
-                      <input name="personalEmail" type="email" className="modern-input" value={memberForm.personalEmail} onChange={handleMemberFormChange} placeholder="user@gmail.com" disabled={!!currentUser} />
+                      <input name="personalEmail" type="email" className="modern-input" value={memberForm.personalEmail} onChange={handleMemberFormChange} placeholder="user@gmail.com" />
                     </div>
                     <div className="field-group">
                       <label>Contact Number</label>
@@ -571,7 +558,7 @@ export default function FindingGroups() {
                 ) : (
                   <div className="posters-grid">
                     {filteredMemberPosts.map(post => (
-                      <div key={post._id || post.id} className="poster-card">
+                      <div key={post.id} className="poster-card">
                         <div className="poster-header">
                           <h3>{post.name}</h3>
                           <span className="poster-badge">{post.campus}</span>
@@ -631,8 +618,8 @@ export default function FindingGroups() {
                       <input name="leaderName" className="modern-input" value={bannerForm.leaderName} onChange={handleBannerFormChange} placeholder="Lahiru" />
                     </div>
                     <div className="field-group">
-                      <label>Group Email (Leader)</label>
-                      <input name="personalEmail" type="email" className="modern-input" value={bannerForm.personalEmail} onChange={handleBannerFormChange} placeholder="leader@gmail.com" disabled={!!currentUser} />
+                      <label>Group Email</label>
+                      <input name="personalEmail" type="email" className="modern-input" value={bannerForm.personalEmail} onChange={handleBannerFormChange} placeholder="leader@gmail.com" />
                     </div>
                   </div>
 
@@ -700,7 +687,7 @@ export default function FindingGroups() {
                 ) : (
                   <div className="posters-grid">
                     {filteredGroupBanners.map(banner => (
-                      <div key={banner._id || banner.id} className="poster-card" style={{ borderColor: 'rgba(249,115,22,0.2)' }}>
+                      <div key={banner.id} className="poster-card" style={{ borderColor: 'rgba(249,115,22,0.2)' }}>
                         <div className="poster-header">
                           <h3 style={{ color: "#f97316" }}>{banner.groupName}</h3>
                           <span className="poster-badge" style={{ background: "rgba(249,115,22,0.15)", color: "#fdba74" }}>{banner.campus}</span>
@@ -750,7 +737,6 @@ export default function FindingGroups() {
       <div style={{ textAlign: "center", paddingTop: "2rem", borderTop: "1px solid rgba(255,255,255,0.05)", marginTop: "3rem" }}>
          <p style={{ color: "#64748b", fontSize: "0.95rem" }}>© {new Date().getFullYear()} EduLink. Designed for university projects.</p>
       </div>
-
     </div>
   );
 }

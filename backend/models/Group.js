@@ -1,3 +1,10 @@
+// ============================================================
+// models/Group.js — Study Group Schema (Mongoose Model)
+// ============================================================
+// From Dinuja's backend. Defines study groups with leader,
+// members, capacity, tags, and status.
+// ============================================================
+
 const mongoose = require('mongoose');
 
 const groupSchema = new mongoose.Schema({
@@ -26,7 +33,7 @@ const groupSchema = new mongoose.Schema({
     default: 4,
     max: [10, 'Capacity cannot exceed 10 members']
   },
-  tags: [String], // Desired skills / grouping criteria
+  tags: [String],
   description: String,
   status: {
     type: String,

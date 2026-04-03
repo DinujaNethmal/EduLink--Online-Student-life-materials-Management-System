@@ -1,14 +1,24 @@
-import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
+import { Routes, Route, useNavigate, useLocation, Navigate } from "react-router-dom";
+import { io } from "socket.io-client";
+import { AnimatePresence, motion } from "framer-motion";
+import { MessageCircle } from "lucide-react";
+import { useAuth } from "./context/AuthContext";
+
+// Components
+import ModernLayout from "./components/ModernLayout.jsx";
+import ChatSidebar from "./components/ChatSidebar.jsx";
+
+// Pages
 import Home from "./pages/Home.jsx";
 import Register from "./pages/Register.jsx";
 import Login from "./pages/Login.jsx";
 import ForgotPassword from "./pages/ForgotPassword.jsx";
 import Profile from "./pages/Profile.jsx";
 import FindingGroups from "./pages/FindingGroups.jsx";
-import AdminLogin from "./pages/AdminLogin.jsx";
 import AdminDashboard from "./pages/AdminDashboard.jsx";
 
+// Quiz Components
 import QuizForm from "./pages/QuizComponents/QuizForm.jsx";
 import QuizResults from "./pages/QuizComponents/QuizResults.jsx";
 import QuestionBank from "./pages/QuizComponents/QuestionBank.jsx"; 
@@ -16,30 +26,44 @@ import ViewQuizzes from "./pages/QuizComponents/ViewQuizzes.jsx";
 import QuizAttempt from "./pages/QuizComponents/QuizAttempt.jsx";
 import EditQuiz from "./pages/QuizComponents/EditQuiz.jsx";
 import Charts from "./pages/QuizComponents/Charts.jsx";
-import ModernLayout from "./components/ModernLayout.jsx";
-import ChatSidebar from "./components/ChatSidebar.jsx";
-import { io } from "socket.io-client";
-import { AnimatePresence, motion } from "framer-motion";
-import { MessageCircle } from "lucide-react";
+
+// Marketplace Pages
+import MarketplaceHome from "./pages/marketplace/Home";
+import ProductDetail from "./pages/marketplace/ProductDetail";
+import CartPage from "./pages/marketplace/CartPage";
+import ConfirmOrder from "./pages/marketplace/ConfirmOrder";
+import OrderSuccess from "./pages/marketplace/OrderSuccess";
+import OrderHistory from "./pages/marketplace/OrderHistory";
+import CreateProduct from "./pages/marketplace/CreateProduct";
+import EditProduct from "./pages/marketplace/EditProduct";
+import MyListings from "./pages/marketplace/MyListings";
+import MarketplaceProfile from "./pages/marketplace/Profile";
+
+// Payment Pages
+import CreditCardPayment from "./pages/marketplace/CreditCardPayment";
+import BankTransfer from "./pages/marketplace/BankTransfer";
+
+import "./App.css";
+
+// Route Guards
+function ProtectedRoute({ children }) {
+  const { user, loading } = useAuth();
+  if (loading) return null;
+  return user ? children : <Navigate to="/login" />;
+}
+
+function AdminRoute({ children }) {
+  const { user, loading } = useAuth();
+  if (loading) return null;
+  if (!user) return <Navigate to="/login" />;
+  if (user.role !== "admin") return <Navigate to="/" />;
+  return children;
+}
 
 export default function App() {
-  const [adminUser, setAdminUser] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
-
-  useEffect(() => {
-    // Check if admin is already logged in
-    const savedAdmin = localStorage.getItem('adminUser');
-    if (savedAdmin) {
-      setAdminUser(JSON.parse(savedAdmin));
-    }
-  }, []);
-
-  const handleAdminLogout = () => {
-    localStorage.removeItem('adminUser');
-    setAdminUser(null);
-    navigate('/login');
-  };
+  const { user: currentUserData } = useAuth();
 
   // --- GLOBAL CHAT STATE ---
   const [isChatOpen, setIsChatOpen] = useState(false);
@@ -48,10 +72,11 @@ export default function App() {
   const [globalSocket, setGlobalSocket] = useState(null);
 
   useEffect(() => {
+    // Sync current user from AuthContext or LocalStorage
     const userStr = localStorage.getItem('currentUser');
-    if (userStr) {
+    if (userStr || currentUserData) {
       try {
-        const user = JSON.parse(userStr);
+        const user = currentUserData || JSON.parse(userStr);
         setCurrentUser(user);
 
         // Listen for new messages globally
@@ -60,8 +85,6 @@ export default function App() {
         socket.emit('join', user.email);
 
         socket.on('receiveMessage', (data) => {
-          // If we receive a message and chat isn't open OR is for a different user, 
-          // we popup the chat for the new sender!
           if (data.receiver === user.email) {
             setChatReceiver(""); // Reset to force re-fetch of history
             setTimeout(() => {
@@ -71,9 +94,8 @@ export default function App() {
           }
         });
 
-        // Listen for internal chat open requests (from buttons)
         const handleOpenChat = (e) => {
-          setChatReceiver(""); // Reset first to trigger effect if same
+          setChatReceiver(""); 
           setTimeout(() => {
             setChatReceiver(e.detail);
             setIsChatOpen(true);
@@ -87,16 +109,7 @@ export default function App() {
         };
       } catch (e) {}
     }
-  }, []);
-
-  const openChat = (receiverEmail) => {
-    setChatReceiver("");
-    setTimeout(() => {
-      setChatReceiver(receiverEmail);
-      setIsChatOpen(true);
-    }, 0);
-  };
-
+  }, [currentUserData]);
 
   return (
     <div className="app-shell">
@@ -110,29 +123,18 @@ export default function App() {
           className="page-transition-wrapper"
         >
           <Routes location={location}>
-            {/* Admin Routes (Restricted Component to Unified Login) */}
-            <Route 
-              path="/admin" 
-              element={
-                adminUser ? (
-                  <AdminDashboard admin={adminUser} onLogout={handleAdminLogout} />
-                ) : (
-                  <div style={{ padding: "5rem", textAlign: "center", color: "white", minHeight: "100vh" }}>
-                    <h2 style={{ fontSize: "2rem", color: "#f87171" }}>🔒 Access Denied</h2>
-                    <p style={{ color: "#94a3b8" }}>Admin privileges required to view the dashboard. Please sign in via the main Login portal.</p>
-                  </div>
-                )
-              } 
-            />
-
-            {/* Regular User Routes */}
+            {/* Core Pages */}
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/register" element={<Register />} />
-            <Route path="/profile" element={<Profile />} />
+            <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
             <Route path="/finding-groups" element={<FindingGroups />} />
 
+            {/* Admin Dashboard */}
+            <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
+
+            {/* Quiz Routes */}
             <Route path="/quiz-form" element={<ModernLayout><QuizForm /></ModernLayout>} />
             <Route path="/quiz-results" element={<ModernLayout><QuizResults /></ModernLayout>} />
             <Route path="/question-bank" element={<ModernLayout><QuestionBank /></ModernLayout>} />
@@ -140,6 +142,22 @@ export default function App() {
             <Route path="/quiz-attempt/:id" element={<ModernLayout><QuizAttempt/></ModernLayout>} />
             <Route path="/edit-quiz/:id" element={<ModernLayout><EditQuiz /></ModernLayout>} />
             <Route path="/charts" element={<ModernLayout><Charts /></ModernLayout>} />
+
+            {/* Marketplace Routes */}
+            <Route path="/marketplace" element={<MarketplaceHome />} />
+            <Route path="/marketplace/product/:id" element={<ProductDetail />} />
+            <Route path="/marketplace/cart" element={<CartPage />} />
+            <Route path="/marketplace/confirm-order" element={<ConfirmOrder />} />
+            <Route path="/marketplace/order-success/:orderId" element={<OrderSuccess />} />
+            <Route path="/marketplace/orders" element={<OrderHistory />} />
+            <Route path="/marketplace/sell" element={<ProtectedRoute><CreateProduct /></ProtectedRoute>} />
+            <Route path="/marketplace/edit-product/:id" element={<ProtectedRoute><EditProduct /></ProtectedRoute>} />
+            <Route path="/marketplace/my-listings" element={<ProtectedRoute><MyListings /></ProtectedRoute>} />
+            <Route path="/marketplace/profile" element={<ProtectedRoute><MarketplaceProfile /></ProtectedRoute>} />
+
+            {/* Payment Routes */}
+            <Route path="/marketplace/payment/credit-card/:orderId" element={<CreditCardPayment />} />
+            <Route path="/marketplace/payment/bank-transfer/:orderId" element={<BankTransfer />} />
           </Routes>
         </motion.div>
       </AnimatePresence>
@@ -156,7 +174,6 @@ export default function App() {
           style={{ background: 'linear-gradient(135deg, #4f46e5, #c026d3)' }}
         >
           <MessageCircle size={28} />
-          {/* Unread indicator placeholder */}
           <div className="absolute top-0 right-0 w-4 h-4 bg-red-500 rounded-full border-2 border-[#0b0b10]"></div>
         </motion.button>
       )}
@@ -174,4 +191,3 @@ export default function App() {
     </div>
   );
 }
-

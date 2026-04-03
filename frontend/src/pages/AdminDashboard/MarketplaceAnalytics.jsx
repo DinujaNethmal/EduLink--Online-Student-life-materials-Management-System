@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import { getMarketplaceAnalytics, getPendingProducts, approveProduct } from '../../services/api';
 import './MarketplaceAnalytics.css';
 
 const MarketplaceAnalytics = () => {
@@ -16,11 +16,10 @@ const MarketplaceAnalytics = () => {
   const fetchAnalytics = async () => {
     try {
       setLoading(true);
-      const response = await axios.get('http://localhost:5000/api/admin/analytics/marketplace');
+      const response = await getMarketplaceAnalytics();
       setAnalytics(response.data.data);
 
-      // Fetch pending products
-      const productsResponse = await axios.get('http://localhost:5000/api/admin/products/pending');
+      const productsResponse = await getPendingProducts();
       setProducts(productsResponse.data.data);
 
       setError('');
@@ -34,9 +33,7 @@ const MarketplaceAnalytics = () => {
 
   const handleApproveProduct = async (productId) => {
     try {
-      await axios.put(`http://localhost:5000/api/admin/products/${productId}/approve`, {
-        approval: 'approved'
-      });
+      await approveProduct(productId, 'approved');
       setApprovalAction(`Product approved!`);
       fetchAnalytics();
       setTimeout(() => setApprovalAction(null), 3000);
@@ -47,9 +44,7 @@ const MarketplaceAnalytics = () => {
 
   const handleRejectProduct = async (productId) => {
     try {
-      await axios.put(`http://localhost:5000/api/admin/products/${productId}/approve`, {
-        approval: 'rejected'
-      });
+      await approveProduct(productId, 'rejected');
       setApprovalAction(`Product rejected!`);
       fetchAnalytics();
       setTimeout(() => setApprovalAction(null), 3000);

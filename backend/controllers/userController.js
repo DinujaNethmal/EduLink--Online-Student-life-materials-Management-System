@@ -1,38 +1,60 @@
-const User = require('../models/User');
+// ============================================================
+// controllers/userController.js — Student Profile Operations
+// ============================================================
+// From Dinuja's backend. Handles student profile get/update by
+// email and student registration.
+// ============================================================
 
-// @desc    Get mock student profile
-// @route   GET /api/users/student
-// @access  Public (Normally this would require JWT authentication)
-exports.getStudentProfile = async (req, res) => {
+const User = require("../models/User");
+
+/**
+ * GET /api/users/student
+ * Get student profile by email query param.
+ * Query: ?email=it22000000@my.sliit.lk
+ */
+const getStudentProfile = async (req, res) => {
   try {
-    const email = req.query.email || 'it22000000@my.sliit.lk';
+    const email = req.query.email || "it22000000@my.sliit.lk";
     const student = await User.findOne({ email });
 
     if (!student) {
-      return res.status(404).json({ success: false, error: 'Student Profile Not Found' });
+      return res.status(404).json({ success: false, error: "Student Profile Not Found" });
     }
 
     res.status(200).json({
       success: true,
-      data: student
+      data: student,
     });
   } catch (error) {
-    res.status(500).json({ success: false, error: 'Server Error Fetching Profile' });
+    res.status(500).json({ success: false, error: "Server Error Fetching Profile" });
   }
 };
-// @desc    Update student profile
-// @route   PUT /api/users/student
-// @access  Public
-exports.updateStudentProfile = async (req, res) => {
-  try {
-    const { email, fullName, campus, year, semester, hasGroup, groupName, degreeProgram, bio, profilePhoto } = req.body;
 
-    const queryEmail = email || 'it22000000@my.sliit.lk'; // Default fallback
+/**
+ * PUT /api/users/student
+ * Update student profile.
+ * Request body: { email, fullName, campus, year, semester, hasGroup, groupName, degreeProgram, bio, profilePhoto }
+ */
+const updateStudentProfile = async (req, res) => {
+  try {
+    const {
+      email,
+      fullName,
+      campus,
+      year,
+      semester,
+      hasGroup,
+      groupName,
+      degreeProgram,
+      bio,
+      profilePhoto,
+    } = req.body;
+
+    const queryEmail = email || "it22000000@my.sliit.lk";
     let student = await User.findOne({ email: queryEmail });
 
     if (!student) {
-      // If doesn't exist, create it (mocking behavior for this demo project)
-      student = new User({ email: queryEmail, name: fullName, password: 'password123' });
+      student = new User({ email: queryEmail, name: fullName, password: "password123" });
     }
 
     student.name = fullName || student.name;
@@ -49,64 +71,37 @@ exports.updateStudentProfile = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      data: student
+      data: student,
     });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ success: false, error: 'Server Error Updating Profile' });
+    res.status(500).json({ success: false, error: "Server Error Updating Profile" });
   }
 };
 
-// @desc    Auth User & get token (Login)
-// @route   POST /api/users/login
-// @access  Public
-exports.loginStudent = async (req, res) => {
-  try {
-    const { email, password } = req.body;
-
-    const user = await User.findOne({ email }).select('+password');
-    if (!user) {
-      return res.status(401).json({ success: false, error: 'Invalid credentials' });
-    }
-
-    const isMatch = await user.matchPassword(password);
-    if (!isMatch) {
-      return res.status(401).json({ success: false, error: 'Invalid credentials' });
-    }
-
-    res.status(200).json({
-      success: true,
-      data: {
-        _id: user._id,
-        name: user.name,
-        email: user.email,
-        profilePhoto: user.profilePhoto || null,
-      }
-    });
-
-  } catch (error) {
-    console.error("Login Error:", error);
-    res.status(500).json({ success: false, error: 'Server error during login' });
-  }
-};
-
-// @desc    Register Student
-// @route   POST /api/users/register
-// @access  Public
-exports.registerStudent = async (req, res) => {
+/**
+ * POST /api/users/register
+ * Register a new student.
+ */
+const registerStudent = async (req, res) => {
   try {
     const { name, email, password, role } = req.body;
 
     const userExists = await User.findOne({ email });
     if (userExists) {
-      return res.status(400).json({ success: false, error: 'User already exists' });
+      return res.status(400).json({ success: false, error: "User already exists" });
     }
 
-    const user = await User.create({ name, email, password, role: role || 'student' });
-    
-    res.status(201).json({ success: true, data: { _id: user._id, name: user.name, email: user.email } });
+    const user = await User.create({ name, email, password, role: role || "user" });
+
+    res.status(201).json({
+      success: true,
+      data: { _id: user._id, name: user.name, email: user.email },
+    });
   } catch (error) {
     console.error("Register Error:", error);
-    res.status(500).json({ success: false, error: 'Server error (Database offline or disconnected)' });
+    res.status(500).json({ success: false, error: "Server error (Database offline or disconnected)" });
   }
 };
+
+module.exports = { getStudentProfile, updateStudentProfile, registerStudent };

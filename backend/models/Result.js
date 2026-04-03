@@ -1,3 +1,9 @@
+// ============================================================
+// models/Result.js — Quiz Result Schema (Mongoose Model)
+// ============================================================
+// From Dinuja's backend. Stores quiz attempt results per student.
+// ============================================================
+
 const mongoose = require('mongoose');
 
 const resultSchema = new mongoose.Schema({
