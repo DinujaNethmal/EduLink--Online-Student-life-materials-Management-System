@@ -122,8 +122,7 @@ export default function FindingGroups() {
   const [filters, setFilters] = useState(filterDefaults);
   const [memberPosts, setMemberPosts] = useState(memberPostsSeed);
   const [groupBanners, setGroupBanners] = useState(groupBannersSeed);
-  const [isChatOpen, setIsChatOpen] = useState(false);
-  const [chatReceiver, setChatReceiver] = useState("");
+
 
   const fetchMemberPosts = async () => {
     try {
@@ -395,7 +394,7 @@ export default function FindingGroups() {
           <h2 style={{ fontSize: "1.3rem", marginBottom: "1.2rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
             <Filter size={20} color="#a855f7" /> Filter Posters & Banners
           </h2>
-          <div className="form-grid-2 form-grid-3">
+          <div className="form-grid-4">
             <div className="modern-form">
               <label>Campus</label>
               <select name="campus" value={filters.campus} onChange={handleFilterChange} className="modern-select">
@@ -543,7 +542,7 @@ export default function FindingGroups() {
                           <button className="action-btn" onClick={() => copyToClipboard(post.contactNumber, "Number")}>
                             <Copy size={14}/> {post.contactNumber}
                           </button>
-                          <button className="action-btn" style={{ borderColor: "#10b981", color: "#10b981" }} onClick={() => { setChatReceiver(post.personalEmail); setIsChatOpen(true); }}>
+                          <button className="action-btn" style={{ borderColor: "#10b981", color: "#10b981" }} onClick={() => { window.dispatchEvent(new CustomEvent('openChat', { detail: post.personalEmail })); }}>
                             <MessageSquare size={14}/> Chat
                           </button>
                           {currentUser && currentUser.email === post.personalEmail && (
@@ -674,7 +673,7 @@ export default function FindingGroups() {
                           <button className="action-btn" onClick={() => copyToClipboard(banner.contactNumber, "Number")}>
                             <Copy size={14}/> {banner.contactNumber}
                           </button>
-                          <button className="action-btn" style={{ borderColor: "#10b981", color: "#10b981" }} onClick={() => { setChatReceiver(banner.personalEmail); setIsChatOpen(true); }}>
+                          <button className="action-btn" style={{ borderColor: "#10b981", color: "#10b981" }} onClick={() => { window.dispatchEvent(new CustomEvent('openChat', { detail: banner.personalEmail })); }}>
                             <MessageSquare size={14}/> Chat
                           </button>
                           {currentUser && currentUser.email === banner.personalEmail && (
@@ -703,15 +702,6 @@ export default function FindingGroups() {
          <p style={{ color: "#64748b", fontSize: "0.95rem" }}>© {new Date().getFullYear()} EduLink. Designed for university projects.</p>
       </div>
 
-      <AnimatePresence>
-        {isChatOpen && (
-          <ChatSidebar 
-            currentUser={currentUser} 
-            receiverEmail={chatReceiver} 
-            onClose={() => setIsChatOpen(false)} 
-          />
-        )}
-      </AnimatePresence>
     </div>
   );
 }
