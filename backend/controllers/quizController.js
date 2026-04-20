@@ -55,32 +55,6 @@ const getQuizById = async (req, res) => {
 };
 
 
-const generateQuestionsFromDB = async (req, res) => {
-  try {
-    const { academicYear, semester, subject, difficulty, count } = req.body;
-
-    console.log("Incoming:", req.body);
-
-    const questions = await Question.find({
-      academicYear : academicYear.toLowerCase(),
-      semester: semester.toLowerCase(),
-      subject: subject.toLowerCase(),
-      difficulty: difficulty.toLowerCase(),
-    }).limit(count);
-
-    if (!questions.length) {
-      return res.status(404).json({
-        message: "No questions found for this academic year/semester/subject/difficulty",
-      });
-    }
-
-    res.json({ questions });
-  } catch (err) {
-    console.error("🔥 ERROR:", err);
-    res.status(500).json({ message: err.message });
-  }
-};
-
 module.exports = {
   createQuiz,
   getQuizzes, 
@@ -88,5 +62,5 @@ module.exports = {
   deleteQuiz,
   getAllQuizzes,
   getQuizById,
- generateQuestionsFromDB
+  
 };

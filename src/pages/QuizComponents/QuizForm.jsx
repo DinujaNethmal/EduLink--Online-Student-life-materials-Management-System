@@ -45,15 +45,15 @@ const QuizForm = () => {
     ]);
   };
 
-// Function to auto-generate questions from DB
-    const handleAutoGenerate = async () => {
+    // Function to auto-generate questions from DB
+  const handleAutoGenerate = async () => {
     if (!quizInfo.subject || !quizInfo.difficulty) {
       alert("⚠️ Please select subject and difficulty first!");
       return;
     }
 
     try {
-      const res = await fetch("http://localhost:5000/api/quiz/generate", {
+      const res = await fetch("http://localhost:5000/api/questions/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -61,7 +61,7 @@ const QuizForm = () => {
           semester: quizInfo.semester,
           subject: quizInfo.subject,
           difficulty: quizInfo.difficulty,
-          count: 5, // number of questions
+          count: 5,
         }),
       });
 
@@ -72,7 +72,20 @@ const QuizForm = () => {
 
       const data = await res.json();
       console.log("Generated questions:", data);
-      setQuestions(data.questions); // 🔥 update your state with fetched questions
+
+      // ✅ 🔥 REPLACE HERE
+      setQuestions(
+        (Array.isArray(data) ? data : data.questions || []).map((q) => ({
+          type: "MCQ",
+          text: q.text || q.questionText || "",
+          options: q.options || ["", "", "", ""],
+          answer: q.answer || q.correctAnswer || "",
+          explanation: q.explanation || "",
+          difficulty: q.difficulty || "Medium",
+          marks: q.marks || 1,
+        }))
+      );
+
     } catch (err) {
       console.error(err);
       alert("❌ Auto generation failed: " + err.message);

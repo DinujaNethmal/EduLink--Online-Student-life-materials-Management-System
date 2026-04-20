@@ -1,13 +1,12 @@
 const mongoose = require("mongoose");
 
 const questionSchema = new mongoose.Schema({
-  quiz: { type: mongoose.Schema.Types.ObjectId, ref: "Quiz", required: true },
   questionText: { type: String, required: true },
   options: [{ type: String, required: true }],
   correctAnswer: { type: String, required: true },
   explanation: { type: String },
-  academicYear: { type: Number },
-  semester: { type: Number },
+  year: { type: String },
+  semester: { type: String },
   subject: { type: String },
   difficulty: { type: String, enum: ["Easy", "Medium", "Hard"], default: "Medium" }
 }, { timestamps: true });

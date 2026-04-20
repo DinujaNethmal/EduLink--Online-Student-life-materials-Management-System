@@ -4,10 +4,14 @@ const {
   getQuestions,
   getQuestionById,
   updateQuestion,
-  deleteQuestion
+  deleteQuestion,
+  generateQuestionsFromDB
 } = require("../controllers/questionController.js");
 
 const router = express.Router();
+
+// Auto-generate
+router.post("/generate", generateQuestionsFromDB);
 
 router.post("/", createQuestion);
 router.get("/", getQuestions);

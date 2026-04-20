@@ -6,14 +6,11 @@ const {
   getQuizById,
   updateQuiz,
   deleteQuiz,
-  generateQuestionsFromDB,
 } = require("../controllers/quizController.js");
 
-// Auto-generate
-router.post("/generate", generateQuestionsFromDB);
 
 // CRUD
-router.post("/", createQuiz);
+router.post("/create", createQuiz);
 router.get("/", getQuizzes);
 router.get("/:id", getQuizById);
 router.put("/:id", updateQuiz);
