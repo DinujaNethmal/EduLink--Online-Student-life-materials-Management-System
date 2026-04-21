@@ -11,13 +11,14 @@
 }
 
 .product-form {
-  background: var(--sliit-white);
+  background: #162233;   /* dark card */
+  border: 1px solid #2a3a52;
   padding: 32px;
-  border-radius: var(--radius-lg);
+  border-radius: 12px;
   box-shadow: var(--shadow-md);
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 24px;
 }
 
 .form-row {
@@ -107,4 +108,37 @@
 
 .dark .form-actions button:last-child:hover {
   background: #f59e0b;
+}
+
+/* ===== DARK INPUTS ===== */
+.product-form input,
+.product-form textarea,
+.product-form select {
+  background-color: #1f2a3a;
+  border: 1px solid #3b4a60;
+  color: #ffffff;
+  padding: 10px;
+  border-radius: 6px;
+}
+
+/* ===== INPUT FOCUS EFFECT ===== */
+.product-form input:focus,
+.product-form textarea:focus,
+.product-form select:focus {
+  border-color: #f4b400;
+  box-shadow: 0 0 0 2px rgba(244, 180, 0, 0.2);
+  outline: none;
+}
+
+/* ===== LABEL COLOR ===== */
+.product-form label {
+  color: #cbd5e1;
+  font-weight: 500;
+}
+
+/* ===== BUTTON FIX ===== */
+.form-actions button:last-child {
+  background-color: #f4b400;
+  color: black;
+  font-weight: 600;
 }
