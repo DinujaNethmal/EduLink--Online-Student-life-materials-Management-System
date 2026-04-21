@@ -1,16 +1,3 @@
-// ============================================================
-// controllers/authController.js — Authentication Operations
-// ============================================================
-// From Tarini's backend. Handles user registration, login,
-// profile retrieval, and account deletion. Issues JWT tokens.
-//
-// Route summary:
-//   POST   /api/auth/register  → Create a new account
-//   POST   /api/auth/login     → Authenticate and get token
-//   GET    /api/auth/me        → Get current user's profile
-//   DELETE /api/auth/me        → Delete current user's account
-// ============================================================
-
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 
@@ -23,15 +10,11 @@ const generateToken = (user) => {
   });
 };
 
-/**
- * POST /api/auth/register
- * Create a new user account.
- */
+
 const register = async (req, res) => {
   try {
     const { name, email, password, studentId } = req.body;
 
-    // Check if user already exists
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ message: "Email already registered" });
@@ -57,10 +40,7 @@ const register = async (req, res) => {
   }
 };
 
-/**
- * POST /api/auth/login
- * Authenticate user and return token.
- */
+
 const login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -93,10 +73,7 @@ const login = async (req, res) => {
   }
 };
 
-/**
- * GET /api/auth/me
- * Get current logged-in user's profile.
- */
+
 const getMe = async (req, res) => {
   res.json({
     user: {
@@ -109,10 +86,7 @@ const getMe = async (req, res) => {
   });
 };
 
-/**
- * DELETE /api/auth/me
- * Delete the current user's account and all their product listings.
- */
+
 const deleteAccount = async (req, res) => {
   try {
     const Product = require("../models/Product");

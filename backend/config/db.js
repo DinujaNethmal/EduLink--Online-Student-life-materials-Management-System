@@ -1,15 +1,7 @@
-// ============================================================
-// config/db.js — MongoDB Connection Logic
-// ============================================================
-// Connects to MongoDB Atlas using the MONGO_URI environment variable.
-// ============================================================
+
 
 const mongoose = require("mongoose");
 
-/**
- * connectDB — Establishes the MongoDB connection
- * Uses MONGO_URI from .env (Dinuja's MongoDB Atlas cluster)
- */
 const connectDB = async () => {
   try {
     const uri = process.env.MONGO_URI;

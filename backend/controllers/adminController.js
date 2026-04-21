@@ -1,11 +1,3 @@
-// ============================================================
-// controllers/adminController.js — Merged Admin Operations
-// ============================================================
-// Combines Tarini's admin CRUD (stats, users, products management)
-// with Dinuja's admin analytics (login, dashboard summary,
-// marketplace analytics, quiz analytics, student progress,
-// pending products, product approval).
-// ============================================================
 
 const User = require("../models/User");
 const Product = require("../models/Product");
@@ -13,12 +5,6 @@ const Order = require("../models/Order");
 const Quiz = require("../models/Quiz");
 const Result = require("../models/Result");
 
-// ===================== Tarini's Admin CRUD =====================
-
-/**
- * GET /api/admin/stats
- * Dashboard summary statistics.
- */
 const getStats = async (req, res) => {
   try {
     const [userCount, productCount, orderCount] = await Promise.all([
@@ -33,10 +19,6 @@ const getStats = async (req, res) => {
   }
 };
 
-/**
- * GET /api/admin/users
- * List all registered users (excluding passwords).
- */
 const getUsers = async (req, res) => {
   try {
     const users = await User.find().select("-password").sort({ createdAt: -1 });
@@ -46,11 +28,7 @@ const getUsers = async (req, res) => {
   }
 };
 
-/**
- * DELETE /api/admin/users/:id
- * Delete a user and all their product listings.
- * Admins cannot delete themselves.
- */
+
 const deleteUser = async (req, res) => {
   try {
     if (req.params.id === req.user._id.toString()) {
@@ -71,10 +49,7 @@ const deleteUser = async (req, res) => {
   }
 };
 
-/**
- * PUT /api/admin/users/:id/role
- * Change a user's role (user <-> admin).
- */
+
 const updateUserRole = async (req, res) => {
   try {
     const { role } = req.body;
@@ -102,10 +77,7 @@ const updateUserRole = async (req, res) => {
   }
 };
 
-/**
- * GET /api/admin/products
- * List ALL products (including unavailable ones).
- */
+
 const getAllProducts = async (req, res) => {
   try {
     const products = await Product.find().sort({ createdAt: -1 });
@@ -115,10 +87,7 @@ const getAllProducts = async (req, res) => {
   }
 };
 
-/**
- * DELETE /api/admin/products/:id
- * Admin can delete any product.
- */
+
 const adminDeleteProduct = async (req, res) => {
   try {
     const product = await Product.findByIdAndDelete(req.params.id);
@@ -131,12 +100,7 @@ const adminDeleteProduct = async (req, res) => {
   }
 };
 
-// ===================== Dinuja's Admin Analytics =====================
 
-/**
- * POST /api/admin/login
- * Admin login (Dinuja's endpoint with demo bypass).
- */
 const adminLogin = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -145,7 +109,6 @@ const adminLogin = async (req, res) => {
       return res.status(400).json({ success: false, message: "Please provide email and password" });
     }
 
-    // Demo bypass for quick testing
     if (email === "admin@gmail.com" && password === "admin12345") {
       return res.status(200).json({
         success: true,
@@ -190,10 +153,7 @@ const adminLogin = async (req, res) => {
   }
 };
 
-/**
- * GET /api/admin/dashboard-summary
- * Full dashboard summary with student count, products, quizzes, and performance.
- */
+
 const getDashboardSummary = async (req, res) => {
   try {
     const totalStudents = await User.countDocuments({ role: { $in: ["student", "user"] } });
@@ -233,10 +193,7 @@ const getDashboardSummary = async (req, res) => {
   }
 };
 
-/**
- * GET /api/admin/analytics/marketplace
- * Marketplace analytics: product counts, category breakdown, revenue.
- */
+
 const getMarketplaceAnalytics = async (req, res) => {
   try {
     const totalProducts = await Product.countDocuments();
@@ -284,10 +241,7 @@ const getMarketplaceAnalytics = async (req, res) => {
   }
 };
 
-/**
- * GET /api/admin/analytics/quizzes
- * Quiz analytics: total quizzes, attempts, performance, difficulty, score distribution.
- */
+
 const getQuizAnalytics = async (req, res) => {
   try {
     const totalQuizzes = await Quiz.countDocuments();
@@ -370,10 +324,7 @@ const getQuizAnalytics = async (req, res) => {
   }
 };
 
-/**
- * GET /api/admin/student-progress
- * Student progress reports with quiz results.
- */
+
 const getStudentProgress = async (req, res) => {
   try {
     const students = await User.find({ role: { $in: ["student", "user"] } });
@@ -421,10 +372,7 @@ const getStudentProgress = async (req, res) => {
   }
 };
 
-/**
- * GET /api/admin/products/pending
- * Get marketplace products pending approval.
- */
+
 const getPendingProducts = async (req, res) => {
   try {
     const pendingProducts = await Product.find().sort({ createdAt: -1 });
@@ -438,11 +386,7 @@ const getPendingProducts = async (req, res) => {
   }
 };
 
-/**
- * PUT /api/admin/products/:id/approve
- * Approve or reject a marketplace product.
- * Request body: { approval: "approved" | "rejected" }
- */
+
 const approveProduct = async (req, res) => {
   try {
     const { approval } = req.body;
@@ -467,14 +411,14 @@ const approveProduct = async (req, res) => {
 };
 
 module.exports = {
-  // Tarini's admin CRUD
+  
   getStats,
   getUsers,
   deleteUser,
   updateUserRole,
   getAllProducts,
   adminDeleteProduct,
-  // Dinuja's admin analytics
+  
   adminLogin,
   getDashboardSummary,
   getMarketplaceAnalytics,

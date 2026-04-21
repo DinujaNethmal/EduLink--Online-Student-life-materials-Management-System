@@ -54,7 +54,7 @@ function App() {
   const hideNavbar = location.pathname === "/admin";
 
   return (
-    <div className="app">
+    <div className="app dark">
       {/* Single unified navbar across the entire site */}
       {!hideNavbar && <Navbar />}
 

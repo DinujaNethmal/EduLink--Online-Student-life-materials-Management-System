@@ -8,3 +8,92 @@
   padding-top: 64px;
   flex: 1;
 }
+
+/* ========== GLOBAL DARK MODE ========== */
+
+.dark {
+  background-color: #0f172a;
+  color: #f8fafc;
+  min-height: 100vh;
+}
+
+.dark body,
+.dark .app,
+.dark .main-content {
+  background-color: #0f172a;
+  color: #f8fafc;
+}
+
+/* Generic surfaces */
+.dark .container,
+.dark .card,
+.dark .box,
+.dark .section,
+.dark .panel,
+.dark .content,
+.dark .page,
+.dark [class*="page"],
+.dark [class*="container"],
+.dark [class*="section"],
+.dark [class*="card"] {
+  background-color: #0f172a;
+  color: #f8fafc;
+}
+
+/* Inputs */
+.dark input,
+.dark textarea,
+.dark select {
+  background-color: #1e293b;
+  color: #f8fafc;
+  border: 1px solid #334155;
+}
+
+.dark input::placeholder,
+.dark textarea::placeholder {
+  color: #94a3b8;
+}
+
+/* Buttons */
+.dark button {
+  color: inherit;
+}
+
+/* Links and text */
+.dark p,
+.dark span,
+.dark div,
+.dark label,
+.dark h1,
+.dark h2,
+.dark h3,
+.dark h4,
+.dark h5,
+.dark h6,
+.dark a,
+.dark li {
+  color: inherit;
+}
+
+/* Borders / dividers */
+.dark hr,
+.dark [class*="divider"],
+.dark [class*="border"] {
+  border-color: #334155;
+}
+
+/* Tables if any */
+.dark table {
+  background-color: #1e293b;
+  color: #f8fafc;
+}
+
+.dark th,
+.dark td {
+  border-color: #334155;
+}
+
+/* Navbar can stay dark-looking */
+.dark nav {
+  background-color: #0b2341;
+}

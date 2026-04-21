@@ -6,9 +6,15 @@
 
 /* ========== Hero Section ========== */
 .hero-section {
-  background: linear-gradient(135deg, var(--sliit-blue) 0%, var(--sliit-blue-light) 100%);
-  padding: 48px 0 40px;
+  background:
+    linear-gradient(rgba(10, 35, 66, 0.6), rgba(20, 55, 95, 0.68)),
+    url('/images/marketplacehero.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 72px 0 64px;
   text-align: center;
+  
 }
 
 .hero-title {
@@ -174,4 +180,156 @@
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 16px;
   }
+}
+
+/* ========== DARK MODE ========== */
+
+.dark .marketplace-home {
+  background-color: #0f172a;
+}
+
+/* Search bar (white → dark) */
+/* ---- Search Bar ---- */
+.search-bar {
+  display: flex;
+  align-items: center;
+
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 50px;
+
+  padding: 6px 6px 6px 16px;
+  max-width: 560px;
+  margin: 0 auto;
+
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+}
+
+/* Category chips (white → dark) */
+.dark .category-chip {
+  background: #1e293b;
+  color: #e2e8f0;
+  border-color: #334155;
+}
+
+.dark .category-chip:hover {
+  border-color: #60a5fa;
+  color: #60a5fa;
+}
+
+.dark .category-chip.active {
+  background-color: #2563eb;
+  color: white;
+}
+
+/* Text */
+.dark .results-count {
+  color: #94a3b8;
+}
+
+/* Loading / empty */
+.dark .loading,
+.dark .error-message,
+.dark .empty-message {
+  color: #cbd5e1;
+}
+
+/* Spinner */
+.dark .spinner {
+  border: 4px solid #334155;
+  border-top-color: #60a5fa;
+}
+
+/* ========== FULL DARK MODE ========== */
+
+.dark .marketplace-home {
+  min-height: 100vh;
+  background-color: #0f172a;
+}
+
+/* Hero */
+.dark .hero-section {
+  background:
+    linear-gradient(rgba(0, 0, 0, 0.72), rgba(0, 0, 0, 0.82)),
+    url('/images/marketplacehero.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.dark .hero-title {
+  color: #f8fafc;
+}
+
+.dark .hero-title .highlight {
+  color: #fbbf24;
+}
+
+.dark .hero-subtitle {
+  color: rgba(255, 255, 255, 0.82);
+}
+
+/* Search bar */
+.dark .search-bar {
+  background: #1e293b;
+  border: 1px solid #334155;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+.dark .search-icon {
+  color: #94a3b8;
+}
+
+.dark .search-bar input {
+  color: #f8fafc;
+}
+
+.dark .search-bar input::placeholder {
+  color: #94a3b8;
+}
+
+.dark .search-bar .btn {
+  background: #fbbf24;
+  color: #0f172a;
+}
+
+/* Category chips */
+.dark .category-chip {
+  background: #1e293b;
+  color: #e2e8f0;
+  border: 1.5px solid #334155;
+}
+
+.dark .category-chip:hover {
+  border-color: #60a5fa;
+  color: #60a5fa;
+}
+
+.dark .category-chip.active {
+  background-color: #2563eb;
+  color: #ffffff;
+  border-color: #2563eb;
+}
+
+/* Product section */
+.dark .products-section {
+  background: #0f172a;
+}
+
+.dark .results-count {
+  color: #94a3b8;
+}
+
+/* Loading / Error / Empty */
+.dark .loading,
+.dark .error-message,
+.dark .empty-message {
+  color: #cbd5e1;
+}
+
+.dark .spinner {
+  border: 4px solid #334155;
+  border-top-color: #60a5fa;
 }
