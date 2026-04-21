@@ -84,13 +84,13 @@
   padding: 3px 10px;
   border-radius: 20px;
   margin-left: auto;
-  background-color: #f8d7da;
+  background-color: #dc2626;
   color: #721c24;
 }
 
 .payment-status-badge.paid {
-  background-color: #d4edda;
-  color: #155724;
+  background: #16a34a;  /* green */
+  color: white;
 }
 
 .order-card-items {
