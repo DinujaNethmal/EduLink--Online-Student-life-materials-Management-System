@@ -1,8 +1,10 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useParams } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+
 
 const QuizForm = () => {
+  const { id } = useParams();
+  
   const [quizInfo, setQuizInfo] = useState({
     title: "",
     year: "",
@@ -45,10 +47,18 @@ const QuizForm = () => {
     ]);
   };
 
+   const filtered = questions.filter((quiz) => {
+    return (
+      (!quizInfo.year || quiz.year === quizInfo.year) &&
+      (!quizInfo.semester || quiz.semester === quizInfo.semester) &&
+      (!quizInfo.subject || quiz.subject === quizInfo.subject)
+    );
+  });
+
     // Function to auto-generate questions from DB
   const handleAutoGenerate = async () => {
-    if (!quizInfo.subject || !quizInfo.difficulty) {
-      alert("⚠️ Please select subject and difficulty first!");
+    if (!quizInfo.subject || !quizInfo.difficulty || !quizInfo.year || !quizInfo.semester) {
+      alert("⚠️ Please select academic year, semester,subject and difficulty first!");
       return;
     }
 
@@ -74,17 +84,24 @@ const QuizForm = () => {
       console.log("Generated questions:", data);
 
       // ✅ 🔥 REPLACE HERE
-      setQuestions(
-        (Array.isArray(data) ? data : data.questions || []).map((q) => ({
-          type: "MCQ",
-          text: q.text || q.questionText || "",
-          options: q.options || ["", "", "", ""],
-          answer: q.answer || q.correctAnswer || "",
-          explanation: q.explanation || "",
-          difficulty: q.difficulty || "Medium",
-          marks: q.marks || 1,
-        }))
-      );
+      const extractedQuestions = (data.questions || []).flatMap((quiz) =>
+      (quiz.questions || []).map((q) => ({
+        type: q.type || "MCQ",
+        text: q.text || q.questionText || "",
+        options: q.options?.length ? q.options : ["", "", "", ""],
+        answer: q.answer || q.correctAnswer || "",
+        explanation:
+        q.explanation ??
+        q.Explanation ??
+        q.explanationText ??
+        q.solution ??
+        "No explanation available",
+        difficulty: q.difficulty || "Medium",
+        marks: q.marks || 1,
+      }))
+    );
+
+    setQuestions(extractedQuestions);
 
     } catch (err) {
       console.error(err);
