@@ -1,0 +1,168 @@
+.profile-modern-page .modern-content-wrapper {
+  max-width: 1180px;
+  margin-top: 7rem;
+}
+
+.profile-modern-page .profile-header-modern {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.profile-modern-page .avatar-rings {
+  position: relative;
+  width: 110px;
+  height: 110px;
+  flex: 0 0 110px;
+}
+
+.profile-modern-page .modern-avatar {
+  width: 100%;
+  height: 100%;
+  border-radius: 999px;
+  object-fit: cover;
+  background: linear-gradient(135deg, #4f46e5, #7c3aed);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 1.7rem;
+  font-weight: 900;
+  border: 2px solid rgba(255, 255, 255, 0.22);
+}
+
+.profile-modern-page .btn-modern-primary,
+.profile-modern-page .btn-modern-secondary {
+  border: 1px solid transparent;
+  border-radius: 12px;
+  padding: 0.68rem 1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  color: #fff;
+  cursor: pointer;
+  font-weight: 700;
+  transition: 0.2s ease;
+}
+
+.profile-modern-page .btn-modern-primary {
+  background: linear-gradient(135deg, #4f46e5, #7c3aed);
+}
+
+.profile-modern-page .btn-modern-secondary {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.profile-modern-page .form-grid-2 {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 1rem;
+}
+
+.profile-modern-page .form-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.8rem;
+}
+
+.profile-modern-page .glass-panel {
+  padding: 1.35rem;
+}
+
+.profile-modern-page .modern-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.95rem;
+}
+
+.profile-modern-page .field-group label {
+  display: block;
+  font-size: 0.8rem;
+  margin-bottom: 0.38rem;
+  color: #cbd5e1;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.profile-modern-page .modern-input,
+.profile-modern-page .modern-select {
+  width: 100%;
+  min-height: 44px;
+  padding: 0.68rem 0.8rem;
+  border: 1px solid rgba(148, 163, 184, 0.45);
+  border-radius: 12px;
+  background: rgba(15, 23, 42, 0.66);
+  color: #f8fafc;
+}
+
+.profile-modern-page .modern-select option {
+  color: #0f172a;
+}
+
+.profile-modern-page .profile-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.6rem;
+  margin-bottom: 1rem;
+}
+
+.profile-modern-page .stat-box {
+  padding: 0.8rem 0.6rem;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  text-align: center;
+}
+
+.profile-modern-page .stat-box .val {
+  font-size: 1.15rem;
+  font-weight: 800;
+}
+
+.profile-modern-page .stat-box .lbl {
+  font-size: 0.78rem;
+  color: #94a3b8;
+}
+
+.profile-modern-page .modern-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.profile-modern-page .modern-table th,
+.profile-modern-page .modern-table td {
+  padding: 0.62rem 0.45rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.11);
+  text-align: left;
+}
+
+.profile-modern-page .poster-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.28rem 0.6rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  font-size: 0.78rem;
+}
+
+@media (max-width: 980px) {
+  .profile-modern-page .form-grid-2,
+  .profile-modern-page .form-grid-3 {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-modern-page .profile-header-modern {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .profile-modern-page .profile-stats-grid {
+    grid-template-columns: 1fr;
+  }
+}

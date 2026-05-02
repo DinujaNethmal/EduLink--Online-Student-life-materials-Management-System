@@ -3,6 +3,10 @@
   flex-direction: column;
   min-height: 100vh;
 }
+.main-content {
+  padding-top: 64px; /* same as navbar height */
+}
+
 
 .main-content {
   padding-top: 64px;

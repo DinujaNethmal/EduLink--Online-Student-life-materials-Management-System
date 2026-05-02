@@ -4,12 +4,6 @@
   background-color: #0b0b10;
   overflow-x: hidden;
 }
-.marketplace-home {
-  min-height: 100vh;
-  background-color: var(--sliit-gray-50);
-
-  padding-top: 0; /* keep this 0 because main-content already handles spacing */
-}
 
 .landing-nav {
   position: fixed;
@@ -25,14 +19,6 @@
   backdrop-filter: blur(12px);
   background: rgba(11, 11, 16, 0.7);
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.landing-nav {
-  height: 80px;
-}
-
-.landing-page {
-  padding-top: 80px;
 }
 
 .landing-logo {
@@ -103,9 +89,12 @@
 }
 
 .hero-content {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 4rem;
+  max-width: 1400px;
   width: 100%;
-  padding: 0 2rem;
-  margin: 0;
+  align-items: center;
 }
 
 .hero-badge {

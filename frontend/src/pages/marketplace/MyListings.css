@@ -60,3 +60,90 @@
   display: flex;
   gap: 8px;
 }
+
+/* ===== My Listings Dark Mode ===== */
+
+.my-listings {
+  min-height: 100vh;
+  padding: 40px 20px;
+  background: #0b1630;
+}
+
+.listings-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.listings-header h1 {
+  color: #ffffff;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: #94a3b8;
+}
+
+.empty-state p {
+  font-size: 18px;
+  margin-bottom: 20px;
+  color: #94a3b8;
+}
+
+.listings-table-wrapper {
+  background: #16243b;
+  border: 1px solid #2b3b55;
+  border-radius: 18px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25);
+  overflow-x: auto;
+}
+
+.listings-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.listings-table th,
+.listings-table td {
+  padding: 14px 16px;
+  text-align: left;
+  border-bottom: 1px solid #2b3b55;
+}
+
+.listings-table th {
+  background: #f8fafc;
+  font-weight: 600;
+  font-size: 13px;
+  text-transform: uppercase;
+  color: #64748b;
+}
+
+.listings-table td {
+  background: #1b2a44;
+  color: #e2e8f0;
+}
+
+.listings-table tr:hover td {
+  background: #223552;
+}
+
+.product-name-link {
+  color: #93c5fd;
+  font-weight: 600;
+}
+
+.product-name-link:hover {
+  text-decoration: underline;
+}
+
+.actions-cell {
+  display: flex;
+  gap: 8px;
+}
+
+/* optional button polish */
+.actions-cell button {
+  border-radius: 10px;
+}

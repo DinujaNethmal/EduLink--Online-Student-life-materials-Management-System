@@ -1,43 +1,28 @@
-// ============================================================
-// pages/ProductDetail.jsx — Product Detail Page
-// ============================================================
-// Shows the full details of a single product when a user clicks
-// on a ProductCard. Features:
-//   - Large product image (or colored placeholder)
-//   - Full description, category, condition, seller name
-//   - Price and stock availability indicator
-//   - Quantity selector (with min 1, max = stock)
-//   - "Add to Cart" and "Buy Now" buttons
-//   - Back button to return to the previous page
-//
-// The product ID is extracted from the URL (e.g., /product/6651a3b2f1...)
-// using React Router's useParams hook.
-// ============================================================
 
-import { useState, useEffect } from "react";              // React hooks
-import { useParams, useNavigate } from "react-router-dom"; // URL params + navigation
+
+import { useState, useEffect } from "react";              
+import { useParams, useNavigate } from "react-router-dom"; 
 import {
-  FiShoppingCart,  // Cart icon
-  FiZap,           // Lightning bolt icon (Buy Now)
-  FiArrowLeft,     // Back arrow icon
-  FiMinus,         // Minus icon (quantity)
-  FiPlus,          // Plus icon (quantity)
+  FiShoppingCart,  
+  FiZap,           
+  FiArrowLeft,     
+  FiMinus,        
+  FiPlus,         
 } from "react-icons/fi";
-import { getProductById, addToCart } from "../../services/api"; // API calls
-import toast from "react-hot-toast";   // Toast notifications
-import "./ProductDetail.css";          // Page-specific styles
+import { getProductById, addToCart } from "../../services/api"; 
+import toast from "react-hot-toast";   
+import "./ProductDetail.css";          
 
 function ProductDetail() {
-  // Extract the product ID from the URL path (e.g., /product/:id)
+  
   const { id } = useParams();
   const navigate = useNavigate();
 
-  // --- State ---
-  const [product, setProduct] = useState(null);  // Product data from the API
-  const [loading, setLoading] = useState(true);  // Loading spinner toggle
-  const [quantity, setQuantity] = useState(1);   // Selected quantity for purchase
 
-  // Fetch the product details when the component mounts (or when ID changes)
+  const [product, setProduct] = useState(null);  
+  const [loading, setLoading] = useState(true);  
+  const [quantity, setQuantity] = useState(1);   
+
   useEffect(() => {
     const fetchProduct = async () => {
       try {
@@ -45,7 +30,7 @@ function ProductDetail() {
         setProduct(res.data.product);
       } catch {
         toast.error("Product not found");
-        navigate("/marketplace"); // Redirect to homepage if product doesn't exist
+        navigate("/marketplace"); 
       } finally {
         setLoading(false);
       }
@@ -53,9 +38,7 @@ function ProductDetail() {
     fetchProduct();
   }, [id, navigate]);
 
-  /**
-   * Add the product to the cart with the selected quantity.
-   */
+  
   const handleAddToCart = async () => {
     try {
       await addToCart(product._id, quantity);
